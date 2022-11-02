@@ -28,10 +28,6 @@ module.exports = function([mode] = ['production'], opts = { watch: false }) {
     // [Handle errors here](#error-handling)
     clearInterval(dots)
     buildCount++
-    if (process.BUILD.clientFiles.length > 0 && buildCount === 1) {
-      const preferredFiles = process.BUILD.clientFiles.map(file => file.slice(file.indexOf('src/') + 4)).sort().filter((file, index, array) => array.indexOf(file) === index)
-      log('green', 'CLIENT files that take precedence over matching FRAMEWORK files:', preferredFiles)
-    }
     timer.report()
     // display times of utils/long processes
     const longTimes = longProcesses(process.BUILD.timing)
