@@ -1,5 +1,5 @@
 /*
-  npm run init-new feature|element feature-name all|sections|snippets|scripts|schema|installs|styles|config
+  npx theme new feature|element feature-name all|sections|snippets|scripts|schema|install|styles|config
   creates a directory in _features or _elements with starter files to build your feature or element
 */
 const fs = require('fs')

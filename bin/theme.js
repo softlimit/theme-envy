@@ -24,6 +24,13 @@ const argv = yargs(process.argv.slice(2))
     type: 'boolean',
     default: false
   })
+  .option('target', {
+    alias: 't',
+    describe: 'Path to target destination of src folder and config files',
+    type: 'string',
+    default: './',
+    nargs: 1
+  })
   .command('$0 <script> [args]', 'Theme Scripts', {
     script: {
       description: 'Available scripts: ["build", "clean", "ignore", "prep", "pull-json", "new"]. Each script has additional info with the "--help" or "-h" flag.',
@@ -36,13 +43,15 @@ const argv = yargs(process.argv.slice(2))
   },
   (argv) => {
     console.log(
-      chalk.green('==================================\n') +
-      chalk.green.bold(`Starting Softlimit script\n`) +
-      chalk.bgGreen(` theme ${argv.script} \n`) +
-      chalk.green('==================================\n')
+      chalk.green.bold('Starting Softlimit script'),
+      chalk.bgGreen(`theme ${argv.script}\n`)
     )
     const themeScript = require(path.resolve(__dirname, `theme-${argv.script}`))
-    themeScript(argv.args, { direct: true, watch: argv.watch })
+    themeScript(argv.args, {
+      direct: true,
+      watch: argv.watch,
+      target: argv.target
+    })
   })
   .help('h')
   .showHelpOnFail(true)
