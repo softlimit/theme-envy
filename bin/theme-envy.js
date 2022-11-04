@@ -44,9 +44,9 @@ const argv = yargs(process.argv.slice(2))
   (argv) => {
     console.log(
       chalk.green.bold('Starting Softlimit script'),
-      chalk.bgGreen(`theme ${argv.script}\n`)
+      chalk.bgGreen(`theme-envy ${argv.script}\n`)
     )
-    const themeScript = require(path.resolve(__dirname, `theme-${argv.script}`))
+    const themeScript = require(path.resolve(__dirname, `theme-envy-${argv.script}`))
     themeScript(argv.args, {
       direct: true,
       watch: argv.watch,
