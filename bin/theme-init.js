@@ -11,7 +11,7 @@ const fs = require('fs')
 const fse = require('fs-extra')
 const chalk = require('chalk')
 
-const dirSrc = path.resolve(__dirname, '.././src')
+const dirSrc = path.resolve(__dirname, '.././src-structure')
 const configSrc = path.resolve(__dirname, '.././configs')
 
 module.exports = function (args, opts = { target: './' }) {
