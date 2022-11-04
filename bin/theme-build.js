@@ -1,8 +1,6 @@
 const chalk = require('chalk')
 const path = require('path')
-const fs = require('fs')
-const glob = require('glob')
-const config = require(path.resolve(process.cwd(), 'webpack.config.js'))
+const config = require(path.resolve(__dirname, '.././webpack.config.js'))
 const webpack = require('webpack')
 const EventEmitter = require('events')
 const BuildTime = require('../utils/build-time')
@@ -40,9 +38,6 @@ module.exports = function([mode] = ['production'], opts = { watch: false }) {
 
     process.BUILD.events.emit('build:complete')
     process.BUILD.building = false
-    if (!remoteWatchStarted && opts.watch) {
-      watchRemoteJSON()
-    }
   })
   // output list of changed files
   compiler.hooks.watchRun.tap('WatchRun', (compiler) => {
@@ -55,35 +50,6 @@ module.exports = function([mode] = ['production'], opts = { watch: false }) {
       }
     }
   })
-}
-
-function watchRemoteJSON() {
-  remoteWatchStarted = true
-  // With --theme-editor-sync is passed to shopify theme serve, this responds to the Shopify CLI making changes to dist/templates json files and config/settings_data
-  const files = [path.resolve(process.cwd(), 'dist/templates'), path.resolve(process.cwd(), 'dist/config/settings_data.json')]
-
-  const fileChanged = (eventType, filename) => {
-    // exit if not a json file
-    if (filename.indexOf('.json') === -1) return
-    const file = glob.sync(path.resolve(process.cwd(), `./dist/**/${filename}`))[0]
-    console.log(`REMOTE: ${eventType} ${file.slice(nthLastIndexOf(file, '/', 2) + 1)}`)
-    fs.copyFileSync(file, file.replace('/dist/', '/src/'))
-  }
-  files.forEach(dir => {
-    fs.watch(dir, fileChanged)
-  })
-
-  // utility function that gets the nth last index of a substring
-  const nthLastIndexOf = function(str, searchString, n) {
-    if (str === null) {
-      return -1
-    }
-    if (!n || isNaN(n) || n <= 1) {
-      return str.lastIndexOf(searchString)
-    }
-    n--
-    return str.lastIndexOf(searchString, nthLastIndexOf(str, searchString, n) - 1)
-  }
 }
 
 function log(color, msg, ...more) {
