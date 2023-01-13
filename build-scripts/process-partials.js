@@ -30,7 +30,7 @@ const processPartials = (input) => {
     const tag = JSON.parse([...match[0].matchAll(jsonRegex)][0][0])
     // ignore softlimit tags that are not partial references
     if (tag.action !== 'partial') return
-    const file = ThemeRequire(`${tag.file}.liquid`, { globStr: './{src,node_modules/@softlimit/framework/src}/**/partials/**/' })
+    const file = ThemeRequire(`${tag.file}.liquid`, { globStr: './src/**/partials/**/' })
     input = input.replace(match[0], processPartials(file))
   })
   timer.report()

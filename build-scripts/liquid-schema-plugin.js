@@ -39,7 +39,7 @@ class LiquidSchemaPlugin {
             const schemaFile = schema[0].match(/'(.*)'/)[1] || schema[0].match(/"(.*)"/)[1]
 
             // load the file export
-            let schemaSource = ThemeRequire(schemaFile, { globStr: '{src,node_modules/@softlimit/framework/src}/**/{schema,_schema}/' })
+            let schemaSource = ThemeRequire(schemaFile, { globStr: 'src/**/{schema,_schema}/' })
             // replace the {% schema %} tag with the schema string and update asset
             // replace our old softlimit type
             schemaSource = replaceReferencedSchema(schemaSource)

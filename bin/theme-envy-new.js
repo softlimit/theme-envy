@@ -17,7 +17,7 @@ const starterConfigs = {
 // returns starter content of file name
 // checks for file in user root first, otherwise use package file
 const starterContent = (fileName, args) => {
-  const content = require(path.join(process.cwd(), '/utils/', fileName))
+  const content = require(path.join(process.cwd(), '/build-scripts/', fileName))
   return content(...args)
 }
 

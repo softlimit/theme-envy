@@ -1,7 +1,7 @@
 /*
   Function: accepts a filename and a glob string and returns the file contents from either the @softlimit/framework package or /src
   @param {string} file - the filename to load
-  @param {string} globStr - the glob string to search for the file: defaults to ./{src,node_modules/@softlimit/framework/src}/ ie. src dir
+  @param {string} globStr - the glob string to search for the file in src dir
 */
 const glob = require('glob')
 const path = require('path')
@@ -18,31 +18,27 @@ Object.entries(BuildConfig).forEach(([key, value]) => {
   FlatConfig = FlatConfig.concat(value)
 })
 
-// our standard reference for files in the client or framework
-
-const twoLocations = './{src,node_modules/@softlimit/framework/src}'
-
 let fileCache = {}
 
 // get all liquid partials and filter to partials that exist in build config elements
-let allLiquidPartials = glob.sync(`${twoLocations}/**/partials/**/*.liquid`).filter(file => FlatConfig.some(element => file.includes(`/${element}/`)))
-let allJsonSchema = glob.sync(`${twoLocations}/**/{schema,_schema}/**/*.{js,json}`)
+let allLiquidPartials = glob.sync(`./src/**/partials/**/*.liquid`).filter(file => FlatConfig.some(element => file.includes(`/${element}/`)))
+let allJsonSchema = glob.sync(`./src/**/{schema,_schema}/**/*.{js,json}`)
 
 // uncache stuff after a build is complete so changes can be made to partials and schemas in between watch events
 process.BUILD.events.on('build:complete', () => {
   fileCache = {}
-  allLiquidPartials = glob.sync(`${twoLocations}/**/partials/**/*.liquid`).filter(file => FlatConfig.some(element => file.includes(`/${element}/`)))
-  allJsonSchema = glob.sync(`${twoLocations}/**/{schema,_schema}/**/*.{js,json}`)
+  allLiquidPartials = glob.sync(`./src/**/partials/**/*.liquid`).filter(file => FlatConfig.some(element => file.includes(`/${element}/`)))
+  allJsonSchema = glob.sync(`./src/**/{schema,_schema}/**/*.{js,json}`)
 })
 
 module.exports = (file, options) => {
   const timer = new BuildTime()
   // if file is a relative path... use caller() to determine path of parent file and set relative path to that file
   let globStr
-  options?.globStr ? globStr = options.globStr : globStr = `${twoLocations}/`
+  options?.globStr ? globStr = options.globStr : globStr = `./src/`
 
   if (file.includes('./')) {
-    globStr = `${twoLocations}/${path.dirname(caller()).split('src/')[1]}`
+    globStr = `./src/${path.dirname(caller()).split('src/')[1]}`
     file = path.basename(file)
   }
   // if we have found this file already, return the cached version
@@ -71,11 +67,6 @@ module.exports = (file, options) => {
     ref = allJsonSchema.filter(schema => schema.includes(`/${file.replace('.{js,json}', '.js')}`))
   } else {
     ref = glob.sync(`${globStr}${file}`)
-  }
-  if (ref.length > 1) {
-    // prefer the file from the src directory (ie client)
-    ref = ref.filter(file => file.indexOf('node_modules') === -1)
-    process.BUILD.clientFiles.push(ref[0])
   }
 
   if (ref.length === 0) {

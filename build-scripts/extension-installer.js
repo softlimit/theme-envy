@@ -25,7 +25,7 @@ class ExtensionInstaller {
           const timer = new BuildTime()
           const INSTALLS = process.BUILD.installs.map(file => {
             const extension = file.split('.').pop()
-            if (extension === 'json') console.log('Theme is still using install.json files instead of install.js. Try running \'node node_modules/@softlimit/framework/utils/convert-json-js\' to resolve.')
+            if (extension === 'json') console.log('Theme is still using install.json files instead of install.js. Try running \'node node_modules/@softlimit/shopify-env/build-scripts/convert-json-js\' to resolve.')
             return require(file)
           }).flat()
           // reset installs, they will all be taken care of here

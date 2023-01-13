@@ -74,7 +74,7 @@ const getProperty = (string) => {
 const actions = {
   partial: (props, loader) => {
     const content = `${props.file !== 'colors' ? hookStrings(props.file).hookOpen() : ''}
-${ThemeRequire(`${props.file}.liquid`, { globStr: './{src,node_modules/@softlimit/framework/src}/**/partials/', loader })}
+${ThemeRequire(`${props.file}.liquid`, { globStr: './src/**/partials/', loader })}
 ${props.file !== 'colors' ? hookStrings(props.file).hookClose() : ''}
 `
     addHook(props.file, loader)
@@ -83,7 +83,7 @@ ${props.file !== 'colors' ? hookStrings(props.file).hookClose() : ''}
   render: (props, loader) => {
     // legacy function, almost everything is using 'partial'
     const content = `${hookStrings(props.snippet).hookOpen()}
-${ThemeRequire(`${props.snippet}.liquid`, { globStr: './{src,node_modules/@softlimit/framework/src}/**/snippets/', loader })}
+${ThemeRequire(`${props.snippet}.liquid`, { globStr: './src/**/snippets/', loader })}
 ${hookStrings(props.snippet).hookClose()}
 `
     addHook(props.snippet, loader)

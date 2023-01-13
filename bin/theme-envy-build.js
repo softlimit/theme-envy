@@ -3,7 +3,7 @@ const path = require('path')
 const config = require(path.resolve(__dirname, '.././webpack.config.js'))
 const webpack = require('webpack')
 const EventEmitter = require('events')
-const BuildTime = require('../utils/build-time')
+const BuildTime = require('../build-scripts/build-time')
 
 process.BUILD = process.BUILD || {}
 
@@ -27,7 +27,7 @@ module.exports = function([mode] = ['production'], opts = { watch: false }) {
     clearInterval(dots)
     buildCount++
     timer.report()
-    // display times of utils/long processes
+    // display times of build-scripts/long processes
     const longTimes = longProcesses(process.BUILD.timing)
     if (Object.keys(longTimes).length > 0) {
       const formatTimeDisplay = Object.keys(orderKeys(longTimes)).map(key => `\n  ${key}: ${longTimes[key]}ms`).join('')
