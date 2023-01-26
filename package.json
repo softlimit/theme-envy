@@ -1,14 +1,14 @@
 {
-  "name": "@softlimit/shopify-env",
+  "name": "@softlimit/shopify-theme-env",
   "version": "1.0.0",
-  "description": "Softlimit Shopify Development Environment",
+  "description": "Softlimit Shopify Theme Development Environment",
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/softlimit/shopify-env",
     "directory": "@softlimit/shopify-env"
   },
   "bin": {
-    "theme": "bin/theme.js"
+    "theme-envy": "bin/theme-envy.js"
   },
   "engines": {
     "npm": "8.x"

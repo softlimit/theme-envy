@@ -1,9 +1,9 @@
 /*
-  npx theme init --target=path/to/dest
+  npx theme-envy init --target=path/to/dest
 
   creates skeleton structure for src folder
     - Shopify directories
-    - Softlimit "_features" and "_elements" directories
+    - Adds "_features" and "_elements" directories
     - config files
 */
 const path = require('path')
@@ -14,7 +14,7 @@ const chalk = require('chalk')
 const dirSrc = path.resolve(__dirname, '.././src-structure')
 const configSrc = path.resolve(__dirname, '.././configs')
 
-module.exports = function (args, opts = { target: './' }) {
+module.exports = function(args, opts = { target: './' }) {
   const target = path.resolve(process.cwd(), opts.target)
 
   fs.mkdir(path.join(target, 'src'), err => {
