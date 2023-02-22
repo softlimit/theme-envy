@@ -1,0 +1,9 @@
+<div class="p-8 customer reset-password md:p-16 md:w-1/2 md:mx-auto">
+  <h1 class="font-heading">
+    {{ 'customer.reset_password.title' | t }}
+  </h1>
+  <p>
+    {{ 'customer.reset_password.subtext' | t: email: email }}
+  </p>
+  {% render 'form-reset' %}
+</div>

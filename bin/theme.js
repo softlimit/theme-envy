@@ -50,7 +50,8 @@ const argv = yargs(process.argv.slice(2))
     themeScript(argv.args, {
       direct: true,
       watch: argv.watch,
-      target: argv.target
+      verbose: argv.verbose,
+      argv
     })
   })
   .help('h')

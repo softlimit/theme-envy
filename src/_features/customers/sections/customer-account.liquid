@@ -1,0 +1,77 @@
+<div class="orders" style="min-height: 50vh">
+  {% paginate customer.orders by 20 %}
+
+  <h1 class="mb-4 text-2xl font-semibold leading-8 font-heading">{{ 'customer.orders.title' | t }}</h1>
+
+  {% if customer.orders.size != 0 %}
+    <table class="w-full responsive-table no-translate md:border">
+      <thead class="md:border">
+        <tr>
+          <th class="px-6 py-3 text-left bg-gray-50">{{ 'customer.orders.order_number' | t }}: </th>
+          <th class="px-6 py-3 text-left bg-gray-50" colspan="2">{{ 'customer.orders.date' | t }}: </th>
+          <th class="px-6 py-3 text-left bg-gray-50">{{ 'customer.orders.payment_status' | t }}: </th>
+          <th class="px-6 py-3 text-left bg-gray-50">{{ 'customer.orders.fulfillment_status' | t }}: </th>
+          <th class="px-6 py-3 text-left bg-gray-50">{{ 'customer.order.tracking_number' | t }}: </th>
+          <th class="px-6 py-3 text-left bg-gray-50">{{ 'customer.orders.total' | t }}: </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for order in customer.orders %}
+          <tr class="py-4 border-b md:py-0 md:border-0 md:even:bg-gray-50">
+            <td class="py-4 md:px-6" data-label="{{ 'customer.orders.order_number' | t }}">
+              <a
+                href="{{ order.customer_url }}"
+                class="link"
+              >
+                {{ order.name }}
+              </a>
+            </td>
+            <td class="py-4 md:px-6" data-label="{{ 'customer.orders.date' | t }}" colspan="2">
+              {{ order.created_at | date: "%B %e, %Y"}}
+            </td>
+            <td class="py-4 md:px-6" data-label="{{ 'customer.order.payment_status' | t }}">
+              {{ order.financial_status_label }}
+            </td>
+            <td class="py-4 md:px-6" data-label="{{ 'customer.order.fulfillment_status' | t }}">
+              {{ order.fulfillment_status_label }}
+            </td>
+            <td class="py-4 md:px-6" data-label="{{ 'customer.order.fulfillment_status' | t }}">
+              {% liquid
+                assign tracking_urls = blank
+                for item in order.line_items
+                  if tracking_urls contains item.fulfillment.tracking_number
+                    continue
+                  else
+                    capture tracking_urls
+                      echo tracking_urls
+                      echo '<a class="tracking-link !text-left button btn-link block" target="_blank" href="' | append: item.fulfillment.tracking_url | append: '">' | append: item.fulfillment.tracking_number | append: '</a>'
+                    endcapture
+                  endif
+                endfor
+
+                if tracking_urls != blank
+                  echo tracking_urls
+                endif
+              %}
+            </td>
+            <td class="py-4 md:px-6" data-label="{{ 'customer.order.total' | t }}">
+              {{ order.total_price | money }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+
+  <p>{{ 'customer.orders.none' | t }}</p>
+  {% endif %}
+
+  {% if paginate.pages > 1 %}
+    {% render 'pagination' %}
+  {% endif %}
+
+  {% endpaginate %}
+</div>
+
+{% schema 'schema-customer-account.js' %}

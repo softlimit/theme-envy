@@ -1,0 +1,99 @@
+<div class="addresses">
+
+  {% render 'form-address-new' %}
+
+  <h1 class="mb-4 text-2xl font-semibold leading-8 font-heading">{{ 'customer.addresses.title' | t }}</h1>
+
+  {% paginate customer.addresses by 4 %}
+
+  <div class="addresses md:col-span-2">
+
+    <div class="grid grid-cols-1 gap-theme-sm md:gap-theme-md md:grid-cols-2 lg:grid-cols-3">
+
+      <div class="flex items-center justify-center bg-gray-100 h-36 add-new-address md:h-auto">
+        <modal-opener data-modal="#AddressNewForm" data-address-add>
+          <button type="button" class="button">
+            {{ 'customer.addresses.add_new' | t }}
+          </button>
+        </modal-opener>
+      </div>
+
+      {% for address in customer.addresses %}
+        <div class="{% if address == customer.default_address %} default dark-border {%endif%} py-4">
+
+          <div class="py-2 text-lg font-medium leading-6">
+            {{ address.name }}
+          </div>
+          <p class="text-gray-500">
+            {{ address.address1 }}<br>
+            {% if address.address2 != blank %}
+              {{ address.address2 }}<br>
+            {% endif %}
+            {{ address.city }}, {{ address.province_code }} {{ address.zip }}<br>
+            {{ address.country }}
+          </p>
+
+          <div class="button-container">
+            <div class="flex pt-2">
+              <modal-opener
+                type="button"
+                class = "address-buttons edit-button no-js-hidden"
+                data-form-id="{{ address.id }}"
+                data-modal="#EditAddress_{{ address.id }}"
+              >
+                <button type="button" class="link">
+                  {{ 'customer.addresses.edit' | t }}
+                </button>
+              </modal-opener>
+              <span>&nbsp; | &nbsp;</span>
+              <form
+                class="address-delete-form"
+                method="post"
+                action="/account/addresses/{{ address.id }}"
+                data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+              >
+                <input type="hidden" name="_method" value="delete" />
+                <button class="link address-buttons" type="submit">
+                  {{ 'customer.addresses.delete' | t }}
+                </button>
+              </form>
+            </div>
+          </div>
+          {% comment %}
+          {% if address == customer.default_address %}
+            <label class = "checkbox-container default">
+              <input type="checkbox" checked="checked">
+              <span class="checkmark"></span>
+            </label>
+            <label class = "checkbox-text" for="address_default_address_new">{{ 'customer.addresses.default' | t }}</label>
+          {% endif %}
+          {% unless address == customer.default_address %}
+          <div class = "default-checkbox al">
+          {% form 'customer_address', address %}
+
+              <label class = "checkbox-container">
+              {{ form.set_as_default_checkbox }}
+              <span class="checkmark"></span>
+              <input type="submit" class="default-submit" value="Save">
+              </label>
+              <label class = "checkbox-text" for="address_default_address_new">{{ 'customer.addresses.set_default' | t }}</label>
+          {% endform %}
+          </div>
+          {% endunless %}
+          {% endcomment %}
+        </div>
+
+        {% include 'form-address-edit', address: address %}
+      {% endfor %}
+
+    </div>
+
+    {% if paginate.pages > 1 %}
+      {% include 'pagination' %}
+    {% endif %}
+  </div>
+
+  {% endpaginate %}
+</div>
+
+{% schema 'schema-customer-addresses.js' %}
