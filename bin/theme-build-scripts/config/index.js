@@ -13,6 +13,8 @@ const writeSettingsSchema = () => {
       if (requiredModules.indexOf(file) === -1) requiredModules.push(file)
       return require(file)
     })
+    .flat()
+    .sort((a, b) => (a.name > b.name) ? 1 : -1)
 
   const config = [...settingsSchema, ...globbedConfigs].flat()
 
