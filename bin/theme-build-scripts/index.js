@@ -9,12 +9,14 @@ const fs = require('fs')
 
 const chokidar = require('chokidar')
 
-require('./globals/index.js')
-require('./scripts/index.js')
-require('./config/index.js')
-require('./templates/index.js')
+require('./globals')
+require('./assets')
+require('./locales')
+require('./scripts')
+require('./config')
+require('./templates')
 
-const helpers = require('./helpers/index.js')
+const helpers = require('./helpers')
 
 const webpackConfig = require('#Root/bin/theme-build-scripts/envy.config.js')
 
