@@ -26,10 +26,14 @@ const argv = yargs(process.argv.slice(2))
   })
   .option('target', {
     alias: 't',
-    describe: 'Path to target destination of src folder and config files',
+    describe: 'init: Path to target destination of src folder and config files',
     type: 'string',
     default: './',
     nargs: 1
+  })
+  .option('example-feature', {
+    alias: 'ef',
+    decribe: 'init: Add example feature to _features when copying the src structure'
   })
   .command('$0 <script> [args]', 'Theme Envy Scripts', {
     script: {
@@ -50,7 +54,8 @@ const argv = yargs(process.argv.slice(2))
     themeScript(argv.args, {
       direct: true,
       watch: argv.watch,
-      target: argv.target
+      target: argv.target,
+      feature: argv['example-feature']
     })
   })
   .help('h')
