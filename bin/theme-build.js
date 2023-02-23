@@ -18,7 +18,7 @@ webpackConfig.optimization.minimize = mode === 'production'
 webpackConfig.watch = watch
 
 module.exports = (args, { direct, watch, verbose, argv }) => {
-  buildTheme({ watch })
+  buildTheme({ watch, mode })
   // run tailwind
   const tailwindOpts = ['tailwindcss', 'build', '-i', './src/styles/critical.css', '-o', './dist/assets/critical.css']
   if (mode === 'production') tailwindOpts.push('--minify')

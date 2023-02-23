@@ -20,7 +20,7 @@ const webpackConfig = require('#Root/bin/theme-build-scripts/envy.config.js')
 
 const { extendLiquid, flattenShopifyDirectoryStructure, liquidPrettify, sectionSchemaInject } = helpers
 
-module.exports = function({ watch }) {
+module.exports = function({ watch, mode }) {
   function build(files = []) {
     if (files.length > 0) {
       // remove partials and schema = require(files list)
@@ -47,7 +47,7 @@ module.exports = function({ watch }) {
       source = extendLiquid({ source, filePath: file })
 
       // prettify our liquid if possible
-      source = liquidPrettify(source, outputPath)
+      if (mode === 'production') source = liquidPrettify(source, outputPath)
 
       // create output directory if it doesn't exist
       if (!fs.existsSync(path.dirname(outputPath))) {
