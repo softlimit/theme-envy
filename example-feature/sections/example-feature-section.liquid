@@ -1,0 +1,11 @@
+<div class="example-feature">
+  {% if section.settings.title != blank %}
+    <div class="w-full py-4 text-2xl text-center title">
+      {{ section.settings.title }}
+    </div>
+  {% endif %}
+  {% partial '_example-feature-partial' %}
+  {% snippet 'example-feature-snippet' %}
+</div>
+
+{% schema 'schema-example-feature-section.js' %}
