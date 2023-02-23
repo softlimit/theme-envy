@@ -14,6 +14,7 @@ const writeSettingsSchema = () => {
       return require(file)
     })
     .flat()
+    // sort alphabetically by name
     .sort((a, b) => (a.name > b.name) ? 1 : -1)
 
   const config = [...settingsSchema, ...globbedConfigs].flat()
