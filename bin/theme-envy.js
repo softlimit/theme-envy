@@ -26,12 +26,16 @@ const argv = yargs(process.argv.slice(2))
   })
   .option('target', {
     alias: 't',
-    describe: 'Path to target destination of src folder and config files',
+    describe: 'init: Path to target destination of src folder and config files',
     type: 'string',
     default: './',
     nargs: 1
   })
-  .command('$0 <script> [args]', 'Theme Scripts', {
+  .option('example-feature', {
+    alias: 'ef',
+    decribe: 'init: Add example feature to _features when copying the src structure'
+  })
+  .command('$0 <script> [args]', 'Theme Envy Scripts', {
     script: {
       description: 'Available scripts: ["build", "clean", "ignore", "prep", "pull-json", "new"]. Each script has additional info with the "--help" or "-h" flag.',
       type: 'string'
@@ -43,13 +47,15 @@ const argv = yargs(process.argv.slice(2))
   },
   (argv) => {
     console.log(
-      chalk.green.bold('Starting Softlimit script'),
-      chalk.bgGreen(`theme ${argv.script}\n`)
+      chalk.green.bold('Starting Softlimit Theme Envy script'),
+      chalk.bgGreen(`theme-envy ${argv.script}\n`)
     )
-    const themeScript = require(path.resolve(__dirname, `theme-${argv.script}`))
+    const themeScript = require(path.resolve(__dirname, `theme-envy-${argv.script}`))
     themeScript(argv.args, {
       direct: true,
       watch: argv.watch,
+      target: argv.target,
+      feature: argv['example-feature'],
       verbose: argv.verbose,
       argv
     })

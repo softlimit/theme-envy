@@ -6,6 +6,21 @@ const fs = require('fs')
 const path = require('path')
 const yargs = require('yargs')
 
+const starterConfigs = {
+  config: 'starter-config.js',
+  install: 'starter-install.js',
+  schema: 'starter-schema.js',
+  script: 'starter-script.js',
+  section: 'starter-section.js',
+}
+
+// returns starter content of file name
+// checks for file in user root first, otherwise use package file
+const starterContent = (fileName, args) => {
+  const content = require(path.join(process.cwd(), '/build-scripts/', fileName))
+  return content(...args)
+}
+
 module.exports = function() {
   const argv = yargs(process.argv.slice(3))
     .command('$0 <type> <name> [includes]', 'Create new feature/element', {
@@ -66,55 +81,22 @@ module.exports = function() {
   if (INCLUDE_CONFIG) {
     DIRS.push('config')
 
-    FILES[`config/${EXT_NAME}.json`] = `[
-  {
-    "name": "${EXT_READABLE_NAME}",
-    "settings": [
-      
-    ]
-  }
-]
-`
+    FILES[`config/${EXT_NAME}.json`] = starterContent(starterConfigs.config, [EXT_READABLE_NAME])
   }
 
   if (INCLUDE_SCHEMA) {
     DIRS.push('schema')
-    FILES[`schema/schema-${EXT_NAME}.js`] = `module.exports = {
-  name: '${EXT_READABLE_NAME}',
-  tag: 'section',
-  class: '${EXT_NAME}',
-  settings: [],
-  presets: [
-    {
-      name: '${EXT_READABLE_NAME}',
-      category: 'General',
-      settings: {},
-    },
-  ],
-}
-`
+    FILES[`schema/schema-${EXT_NAME}.js`] = starterContent(starterConfigs.schema, [EXT_NAME, EXT_READABLE_NAME])
   }
 
   if (INCLUDE_INSTALL) {
-    FILES['install.json'] = `[
-  {
-    "hook": "hook-body-end",
-    "content": "{% render '${EXT_NAME}' %}"
-  }
-]`
+    FILES['install.json'] = starterContent(starterConfigs.install, [EXT_NAME])
   }
   if (INCLUDE_SCRIPT) {
     scriptImport = `import './scripts/${EXT_NAME}.js'
 `
     DIRS.push('scripts')
-    FILES[`scripts/${EXT_NAME}.js`] = `class ${EXT_CLASS_NAME} extends HTMLElement {
-  constructor () {
-    super()
-    console.log(this)
-  }
-}
-customElements.define('${EXT_COMPONENT_NAME}', ${EXT_CLASS_NAME})
-`
+    FILES[`scripts/${EXT_NAME}.js`] = starterContent(starterConfigs.script, [EXT_NAME, EXT_CLASS_NAME])
   }
   if (INCLUDE_STYLE) {
     styleImport = `import './styles/${EXT_NAME}.css'
@@ -128,14 +110,7 @@ customElements.define('${EXT_COMPONENT_NAME}', ${EXT_CLASS_NAME})
   if (INCLUDE_SECTION) {
     DIRS.push('sections')
     const TAG = INCLUDE_SCRIPT ? EXT_COMPONENT_NAME : 'div'
-    FILES[`sections/${EXT_NAME}.liquid`] = `<!-- softlimit { "action": "partial", "file": "section-spacing-y" } -->
-<${TAG} class="{{ sectionSpacingY }} {{ section.settings.custom_classes }}"{{ sectionColorStyle }}>
-  <div class="{% unless section.settings.full_width %}page-width {% endunless %}">
-    
-  </div>
-</${TAG}>
-{% schema 'schema-${EXT_NAME}.js' %}
-`
+    FILES[`sections/${EXT_NAME}.liquid`] = starterContent(starterConfigs.section, [TAG,EXT_NAME])
   }
 
   if (INCLUDE_SNIPPET) {
