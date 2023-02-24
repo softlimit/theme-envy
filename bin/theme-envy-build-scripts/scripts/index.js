@@ -1,2 +1,2 @@
-require('./elements.js')
-require('./features.js')
+require('./elements.build.js')
+require('./features.build.js')

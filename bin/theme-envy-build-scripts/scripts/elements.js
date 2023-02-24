@@ -1,19 +1,7 @@
 /*
-  DO NOT EDIT, PRECOMPILED DURING BUILD FROM LIST OF ALL DIRECTORIES IN _elements
-*/
-const glob = require('glob')
-const path = require('path')
-const fs = require('fs')
-
-const elements = glob.sync(path.resolve(process.cwd(), './src/_elements/**/index.js')).map(file => {
-  const name = path.basename(path.dirname(file))
-  return `'${name}': () => import(/* webpackChunkName: "${name}" */ 'Elements/${name}/index.js')`
-})
-
-const markup = `/*
 DO NOT EDIT, PRECOMPILED DURING BUILD FROM LIST OF ALL DIRECTORIES IN _elements
 */
-const elements = {${elements.join(',\n')}}
+const elements = {}
 // check all elements for presence in the Document and load if they are there
 Object.entries(elements).forEach(elm => {
   if (document.querySelector(elm[0])) {
@@ -23,5 +11,3 @@ Object.entries(elements).forEach(elm => {
     delete elements[elm[0]]
   }
 })
-`
-fs.writeFileSync(path.resolve(process.cwd(), './src/scripts/elements.js'), markup, 'utf8')
