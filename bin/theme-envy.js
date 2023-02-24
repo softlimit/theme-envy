@@ -55,7 +55,9 @@ const argv = yargs(process.argv.slice(2))
       direct: true,
       watch: argv.watch,
       target: argv.target,
-      feature: argv['example-feature']
+      feature: argv['example-feature'],
+      verbose: argv.verbose,
+      argv
     })
   })
   .help('h')

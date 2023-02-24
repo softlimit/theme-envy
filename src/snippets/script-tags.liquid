@@ -1,0 +1,21 @@
+<script>
+  window.shop = {
+    money: {{ shop.money_format | json }},
+    money_with_currency: {{ shop.money_with_currency_format | json }},
+    money_without_trailing_zeros: {{ shop.money_format | replace: 'amount_no_decimals', 'amount' | replace: 'amount', 'amount_no_trailing_zeros' | json }}
+  };
+  
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'has-js');
+  document.body.classList.add('has-js');
+
+  var asset_url = "{{ 'image.jpg' | asset_url }}";
+  window.asset_timestamp = asset_url.substring(asset_url.indexOf("?"));
+  window.__webpack_public_path__ = asset_url.substring(0, asset_url.lastIndexOf("/") + 1);
+</script>
+
+{% hook 'body-end-scripts' %}
+
+<script src="{{ 'main.js' | asset_url }}" defer="defer"></script>
+{% if request.design_mode %}
+  <script src="{{ 'theme_editor.js' | asset_url }}" defer="defer"></script>
+{% endif %}
