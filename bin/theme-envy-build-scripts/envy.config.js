@@ -4,7 +4,9 @@ const { ESBuildMinifyPlugin } = require('esbuild-loader')
 const path = require('path')
 
 module.exports = {
-  entry: path.resolve(process.cwd(), './src/scripts/main.js'),
+  entry: {
+    'theme-envy': path.resolve(__dirname, 'scripts/theme-envy.js')
+  },
   output: {
     path: path.resolve(process.cwd(), 'dist/assets'),
     publicPath: '',

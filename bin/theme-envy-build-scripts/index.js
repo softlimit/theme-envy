@@ -18,7 +18,7 @@ require('./templates')
 
 const helpers = require('./helpers')
 
-const webpackConfig = require('#Root/bin/theme-build-scripts/envy.config.js')
+const webpackConfig = require(path.resolve(__dirname, 'envy.config.js'))
 
 const { extendLiquid, flattenShopifyDirectoryStructure, liquidPrettify, sectionSchemaInject } = helpers
 
