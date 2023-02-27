@@ -120,6 +120,6 @@ tmp
 .DS_Store
 .trash
 
-postcss.config.js
-tailwind.config.js
-theme.config.js
+/postcss.config.js
+/tailwind.config.js
+/theme.config.js
