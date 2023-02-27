@@ -119,4 +119,7 @@ tmp
 # End of https://www.toptal.com/developers/gitignore/api/node
 .DS_Store
 .trash
-backup*
+
+postcss.config.js
+tailwind.config.js
+theme.config.js
