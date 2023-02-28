@@ -3,7 +3,7 @@ const { spawn } = require('child_process')
 const path = require('path')
 const buildTheme = require('./theme-envy-build-scripts/index.js')
 const webpack = require('webpack')
-const webpackConfig = require('./theme-envy-build-scripts/envy.config.js')
+const webpackConfig = require('./theme-envy-build-scripts/theme-envy.config.js')
 const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
 
 // parse command line arguments
@@ -22,13 +22,13 @@ webpackConfig.watch = watch
 // merge our theme config named entries into webackConfig.entry
 webpackConfig.entry = { ...webpackConfig.entry, ...ThemeConfig.entry }
 
-console.log(webpackConfig.entry)
-
 module.exports = (args, { direct, watch, verbose, argv }) => {
   buildTheme({ watch, mode })
   // run tailwind
-  const tailwindOpts = ['tailwindcss', 'build', '-i', './src/styles/critical.css', '-o', './dist/assets/critical.css']
+  const tailwindCss = path.resolve(__dirname, 'theme-envy-build-scripts/styles/theme-envy.css')
+  const tailwindOpts = ['tailwindcss', 'build', '-i', tailwindCss, '-o', './dist/assets/theme-envy.css']
   if (mode === 'production') tailwindOpts.push('--minify')
+  if (watch) tailwindOpts.push('--watch')
   spawn('npx', tailwindOpts, { stdio: 'inherit' })
 
   // run webpack
