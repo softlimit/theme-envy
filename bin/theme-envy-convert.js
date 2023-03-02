@@ -1,16 +1,15 @@
 /*
-  npx theme-envy init --target=path/to/dest
+  npx theme-envy convert --(source|src|S)=path/to/theme
 
-  creates skeleton structure for src folder
-    - Shopify directories
-    - Adds "_features" and "_elements" directories
-    - config files
+  converts a Shopify theme to Theme Envy directory structure
+    - should be run after theme-envy-import, by using the --convert flag
+    - can be run independently, node bin/theme-envy convert --source=path/to/theme, or --src=path/to/theme, or -S=path/to/theme
 */
 const path = require('path')
-const fs = require('fs')
-const fse = require('fs-extra')
+const fs = require('fs-extra')
 const glob = require('glob')
 const { ESLint } = require('eslint')
+const { directories, ensureDirectories } = require('./build-scripts/directory-structure')
 
 async function lint(file) {
   const eslint = new ESLint({ fix: true })
@@ -20,38 +19,50 @@ async function lint(file) {
   await ESLint.outputFixes(results)
 }
 
-module.exports = async function(args, opts = { target: './', feature: false }) {
-  const sourceTheme = path.resolve(process.cwd(), opts.target)
-  const destTheme = path.resolve(process.cwd(), 'converted-theme')
+module.exports = async function(args, opts = { argv: {} }) {
+  let { source, src, S } = opts.argv
+  source = source || src || S
 
-  // Create destination directory
-  fse.ensureDirSync(destTheme)
+  if (!source) {
+    console.error('Source theme directory not supplied. Use --source=path/to/theme')
+    process.exit(1)
+  }
+  const sourceTheme = path.resolve(process.cwd(), source)
+  // verify source theme exists
+  if (!fs.existsSync(sourceTheme)) {
+    console.error(`Source theme directory not found: ${sourceTheme}`)
+    process.exit(1)
+  }
 
-  // Copy files from source to destination
-  const sourceDirectores = ['assets', 'config', 'layout', 'locales', 'sections', 'snippets', 'templates']
-  sourceDirectores.forEach(dir => {
-    fse.copySync(path.resolve(sourceTheme, dir), path.resolve(destTheme, dir))
+  // validate directory structure of source theme
+  directories.forEach(dir => {
+    if (!fs.existsSync(path.resolve(sourceTheme, dir))) {
+      console.error(`Source theme required directory not found: ${path.resolve(sourceTheme, dir)}`)
+      process.exit(1)
+    }
   })
 
   // Create directories _features and _elements
-  fse.ensureDirSync(path.resolve(destTheme, '_features'))
-  fse.ensureDirSync(path.resolve(destTheme, '_elements'))
+  ensureDirectories({ root: sourceTheme, envy: true })
 
-  // Set config/settings_schema to .js
-  const settingsSchema = path.resolve(destTheme, 'config/settings_schema.json')
-  // rename settings_schema.json to settings_schema.js
-  fs.writeFileSync(path.resolve(destTheme, 'config/settings_schema.json'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
-  fs.renameSync(settingsSchema, path.resolve(destTheme, 'config/settings_schema.js'))
-  await lint(path.resolve(destTheme, 'config/settings_schema.js'))
+  // Set config/settings_schema to .js if settings_schema is json
+  const settingsSchema = path.resolve(sourceTheme, 'config/settings_schema.json')
+  if (fs.existsSync(settingsSchema)) {
+    // rename settings_schema.json to settings_schema.js
+    fs.writeFileSync(path.resolve(sourceTheme, 'config/settings_schema.json'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
+    fs.renameSync(settingsSchema, path.resolve(sourceTheme, 'config/settings_schema.js'))
+    await lint(path.resolve(sourceTheme, 'config/settings_schema.js'))
+  }
 
   // figure out if we can separate any sections into _features
-  const sections = glob.sync(path.resolve(destTheme, 'sections/*.liquid'))
+  const sections = glob.sync(path.resolve(sourceTheme, 'sections/*.liquid'))
+
   const children = sections.map(section => {
     // regexp matching for render and include tags
-    let results = detectChildren({ section, filePath: section })
+    let results = detectChildren({ section, filePath: section, root: sourceTheme })
     if (results.snippets.length) {
       results.snippets.forEach(snippet => {
-        const snippetPath = path.resolve(destTheme, `snippets/${snippet}.liquid`)
+        const snippetPath = path.resolve(sourceTheme, `snippets/${snippet}.liquid`)
         const snippetChildren = detectChildren({ section, filePath: snippetPath })
         const snippets = [...results.snippets, ...snippetChildren.snippets]
         const assets = [...results.assets, ...snippetChildren.assets]
@@ -74,35 +85,35 @@ module.exports = async function(args, opts = { target: './', feature: false }) {
   // move sections with unique children to _features
   sectionsWithUniqueChildren.forEach(section => {
     const sectionName = path.basename(section.section, '.liquid')
-    fse.ensureDirSync(path.resolve(destTheme, '_features', sectionName))
-    fse.moveSync(section.section, path.resolve(destTheme, '_features', sectionName, `sections/${sectionName}.liquid`))
+    fs.ensureDirSync(path.resolve(sourceTheme, '_features', sectionName))
+    fs.moveSync(section.section, path.resolve(sourceTheme, '_features', sectionName, `sections/${sectionName}.liquid`))
     if (section.snippets.length) {
-      fse.ensureDirSync(path.resolve(destTheme, '_features', sectionName, 'snippets'))
+      fs.ensureDirSync(path.resolve(sourceTheme, '_features', sectionName, 'snippets'))
       section.snippets.forEach(snippet => {
-        fse.moveSync(path.resolve(destTheme, `snippets/${snippet}.liquid`), path.resolve(destTheme, '_features', sectionName, 'snippets', `${snippet}.liquid`))
+        fs.moveSync(path.resolve(sourceTheme, `snippets/${snippet}.liquid`), path.resolve(sourceTheme, '_features', sectionName, 'snippets', `${snippet}.liquid`))
       })
     }
     if (section.assets.length) {
-      fse.ensureDirSync(path.resolve(destTheme, '_features', sectionName, 'assets'))
+      fs.ensureDirSync(path.resolve(sourceTheme, '_features', sectionName, 'assets'))
       section.assets.forEach(asset => {
-        fse.moveSync(path.resolve(destTheme, `assets/${asset}`), path.resolve(destTheme, '_features', sectionName, 'assets', `${asset}`))
+        fs.moveSync(path.resolve(sourceTheme, `assets/${asset}`), path.resolve(sourceTheme, '_features', sectionName, 'assets', `${asset}`))
       })
     }
   })
 }
 
-function detectChildren({ section, filePath }) {
+function detectChildren({ section, filePath, root }) {
   try {
     const source = fs.readFileSync(filePath, 'utf8')
     const snippetTags = /\s*((include|render)\s['|"](\S*)['|"])\s*/gm
     const snippets = [...source.matchAll(snippetTags)].map(tag => tag[3]).filter(snippet => {
       // file exists
-      return fs.existsSync(path.resolve(process.cwd(), `converted-theme/snippets/${snippet}.liquid`))
+      return fs.existsSync(path.resolve(process.cwd(), root, `snippets/${snippet}.liquid`))
     })
     const assetUrl = /['|"](\S*)['|"]\s*[|]\s*asset_url/gm
     const assets = [...source.matchAll(assetUrl)].map(tag => tag[1]).filter(asset => {
       // file exists
-      return fs.existsSync(path.resolve(process.cwd(), `converted-theme/assets/${asset}`))
+      return fs.existsSync(path.resolve(process.cwd(), root, `assets/${asset}`))
     })
     // return unique values
     return {
