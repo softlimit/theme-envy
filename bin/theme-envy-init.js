@@ -9,9 +9,8 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
-const glob = require('glob')
 const { ensureDirectories } = require(path.resolve(__dirname, './build-scripts/directory-structure.js'))
-const configSrc = path.resolve(__dirname, '.././configs/*.*')
+const configSrc = path.resolve(__dirname, '.././configs')
 
 module.exports = function(args, opts = { target: './', feature: false }) {
   const target = path.resolve(process.cwd(), opts.target)
@@ -60,19 +59,11 @@ module.exports = function(args, opts = { target: './', feature: false }) {
   })
 
   // copy config files
-  copyGlob(configSrc, target)
-    .then(() => {
-      console.log(
-        'config files copied to ',
-        chalk.green(target)
-      )
-    })
-}
-
-function copyGlob(globPattern, target) {
-  const files = glob.sync(globPattern)
-  return Promise.all(files.map(file => {
-    const targetPath = path.join(target, path.basename(file))
-    return fs.copy(file, targetPath)
-  }))
+  fs.copy(configSrc, target, err => {
+    if (err) return console.error(err)
+    console.log(
+      'config files copied to ',
+      chalk.green(target)
+    )
+  })
 }

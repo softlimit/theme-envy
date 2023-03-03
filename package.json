@@ -23,7 +23,7 @@
   },
   "scripts": {
     "version": "standard-version",
-    "build": "node ./bin/theme-envy build --watch",
+    "build": "node ./bin/theme-envy build -p",
     "go": "stmux -w always -e ERROR -M -m beep,system -- [ [ \"npm run serve\" .. \"node ./bin/theme-envy build --watch\" ] ]",
     "start": "npm run go",
     "serve": "shopify theme dev --store=sl-dev-testing.myshopify.com --path=dist"
