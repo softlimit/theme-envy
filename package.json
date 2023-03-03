@@ -23,8 +23,8 @@
   },
   "scripts": {
     "version": "standard-version",
-    "build": "node ./bin/theme build -p -w",
-    "go": "stmux -w always -e ERROR -M -m beep,system -- [ [ \"npm run serve\" .. \"node ./bin/theme build --watch\" ] ]",
+    "build": "node ./bin/theme-envy build --watch",
+    "go": "stmux -w always -e ERROR -M -m beep,system -- [ [ \"npm run serve\" .. \"node ./bin/theme-envy build --watch\" ] ]",
     "start": "npm run go",
     "serve": "shopify theme dev --store=sl-dev-testing.myshopify.com --path=dist"
   },
@@ -32,6 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "caller": "^1.1.0",
+    "fs": "^0.0.1-security",
     "glob": "^8.1.0",
     "path": "^0.12.7"
   },

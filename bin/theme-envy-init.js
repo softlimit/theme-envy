@@ -9,6 +9,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
+const glob = require('glob')
 const { ensureDirectories } = require(path.resolve(__dirname, './build-scripts/directory-structure.js'))
 const configSrc = path.resolve(__dirname, '.././configs/*.*')
 
@@ -21,13 +22,57 @@ module.exports = function(args, opts = { target: './', feature: false }) {
 
   // setup our Theme Envy directories
   ensureDirectories({ root: dest, envy: true })
+  console.log(
+    'Theme Envy directories created in ',
+    chalk.green(dest)
+  )
 
-  // copy config files
-  fs.copy(configSrc, target, err => {
-    if (err) return console.error(err)
+  // create settings_schema.js
+  const settingsSchema = path.join(dest, 'config/settings_schema.js')
+  const settingsSchemaMarkup = `module.exports = [
+  {
+    name: 'theme_info',
+    theme_name: 'Theme Envy',
+    theme_version: '1.0.0',
+    theme_author: 'Softlimit',
+    theme_documentation_url: 'http://www.softlimit.com',
+    theme_support_url: 'http://www.softlimit.com'
+  }
+]
+`
+
+  fs.writeFile(settingsSchema, settingsSchemaMarkup, 'utf8', (err) => {
+    if (err) throw err
     console.log(
-      'config files copied to ',
-      chalk.green(target)
+      'settings_schema.js created in ',
+      chalk.green(dest)
     )
   })
+
+  // create settings_data.json
+  const settingsData = path.join(dest, 'config/settings_data.json')
+  fs.writeFile(settingsData, '{}', 'utf8', (err) => {
+    if (err) throw err
+    console.log(
+      'settings_data.json created in ',
+      chalk.green(dest)
+    )
+  })
+
+  // copy config files
+  copyGlob(configSrc, target)
+    .then(() => {
+      console.log(
+        'config files copied to ',
+        chalk.green(target)
+      )
+    })
+}
+
+function copyGlob(globPattern, target) {
+  const files = glob.sync(globPattern)
+  return Promise.all(files.map(file => {
+    const targetPath = path.join(target, path.basename(file))
+    return fs.copy(file, targetPath)
+  }))
 }

@@ -1,4 +1,7 @@
 module.exports = {
+  entry: {
+    // main: './src/scripts/main.js',
+  },
   breakpoints: {
     sm: '640px',
     // => @media (min-width: 640px) { ... }
