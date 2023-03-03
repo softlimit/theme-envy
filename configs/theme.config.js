@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    main: './src/scripts/main.js',
+    // main: './src/scripts/main.js',
   },
   breakpoints: {
     sm: '640px',

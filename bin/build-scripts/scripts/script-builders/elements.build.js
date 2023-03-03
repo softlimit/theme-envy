@@ -10,7 +10,8 @@ const elements = glob.sync(path.resolve(process.cwd(), './src/_elements/**/index
   return `'${name}': () => import(/* webpackChunkName: "${name}" */ 'Elements/${name}/index.js')`
 })
 
-const markup = `const elements = {${elements.join(',\n')}}
+const markup = elements.length
+  ? `const elements = {${elements.join(',\n')}}
 // check all elements for presence in the Document and load if they are there
 Object.entries(elements).forEach(elm => {
   if (document.querySelector(elm[0])) {
@@ -21,4 +22,5 @@ Object.entries(elements).forEach(elm => {
   }
 })
 `
-fs.writeFileSync(path.resolve(__dirname, './elements.js'), markup, 'utf8')
+  : ''
+fs.writeFileSync(path.resolve(__dirname, '../elements.js'), markup, 'utf8')

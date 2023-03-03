@@ -9,4 +9,4 @@ const features = glob.sync(path.resolve(process.cwd(), './src/_features/**/index
 
 const markup = features.join('\n')
 
-fs.writeFileSync(path.resolve(__dirname, './features.js'), markup, 'utf8')
+fs.writeFileSync(path.resolve(__dirname, '../features.js'), markup, 'utf8')
