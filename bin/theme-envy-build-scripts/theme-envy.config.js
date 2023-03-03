@@ -5,7 +5,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    'theme-envy': path.resolve(__dirname, 'scripts/theme-envy.js')
+    'theme-envy': [path.resolve(__dirname, 'scripts/theme-envy.js')],
   },
   output: {
     path: path.resolve(process.cwd(), 'dist/assets'),
@@ -28,16 +28,6 @@ module.exports = {
     rules: [
       {
         test: /(\.css)$/,
-        include: /node_modules/,
-        exclude: /@softlimit/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { url: false } }
-        ],
-      },
-      {
-        test: /(\.css)$/,
-        include: /(@softlimit|src)/,
         use: [
           MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { url: false } },
