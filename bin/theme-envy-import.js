@@ -7,7 +7,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const { ESLint } = require('eslint')
-const { directories, ensureDirectories } = require('./build-scripts/directory-structure')
+const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
 const themeEnvyConvert = require('./theme-envy-convert')
 
 async function lint(file) {
