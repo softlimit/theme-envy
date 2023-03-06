@@ -9,6 +9,7 @@ const fs = require('fs-extra')
 const { ESLint } = require('eslint')
 const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
 const themeEnvyConvert = require('./theme-envy-convert')
+const git = require('simple-git')(process.cwd())
 
 async function lint(file) {
   const eslint = new ESLint({ fix: true })
@@ -23,6 +24,18 @@ module.exports = async function(args, opts = { source: './', argv: {} }) {
   source = source || src || S
   destination = destination || dest || D
   convert = convert || C
+
+  if (source.includes('.git')) {
+    // if source is a git repo, clone it to src directory
+    const gitRepo = source
+    source = path.resolve(process.cwd(), 'src')
+    // set source to src directory so in sourceTheme assignment below, it will be the correct path
+    source = 'src'
+    await git.clone(gitRepo, source)
+    // remove .git directory
+    fs.removeSync(path.resolve(process.cwd(), source, '.git'))
+  }
+
   const sourceTheme = path.resolve(process.cwd(), source)
   const destTheme = path.resolve(process.cwd(), (destination || 'src'))
   // verify source theme exists
