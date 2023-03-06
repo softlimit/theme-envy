@@ -9,7 +9,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const glob = require('glob')
 const { ESLint } = require('eslint')
-const { directories, ensureDirectories } = require('./build-scripts/directory-structure')
+const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
 
 async function lint(file) {
   const eslint = new ESLint({ fix: true })

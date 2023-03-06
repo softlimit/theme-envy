@@ -2,7 +2,7 @@
   Exports a function that ensures our directory structure is in place.
   @param {string} root - The root directory to ensure the directories are in place.
   @param {boolean} envy - Whether or not to ensure the _features and _elements directories.
-  Example: const { ensureDirectories } = require('./directory-structure')
+  Example: const { directories, ensureDirectories } = require('./helpers/ensure-directories')
   ensureDirectories({ root: path.resolve(process.cwd(), 'src'), envy: true })
 */
 const fs = require('fs-extra')

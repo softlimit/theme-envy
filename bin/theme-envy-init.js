@@ -9,7 +9,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
-const { ensureDirectories } = require(path.resolve(__dirname, './build-scripts/directory-structure.js'))
+const { ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
 const configSrc = path.resolve(__dirname, '.././configs')
 
 module.exports = function(args, opts = { target: './', feature: false }) {

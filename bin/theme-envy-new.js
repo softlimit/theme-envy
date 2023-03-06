@@ -110,7 +110,7 @@ module.exports = function() {
   if (INCLUDE_SECTION) {
     DIRS.push('sections')
     const TAG = INCLUDE_SCRIPT ? EXT_COMPONENT_NAME : 'div'
-    FILES[`sections/${EXT_NAME}.liquid`] = starterContent(starterConfigs.section, [TAG,EXT_NAME])
+    FILES[`sections/${EXT_NAME}.liquid`] = starterContent(starterConfigs.section, [TAG, EXT_NAME])
   }
 
   if (INCLUDE_SNIPPET) {
