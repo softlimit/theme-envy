@@ -34,7 +34,7 @@ module.exports = function({ watch, mode }) {
      otherwise glob for all liquid files
     */
     const liquid = files.length > 0 ? files.filter(file => file.includes('.liquid')) : glob.sync(path.resolve('src/**/*.liquid')).filter((file) => !file.includes('partials'))
-    const sectionGroups = files.length > 0 ? files.filter(file => file.includes('.json')) : glob.sync(path.resolve('src/sections/*.json'))
+    const sectionGroups = files.length > 0 ? files.filter(file => file.includes('.json')) : glob.sync(path.resolve('src/**/sections/*.json'))
     // process all liquid files and output to correct directory
     liquid.forEach((file) => {
       const shopifyPath = flattenShopifyDirectoryStructure(file)
