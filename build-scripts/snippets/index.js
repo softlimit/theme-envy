@@ -1,3 +1,6 @@
+/*
+  Creates/copies theme-envy snippet in dist/snippets during build
+*/
 const fs = require('fs-extra')
 const path = require('path')
 const dist = path.resolve(process.cwd(), 'dist')
