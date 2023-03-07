@@ -1,5 +1,5 @@
 /*
-  Attemps to run prettier-plugin-liquid on source string
+  Attempts to run prettier-plugin-liquid on source string
 */
 const liquidPlugin = require('@shopify/prettier-plugin-liquid/standalone')
 const prettier = require('prettier/standalone')
