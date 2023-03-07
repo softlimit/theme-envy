@@ -60,13 +60,15 @@ module.exports = function(args, opts = { target: './', feature: false }) {
 
   // create settings_data.json
   const settingsData = path.join(dest, 'config/settings_data.json')
-  fs.writeFile(settingsData, '{}', 'utf8', (err) => {
-    if (err) throw err
-    console.log(
-      'settings_data.json created in ',
-      chalk.green(dest)
-    )
-  })
+  if (!fs.existsSync(settingsData)) {
+    fs.writeFile(settingsData, '{}', 'utf8', (err) => {
+      if (err) throw err
+      console.log(
+        'settings_data.json created in ',
+        chalk.green(dest)
+      )
+    })
+  }
 
   // copy config files
   fs.copy(configSrc, target, err => {
