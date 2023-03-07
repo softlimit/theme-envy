@@ -34,11 +34,6 @@
     "css-loader": "^6.7.3",
     "cssnano": "^5.1.15",
     "esbuild-loader": "^3.0.1",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.6.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint": "^8.34.0",
     "fs-extra": "^11.1.0",
     "fs": "^0.0.1-security",
     "glob": "^8.1.0",
@@ -54,5 +49,12 @@
     "webpack-cli": "^5.0.1",
     "webpack": "^5.75.0",
     "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint": "^8.34.0"
   }
 }

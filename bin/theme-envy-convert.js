@@ -8,16 +8,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const glob = require('glob')
-const { ESLint } = require('eslint')
 const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
-
-async function lint(file) {
-  const eslint = new ESLint({ fix: true })
-
-  // Lint files.
-  const results = await eslint.lintFiles([file])
-  await ESLint.outputFixes(results)
-}
 
 module.exports = async function(args, opts = { argv: {} }) {
   let { source, src, S } = opts.argv
@@ -49,9 +40,8 @@ module.exports = async function(args, opts = { argv: {} }) {
   const settingsSchema = path.resolve(sourceTheme, 'config/settings_schema.json')
   if (fs.existsSync(settingsSchema)) {
     // rename settings_schema.json to settings_schema.js
-    fs.writeFileSync(path.resolve(sourceTheme, 'config/settings_schema.json'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
     fs.renameSync(settingsSchema, path.resolve(sourceTheme, 'config/settings_schema.js'))
-    await lint(path.resolve(sourceTheme, 'config/settings_schema.js'))
+    fs.writeFileSync(path.resolve(sourceTheme, 'config/settings_schema.js'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
   }
 
   // figure out if we can separate any sections into _features
