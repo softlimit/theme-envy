@@ -19,9 +19,6 @@ module.exports = function(args, opts = { target: './', feature: false }) {
 
   const dest = path.join(target, 'src')
 
-  // setup our Theme Envy directories
-  ensureDirectories({ root: dest, envy: true })
-
   // if we have a valid Shopify theme structure in the target directory move those files to the dest
   const rootDirs = fs.readdirSync(target).filter(res => !res.includes('.'))
   const shopifyThemeExistsInRoot = directories.every(dir => rootDirs.includes(dir))
@@ -30,6 +27,9 @@ module.exports = function(args, opts = { target: './', feature: false }) {
       fs.moveSync(path.join(target, dir), path.join(dest, dir))
     })
   }
+
+  // setup our Theme Envy directories
+  ensureDirectories({ root: dest, envy: true })
 
   console.log(
     'Theme Envy directories created in ',
