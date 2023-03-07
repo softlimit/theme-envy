@@ -9,7 +9,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
-const { ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
+const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
 const configSrc = path.resolve(__dirname, '.././configs')
 
 module.exports = function(args, opts = { target: './', feature: false }) {
@@ -21,6 +21,16 @@ module.exports = function(args, opts = { target: './', feature: false }) {
 
   // setup our Theme Envy directories
   ensureDirectories({ root: dest, envy: true })
+
+  // if we have a valid Shopify theme structure in the target directory move those files to the dest
+  const rootDirs = fs.readdirSync(target).filter(res => !res.includes('.'))
+  const shopifyThemeExistsInRoot = directories.every(dir => rootDirs.includes(dir))
+  if (shopifyThemeExistsInRoot) {
+    directories.forEach(dir => {
+      fs.moveSync(path.join(target, dir), path.join(dest, dir))
+    })
+  }
+
   console.log(
     'Theme Envy directories created in ',
     chalk.green(dest)
