@@ -40,8 +40,8 @@ module.exports = async function(args, opts = { argv: {} }) {
   const settingsSchema = path.resolve(sourceTheme, 'config/settings_schema.json')
   if (fs.existsSync(settingsSchema)) {
     // rename settings_schema.json to settings_schema.js
+    fs.writeFileSync(path.resolve(sourceTheme, 'config/settings_schema.json'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
     fs.renameSync(settingsSchema, path.resolve(sourceTheme, 'config/settings_schema.js'))
-    fs.writeFileSync(path.resolve(sourceTheme, 'config/settings_schema.js'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
   }
 
   // figure out if we can separate any sections into _features
