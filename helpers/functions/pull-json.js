@@ -2,7 +2,8 @@ const glob = require('glob')
 const path = require('path')
 const fs = require('fs')
 const { exec, spawn } = require('child_process')
-const themeIgnore = require(path.resolve(__dirname, './theme-ignore'))
+const { themeIgnore } = require('./theme-ignore')
+
 module.exports = function() {
   themeIgnore('pull')
   exec('cd dist')

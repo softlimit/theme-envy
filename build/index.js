@@ -3,54 +3,42 @@
   Flags:
     -w, --watch: watch for changes and re-run the script
 */
+
+const { spawn } = require('child_process')
 const path = require('path')
-const glob = require('glob')
-const fs = require('fs')
-const chokidar = require('chokidar')
+const webpack = require('webpack')
+const webpackConfig = require('#Build/theme-envy.config.js')
+const { buildWatch, build } = require('#Build/functions.js')
 
-const buildLiquid = require('./liquid')
+module.exports = function({ argv }) {
+  require('./requires')
+  const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
+  const mode = (argv.P || argv.production) ? 'production' : 'development'
+  const watch = argv.watch || argv.W || false
 
-require('./globals')
-require('./assets')
-require('./config')
-require('./locales')
-require('./scripts')
-require('./snippets')
-require('./templates')
+  build({ mode })
+  if (watch) buildWatch({ build })
 
-module.exports = function({ watch, mode }) {
-  function build(files = []) {
-    if (files.length > 0) {
-      // remove partials and schema = require(files list)
-      files = files.filter((file) => !file.includes('partials/') && !file.includes('schema/'))
+  // run tailwind
+  const tailwindCss = path.resolve(__dirname, '../build/styles/theme-envy.css')
+  const tailwindOpts = ['tailwindcss', 'build', '-i', tailwindCss, '-o', './dist/assets/theme-envy.css']
+  if (mode === 'production') tailwindOpts.push('--minify')
+  if (watch) tailwindOpts.push('--watch')
+  spawn('npx', tailwindOpts, { stdio: 'inherit' })
+
+  // run webpack
+  // set our webpack mode
+  webpackConfig.mode = mode
+  // set our webpack optimization
+  webpackConfig.optimization.minimize = mode === 'production'
+  // set our webpack watch flag
+  webpackConfig.watch = watch
+  // merge our theme config named entries into webackConfig.entry
+  webpackConfig.entry = { ...webpackConfig.entry, ...ThemeConfig.entry }
+  webpack(webpackConfig, (err, stats) => {
+    if (err || stats.hasErrors()) {
+      console.log(stats, err)
     }
-    /*
-     if we have files passed in (during watch process), use those
-     otherwise glob for all liquid files
-    */
-    const liquid = files.length > 0 ? files.filter(file => file.includes('.liquid')) : glob.sync(path.resolve('src/**/*.liquid')).filter((file) => !file.includes('partials'))
-    const sectionGroups = files.length > 0 ? files.filter(file => file.includes('.json')) : glob.sync(path.resolve('src/**/sections/*.json'))
-
-    // process all liquid files and output to dist directory
-    liquid.forEach((file) => buildLiquid(file, mode))
-
-    // copy sectionGroup files to dist
-    if (sectionGroups.length > 0) {
-      sectionGroups.forEach((file) => {
-        fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
-      })
-    }
-  }
-  build()
-
-  if (watch) {
-    chokidar.watch(path.resolve(process.cwd(), 'src')).on('change', (path) => {
-      process.build.events.emit('watch:start')
-      const isJSONTemplate = path.includes('templates/') && path.extname(path) === '.json'
-      if (!isJSONTemplate) {
-        build([path])
-        console.log(`updated: ${path.split('/src/')[1]}`)
-      }
-    })
-  }
+    // Done processing
+  })
 }
