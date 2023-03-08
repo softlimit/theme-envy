@@ -9,24 +9,17 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
-const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
-const configSrc = path.resolve(__dirname, '.././configs')
+const { ensureDirectories } = require('#EnsureDirectories')
+const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData } = require('#Init')
 
 module.exports = function(args, opts = { target: './', feature: false }) {
   const target = path.resolve(process.cwd(), opts.target)
 
-  fs.ensureDirSync(path.join(target, 'src'))
-
   const dest = path.join(target, 'src')
 
-  // if we have a valid Shopify theme structure in the target directory move those files to the dest
-  const rootDirs = fs.readdirSync(target).filter(res => !res.includes('.'))
-  const shopifyThemeExistsInRoot = directories.every(dir => rootDirs.includes(dir))
-  if (shopifyThemeExistsInRoot) {
-    directories.forEach(dir => {
-      fs.moveSync(path.join(target, dir), path.join(dest, dir))
-    })
-  }
+  fs.ensureDirSync(dest)
+
+  ifShopifyThemeExists({ target, dest })
 
   // setup our Theme Envy directories
   ensureDirectories({ root: dest, envy: true })
@@ -36,46 +29,11 @@ module.exports = function(args, opts = { target: './', feature: false }) {
     chalk.green(dest)
   )
 
-  // create settings_schema.js
-  const settingsSchema = path.join(dest, 'config/settings_schema.js')
-  const settingsSchemaMarkup = `module.exports = [
-  {
-    name: 'theme_info',
-    theme_name: 'Theme Envy',
-    theme_version: '1.0.0',
-    theme_author: 'Softlimit',
-    theme_documentation_url: 'http://www.softlimit.com',
-    theme_support_url: 'http://www.softlimit.com'
-  }
-]
-`
+  copyStarterConfigFiles({ target })
 
-  fs.writeFile(settingsSchema, settingsSchemaMarkup, 'utf8', (err) => {
-    if (err) throw err
-    console.log(
-      'settings_schema.js created in ',
-      chalk.green(dest)
-    )
-  })
+  addThemeEnvyFeatures()
 
-  // create settings_data.json
-  const settingsData = path.join(dest, 'config/settings_data.json')
-  if (!fs.existsSync(settingsData)) {
-    fs.writeFile(settingsData, '{}', 'utf8', (err) => {
-      if (err) throw err
-      console.log(
-        'settings_data.json created in ',
-        chalk.green(dest)
-      )
-    })
-  }
+  createSettingsSchema({ dest })
 
-  // copy config files
-  fs.copy(configSrc, target, err => {
-    if (err) return console.error(err)
-    console.log(
-      'config files copied to ',
-      chalk.green(target)
-    )
-  })
+  createEmptySettingsData({ dest })
 }

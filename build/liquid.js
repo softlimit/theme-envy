@@ -6,9 +6,9 @@
 */
 const path = require('path')
 const fs = require('fs-extra')
-const helpers = require('../helpers')
+const helpers = require('#Helpers')
 const { extendLiquid, flattenShopifyDirectoryStructure, liquidPrettify, sectionSchemaInject } = helpers
-const webpackConfig = require(path.resolve(__dirname, '../theme-envy.config.js'))
+const webpackConfig = require('#Build/theme-envy.config.js')
 
 module.exports = function(file, mode) {
   const shopifyPath = flattenShopifyDirectoryStructure(file)

@@ -2,22 +2,15 @@
   Usage: npx theme-envy import --(source|src|S)=path/to/theme
   Imports an existing Shopify theme into a destination directory (default: "./src")
   Converts settings_schema.json to settings_schema.js
-  If you supply the --convert flag, it will also convert the theme sections to _features
+  If you supply the --convert flag, it will also convert the theme sections to _features, add hooks and install theme-envy feature
 */
 const path = require('path')
 const fs = require('fs-extra')
-const { ESLint } = require('eslint')
-const { directories, ensureDirectories } = require(path.resolve(__dirname, '../build-scripts/helpers/ensure-directories'))
+const { directories, ensureDirectories } = require('#EnsureDirectories')
 const themeEnvyConvert = require('./theme-envy-convert')
+const { setSettingsSchemaJs } = require('#Convert')
+const { copyStarterConfigFiles, addThemeEnvyFeatures } = require('#Init')
 const git = require('simple-git')(process.cwd())
-
-async function lint(file) {
-  const eslint = new ESLint({ fix: true })
-
-  // Lint files.
-  const results = await eslint.lintFiles([file])
-  await ESLint.outputFixes(results)
-}
 
 module.exports = async function(args, opts = { source: './', argv: {} }) {
   let { source, src, S, destination, dest, D, convert, C } = opts.argv
@@ -33,7 +26,10 @@ module.exports = async function(args, opts = { source: './', argv: {} }) {
     source = 'src'
     await git.clone(gitRepo, source)
     // remove .git directory
-    fs.removeSync(path.resolve(process.cwd(), source, '.git'))
+    const remove = ['.git', '.github']
+    remove.forEach(dir => {
+      if (fs.existsSync(path.resolve(process.cwd(), source, dir))) fs.removeSync(path.resolve(process.cwd(), source, dir))
+    })
   }
 
   const sourceTheme = path.resolve(process.cwd(), source)
@@ -62,14 +58,12 @@ module.exports = async function(args, opts = { source: './', argv: {} }) {
     })
   }
 
-  // Set config/settings_schema to .js
-  const settingsSchema = path.resolve(destTheme, 'config/settings_schema.json')
-  // rename settings_schema.json to settings_schema.js
-  fs.writeFileSync(path.resolve(destTheme, 'config/settings_schema.json'), `module.exports = ${JSON.stringify(require(settingsSchema), null, 2)}`)
-  fs.renameSync(settingsSchema, path.resolve(destTheme, 'config/settings_schema.js'))
-  await lint(path.resolve(destTheme, 'config/settings_schema.js'))
+  // convert settings_schema.json to settings_schema.js
+  setSettingsSchemaJs({ sourceTheme: destTheme })
 
   if (convert) {
+    copyStarterConfigFiles({ target: process.cwd() })
+    addThemeEnvyFeatures({ sourceTheme: destTheme })
     await themeEnvyConvert(args, { argv: { source: destTheme } })
   }
 }

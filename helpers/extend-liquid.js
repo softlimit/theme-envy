@@ -11,9 +11,6 @@ const glob = require('glob')
 const fs = require('fs')
 const listDependencies = require('./extend-liquid-dependencies')
 
-// defines all properties available to {% theme name.key %} tags
-const Theme = require(path.resolve(process.cwd(), 'theme.config.js'))
-
 const strings = {
   tags: ['partial', 'hook', 'theme']
 }
@@ -54,6 +51,8 @@ function replaceTag({ tag, source, filePath } = {}) {
     source = source.replace(replace, replacedContent)
   }
   if (action === 'theme') {
+    // defines all properties available to {% theme name.key %} tags
+    const Theme = require(path.resolve(process.cwd(), 'theme.config.js'))
     const [obj, key] = name.split('.')
     source = source.replace(replace, Theme[obj][key])
   }

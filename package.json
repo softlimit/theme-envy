@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "Softlimit Shopify Theme Development Environment",
   "imports": {
-    "#Root/*": "./*"
+    "#Root/*": "./*",
+    "#Build/*": "./build/*",
+    "#Helpers": "./helpers/index.js",
+    "#Init": "./init/index.js",
+    "#Convert": "./convert/index.js",
+    "#EnsureDirectories": "./helpers/ensure-directories.js"
   },
   "repository": {
     "type": "git",
