@@ -8,7 +8,7 @@ const { spawn } = require('child_process')
 const path = require('path')
 const webpack = require('webpack')
 const webpackConfig = require('#Build/theme-envy.config.js')
-const { buildWatch, build } = require('#Build/functions.js')
+const { buildWatch, build } = require('#Build/functions')
 
 module.exports = function({ argv }) {
   require('./requires')

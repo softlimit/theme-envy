@@ -8,9 +8,9 @@ const path = require('path')
 const fs = require('fs-extra')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
 const themeEnvyConvert = require('#Convert')
-const { setSettingsSchemaJs } = require('#Convert/functions.js')
-const { copyStarterConfigFiles, addThemeEnvyFeatures } = require('#Init/functions.js')
-const { importFromGit, validateSourceTheme } = require('#Import/functions.js')
+const { setSettingsSchemaJs } = require('#Convert/functions')
+const { copyStarterConfigFiles, addThemeEnvyFeatures } = require('#Init/functions')
+const { importFromGit, validateSourceTheme } = require('#Import/functions')
 
 module.exports = async function({ argv }) {
   let source = argv.args[0]
@@ -38,8 +38,9 @@ module.exports = async function({ argv }) {
   // convert settings_schema.json to settings_schema.js
   setSettingsSchemaJs({ sourceTheme: destTheme })
 
+  copyStarterConfigFiles({ target: process.cwd() })
+
   if (convert) {
-    copyStarterConfigFiles({ target: process.cwd() })
     addThemeEnvyFeatures()
     await themeEnvyConvert({ argv: { source: destTheme } })
   }

@@ -8,7 +8,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
-const { setSettingsSchemaJs, convertSectionsToFeatures, installHooks } = require('#Convert/functions.js')
+const { setSettingsSchemaJs, convertSectionsToFeatures, installHooks } = require('#Convert/functions')
 
 module.exports = async function({ argv }) {
   const source = argv.source || argv.src || argv.S
