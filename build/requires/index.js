@@ -1,0 +1,7 @@
+require('./globals')
+require('./assets')
+require('./config')
+require('./locales')
+require('./scripts')
+require('./snippets')
+require('./templates')

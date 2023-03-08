@@ -14,7 +14,6 @@
 * npx theme prep // used during npm run start to determine whether we need a fresh build
 */
 
-const path = require('path')
 const yargs = require('yargs')
 const chalk = require('chalk')
 // eslint-disable-next-line no-unused-vars
@@ -50,14 +49,8 @@ const argv = yargs(process.argv.slice(2))
       chalk.green.bold('Starting Softlimit Theme Envy script'),
       chalk.bgGreen(`theme-envy ${argv.script}\n`)
     )
-    const themeScript = require(path.resolve(__dirname, `theme-envy-${argv.script}`))
-    themeScript({
-      watch: argv.watch,
-      target: argv.target,
-      feature: argv['example-feature'],
-      verbose: argv.verbose,
-      argv
-    })
+    const themeEnvyCommands = require('#Root/theme-envy-commands.js')
+    themeEnvyCommands[argv.script]({ argv })
   })
   .help('h')
   .showHelpOnFail(true)

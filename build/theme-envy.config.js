@@ -5,7 +5,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    'theme-envy': path.resolve(__dirname, 'scripts/theme-envy.js'),
+    'theme-envy': path.resolve(__dirname, 'requires/scripts/theme-envy.js'),
   },
   output: {
     path: path.resolve(process.cwd(), 'dist/assets'),

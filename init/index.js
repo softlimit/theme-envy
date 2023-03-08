@@ -13,8 +13,8 @@ const { ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs } = require('#Convert/functions.js')
 const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData } = require('#Init/functions.js')
 
-module.exports = function(opts = { target: './' }) {
-  const target = path.resolve(process.cwd(), opts.target)
+module.exports = function({ argv }) {
+  const target = path.resolve(process.cwd(), (argv.target || './'))
 
   const dest = path.join(target, 'src')
 
