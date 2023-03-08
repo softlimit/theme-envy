@@ -9,6 +9,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs, convertSectionsToFeatures, installHooks } = require('#Convert')
+const { addThemeEnvyFeatures } = require('#Init')
 
 module.exports = async function(args, opts = { argv: {} }) {
   let { source, src, S } = opts.argv
@@ -37,6 +38,8 @@ module.exports = async function(args, opts = { argv: {} }) {
   ensureDirectories({ root: sourceTheme, envy: true })
 
   convertSectionsToFeatures({ sourceTheme })
+
+  addThemeEnvyFeatures()
 
   installHooks()
 

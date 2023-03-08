@@ -10,6 +10,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
 const { ensureDirectories } = require('#EnsureDirectories')
+const { setSettingsSchemaJs } = require('#Convert')
 const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData } = require('#Init')
 
 module.exports = function(args, opts = { target: './', feature: false }) {
@@ -32,8 +33,12 @@ module.exports = function(args, opts = { target: './', feature: false }) {
   copyStarterConfigFiles({ target })
 
   addThemeEnvyFeatures()
-
-  createSettingsSchema({ dest })
+  // if settings_schema.json exists, convert it to settings_schema.js, else create empty settings_schema.js
+  if (fs.existsSync(path.join(dest, 'config/settings_schema.json'))) {
+    setSettingsSchemaJs({ sourceTheme: dest })
+  } else {
+    createSettingsSchema({ dest })
+  }
 
   createEmptySettingsData({ dest })
 }

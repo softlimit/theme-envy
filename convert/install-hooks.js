@@ -60,7 +60,7 @@ module.exports = function() {
         })
       }
     })
-    source = liquidPrettify(source)
+    source = liquidPrettify(source, themeLiquid)
     fs.writeFileSync(themeLiquid, source, 'utf8')
   }
 }
