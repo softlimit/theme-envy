@@ -1,6 +1,6 @@
 module.exports = [
   {
-    hook: 'hook-head-end',
+    hook: 'head-end',
     content: "{% render 'theme-envy' %}"
   }
 ]
