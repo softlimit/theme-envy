@@ -13,8 +13,15 @@ const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
 const { ensureDirectories } = require('#EnsureDirectories')
-const { setSettingsSchemaJs } = require('#Convert/functions.js')
-const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData, copyExampleFeature } = require('#Init/functions.js')
+const { setSettingsSchemaJs } = require('#Convert/functions')
+const {
+  ifShopifyThemeExists,
+  copyStarterConfigFiles,
+  addThemeEnvyFeatures,
+  createSettingsSchema,
+  createEmptySettingsData,
+  copyExampleFeature
+} = require('#Init/functions')
 
 module.exports = function({ argv }) {
   const target = path.resolve(process.cwd(), (argv.target || './'))
