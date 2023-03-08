@@ -3,7 +3,6 @@ const fs = require('fs-extra')
 const chalk = require('chalk')
 
 module.exports = function({ target }) {
-  console.log('copyStarterConfigFiles({ target })', target)
   // copy config files
   const configSrc = path.resolve(__dirname, './configs')
   fs.copy(configSrc, target, err => {

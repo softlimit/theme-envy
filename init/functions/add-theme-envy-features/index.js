@@ -16,7 +16,7 @@ module.exports = function({ dest }) {
       console.log(
         chalk.green.bold(path.basename(feature)),
         'feature copied to',
-        chalk.green(feature),
+        chalk.green(target),
       )
     })
   })

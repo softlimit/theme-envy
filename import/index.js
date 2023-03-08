@@ -41,7 +41,7 @@ module.exports = async function({ argv }) {
   copyStarterConfigFiles({ target: process.cwd() })
 
   if (convert) {
-    addThemeEnvyFeatures()
+    addThemeEnvyFeatures({ dest: destTheme })
     await themeEnvyConvert({ argv: { source: destTheme } })
   }
 }
