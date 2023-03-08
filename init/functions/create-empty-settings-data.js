@@ -9,7 +9,8 @@ module.exports = function({ dest }) {
     fs.writeFile(settingsData, '{}', 'utf8', (err) => {
       if (err) throw err
       console.log(
-        'settings_data.json created in ',
+        chalk.green.bold('settings_data.json'),
+        'created in',
         chalk.green(dest)
       )
     })

@@ -1,4 +1,7 @@
 /*
+  @param {target} [optional] string: --target --t: path to target directory to init shopify theme envy files, defaults to current user directory
+  @param [optional]: --example-feature --ef: outputs example feature structure and dummy files with readme documentation in each subdirectory
+
   npx theme-envy init --target=path/to/dest
 
   creates skeleton structure for src folder
@@ -11,7 +14,7 @@ const fs = require('fs-extra')
 const chalk = require('chalk')
 const { ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs } = require('#Convert/functions.js')
-const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData } = require('#Init/functions.js')
+const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData, copyExampleFeature } = require('#Init/functions.js')
 
 module.exports = function({ argv }) {
   const target = path.resolve(process.cwd(), (argv.target || './'))
@@ -26,13 +29,14 @@ module.exports = function({ argv }) {
   ensureDirectories({ root: dest, envy: true })
 
   console.log(
-    'Theme Envy directories created in ',
+    chalk.green.bold('Theme Envy directories'),
+    'created in',
     chalk.green(dest)
   )
 
   copyStarterConfigFiles({ target })
 
-  addThemeEnvyFeatures()
+  addThemeEnvyFeatures({ dest })
 
   // if settings_schema.json exists, convert it to settings_schema.js, else create empty settings_schema.js
   if (fs.existsSync(path.join(dest, 'config/settings_schema.json'))) {
@@ -42,4 +46,9 @@ module.exports = function({ argv }) {
   }
 
   createEmptySettingsData({ dest })
+
+  // if --example-feature or --ef flag is present, copy example-feature folder into _features
+  if (argv.ef) {
+    copyExampleFeature({ dest })
+  }
 }
