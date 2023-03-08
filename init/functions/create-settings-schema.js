@@ -20,7 +20,8 @@ module.exports = function({ dest }) {
   fs.writeFile(settingsSchema, settingsSchemaMarkup, 'utf8', (err) => {
     if (err) throw err
     console.log(
-      'settings_schema.js created in ',
+      chalk.green.bold('settings_schema.js'),
+      'created in',
       chalk.green(dest)
     )
   })

@@ -8,7 +8,8 @@ module.exports = function({ target }) {
   fs.copy(configSrc, target, err => {
     if (err) return console.error(err)
     console.log(
-      'config files copied to ',
+      chalk.green.bold('Config files'),
+      'copied to',
       chalk.green(target)
     )
   })
@@ -17,7 +18,8 @@ module.exports = function({ target }) {
   fs.copy(utilsSrc, path.resolve(target, 'utils'), err => {
     if (err) return console.error(err)
     console.log(
-      'Util starter files copied to ',
+      chalk.green.bold('Util starter files'),
+      'copied to',
       chalk.green(target)
     )
   })
