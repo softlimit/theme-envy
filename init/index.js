@@ -10,7 +10,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
 const { ensureDirectories } = require('#EnsureDirectories')
-const { setSettingsSchemaJs } = require('#Convert')
+const { setSettingsSchemaJs } = require('#Convert/functions.js')
 const { ifShopifyThemeExists, copyStarterConfigFiles, addThemeEnvyFeatures, createSettingsSchema, createEmptySettingsData } = require('#Init/functions.js')
 
 module.exports = function(opts = { target: './' }) {
