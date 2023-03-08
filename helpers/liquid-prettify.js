@@ -9,7 +9,7 @@ module.exports = function(source, pathname) {
   try {
     prettified = prettier.format(source, { plugins: [liquidPlugin], parser: 'liquid-html' })
   } catch (error) {
-    console.log(`Error prettifying ${pathname}`)
+    console.log(`Warning: there was an issue prettifying ${pathname}`)
   }
   if (prettified) return prettified
   return source

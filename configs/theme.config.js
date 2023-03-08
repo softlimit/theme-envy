@@ -2,6 +2,7 @@ module.exports = {
   entry: {
     // main: './src/scripts/main.js',
   },
+  store: 'my-store.myshopify.com',
   breakpoints: {
     sm: '640px',
     // => @media (min-width: 640px) { ... }
