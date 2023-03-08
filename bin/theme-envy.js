@@ -51,8 +51,7 @@ const argv = yargs(process.argv.slice(2))
       chalk.bgGreen(`theme-envy ${argv.script}\n`)
     )
     const themeScript = require(path.resolve(__dirname, `theme-envy-${argv.script}`))
-    themeScript(argv.args, {
-      direct: true,
+    themeScript({
       watch: argv.watch,
       target: argv.target,
       feature: argv['example-feature'],

@@ -1,7 +1,7 @@
 module.exports = {
-  ensureDirectories: require('./ensure-directories.js'),
-  extendLiquid: require('./extend-liquid.js'),
-  flattenShopifyDirectoryStructure: require('./flatten-shopify-directory-structure.js'),
-  liquidPrettify: require('./liquid-prettify.js'),
-  sectionSchemaInject: require('./section-schema-inject.js'),
+  ensureDirectories: require('./functions/ensure-directories.js'),
+  extendLiquid: require('./functions/extend-liquid.js'),
+  flattenShopifyDirectoryStructure: require('./functions/flatten-shopify-directory-structure.js'),
+  liquidPrettify: require('./functions/liquid-prettify.js'),
+  sectionSchemaInject: require('./functions/section-schema-inject.js'),
 }

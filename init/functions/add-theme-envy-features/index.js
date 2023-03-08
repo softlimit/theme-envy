@@ -6,7 +6,7 @@ const path = require('path')
 const glob = require('glob')
 
 module.exports = function() {
-  const featuresDir = path.resolve(__dirname, '../build/_features')
+  const featuresDir = path.resolve(__dirname, './_features')
   const initFeatures = glob.sync(`${featuresDir}/**`).filter(ref => fs.statSync(ref).isDirectory() && ref !== featuresDir)
   initFeatures.forEach(feature => {
     console.log('Copying feature: ', path.basename(feature))

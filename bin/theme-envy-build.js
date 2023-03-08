@@ -22,7 +22,7 @@ webpackConfig.watch = watch
 // merge our theme config named entries into webackConfig.entry
 webpackConfig.entry = { ...webpackConfig.entry, ...ThemeConfig.entry }
 
-module.exports = (args, { direct, watch, verbose, argv }) => {
+module.exports = ({ watch }) => {
   buildTheme({ watch, mode })
   // run tailwind
   const tailwindCss = path.resolve(__dirname, '../build/styles/theme-envy.css')

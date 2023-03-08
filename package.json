@@ -6,9 +6,10 @@
     "#Root/*": "./*",
     "#Build/*": "./build/*",
     "#Helpers": "./helpers/index.js",
+    "#Init/*": "./init/*",
     "#Init": "./init/index.js",
     "#Convert": "./convert/index.js",
-    "#EnsureDirectories": "./helpers/ensure-directories.js"
+    "#EnsureDirectories": "./helpers/functions/ensure-directories.js"
   },
   "repository": {
     "type": "git",

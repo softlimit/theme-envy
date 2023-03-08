@@ -1,5 +1,5 @@
 /*
-  Usage: npx theme-envy import --(source|src|S)=path/to/theme
+  Usage: npx theme-envy import path/to/theme
   Imports an existing Shopify theme into a destination directory (default: "./src")
   Converts settings_schema.json to settings_schema.js
   If you supply the --convert flag, it will also convert the theme sections to _features, add hooks and install theme-envy feature
@@ -9,14 +9,13 @@ const fs = require('fs-extra')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
 const themeEnvyConvert = require('./theme-envy-convert')
 const { setSettingsSchemaJs } = require('#Convert')
-const { copyStarterConfigFiles, addThemeEnvyFeatures } = require('#Init')
+const { copyStarterConfigFiles, addThemeEnvyFeatures } = require('#Init/functions.js')
 const git = require('simple-git')(process.cwd())
 
-module.exports = async function(args, opts = { source: './', argv: {} }) {
-  let { source, src, S, destination, dest, D, convert, C } = opts.argv
-  source = source || src || S
-  destination = destination || dest || D
-  convert = convert || C
+module.exports = async function({ argv }) {
+  let source = argv.args[0]
+  const destination = 'src'
+  const convert = argv.C || argv.convert
 
   if (source.includes('.git')) {
     // if source is a git repo, clone it to src directory
@@ -26,14 +25,14 @@ module.exports = async function(args, opts = { source: './', argv: {} }) {
     source = 'src'
     await git.clone(gitRepo, source)
     // remove .git directory
-    const remove = ['.git', '.github']
+    const remove = ['.git', '.github', '.gitignore', '.vscode']
     remove.forEach(dir => {
       if (fs.existsSync(path.resolve(process.cwd(), source, dir))) fs.removeSync(path.resolve(process.cwd(), source, dir))
     })
   }
 
   const sourceTheme = path.resolve(process.cwd(), source)
-  const destTheme = path.resolve(process.cwd(), (destination || 'src'))
+  const destTheme = path.resolve(process.cwd(), destination)
   // verify source theme exists
   if (!fs.existsSync(sourceTheme)) {
     console.error(`Source theme directory not found: ${sourceTheme}`)
@@ -63,7 +62,7 @@ module.exports = async function(args, opts = { source: './', argv: {} }) {
 
   if (convert) {
     copyStarterConfigFiles({ target: process.cwd() })
-    addThemeEnvyFeatures({ sourceTheme: destTheme })
-    await themeEnvyConvert(args, { argv: { source: destTheme } })
+    addThemeEnvyFeatures()
+    await themeEnvyConvert({ argv: { source: destTheme } })
   }
 }
