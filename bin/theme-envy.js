@@ -57,13 +57,6 @@ program
   })
 
 program
-  .command('ignore')
-  .action((command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.ignore()
-  })
-
-program
   .command('import')
   .description('Import an existing Shopify theme into a destination directory (default: "./src")')
   .usage('npx theme-envy import [source]')
