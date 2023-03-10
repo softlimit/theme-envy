@@ -31,7 +31,7 @@ module.exports = async function(opts = {}) {
   // Create directories _features and _elements
   ensureDirectories({ root: sourceTheme, envy: true })
 
-  addThemeEnvyFeatures({ dest: sourceTheme })
+  if (opts.addThemeEnvy !== false) addThemeEnvyFeatures({ dest: sourceTheme })
 
   convertSectionsToFeatures({ sourceTheme })
 
