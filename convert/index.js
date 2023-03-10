@@ -10,8 +10,8 @@ const fs = require('fs-extra')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs, convertSectionsToFeatures, installHooks } = require('#Convert/functions')
 
-module.exports = async function({ argv }) {
-  const source = argv.source || argv.src || argv.S
+module.exports = async function(opts = {}) {
+  const source = opts.source
 
   if (!source) {
     console.error('Source theme directory not supplied. Use --source=path/to/theme')

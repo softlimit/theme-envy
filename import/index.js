@@ -12,10 +12,10 @@ const { setSettingsSchemaJs } = require('#Convert/functions')
 const { copyStarterConfigFiles, addThemeEnvyFeatures } = require('#Init/functions')
 const { importFromGit, validateSourceTheme } = require('#Import/functions')
 
-module.exports = async function({ argv }) {
-  let source = argv.args[0]
+module.exports = async function(src, opts = {}) {
+  let source = src
   const destination = 'src'
-  const convert = argv.C || argv.convert
+  const convert = opts.convert
 
   if (source.includes('.git')) {
     source = await importFromGit({ source, destination })

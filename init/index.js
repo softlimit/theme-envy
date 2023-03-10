@@ -23,8 +23,8 @@ const {
   copyExampleFeature
 } = require('#Init/functions')
 
-module.exports = function({ argv }) {
-  const target = path.resolve(process.cwd(), (argv.target || './'))
+module.exports = function(source, opts = {}) {
+  const target = path.resolve(process.cwd(), (source || './'))
 
   const dest = path.join(target, 'src')
 
@@ -55,7 +55,7 @@ module.exports = function({ argv }) {
   createEmptySettingsData({ dest })
 
   // if --example-feature or --ef flag is present, copy example-feature folder into _features
-  if (argv.ef) {
+  if (opts.example) {
     copyExampleFeature({ dest })
   }
 }
