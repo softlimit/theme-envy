@@ -4,7 +4,6 @@
 */
 const fs = require('fs')
 const path = require('path')
-const yargs = require('yargs')
 
 const starterConfigs = {
   config: 'starter-config.js',
@@ -21,49 +20,26 @@ const starterContent = (fileName, args) => {
   return content(...args)
 }
 
-module.exports = function() {
-  const argv = yargs(process.argv.slice(3))
-    .command('$0 <type> <name> [includes]', 'Create new feature/element', {
-      type: {
-        description: 'feature or element',
-        type: 'string'
-      },
-      name: {
-        description: 'Name of feature/element, do not include spaces',
-        type: 'string'
-      },
-      includes: {
-        description: 'List of all subfolders and starter files. Options: ["all", "config", "install", "schema", "scripts", "sections", "snippets", "styles"]. Format as comma separated list (no spaces, no quotes)',
-        type: 'string'
-      }
-    },
-    (argv) => {
-      argv.includes = argv.includes ? argv.includes.split(',') : null
-      console.log(`Creating ${argv.type} ${argv.name}, include ${argv.includes} starter files`)
-    })
-    .help()
-    .showHelpOnFail(true)
-    .argv
-
+module.exports = function(type, name, include) {
   const ELEMENTS = path.resolve(process.cwd(), 'src/_elements')
   const FEATURES = path.resolve(process.cwd(), 'src/_features')
 
-  if (!argv.name) throw new Error('Please provide an feature or element name as the first argument, ex: new-section')
+  const starters = include?.split(',') || 'all'
 
   function upperFirstLetter(string) {
     return string[0].toUpperCase() + string.substring(1)
   }
   const DIRS = []
-  const EXT_NAME = argv.name.toLowerCase()
-  const INCLUDE_ANY = argv.includes
-  const INCLUDE_ALL = INCLUDE_ANY && argv.includes.includes('all')
-  const INCLUDE_SCRIPT = INCLUDE_ANY && (argv.includes.includes('scripts') || INCLUDE_ALL)
-  const INCLUDE_STYLE = INCLUDE_ANY && (argv.includes.includes('styles') || INCLUDE_ALL)
-  const INCLUDE_INSTALL = INCLUDE_ANY && (argv.includes.includes('install') || INCLUDE_ALL)
-  const INCLUDE_SECTION = INCLUDE_ANY && (argv.includes.includes('sections') || INCLUDE_ALL)
-  const INCLUDE_SNIPPET = INCLUDE_ANY && (argv.includes.includes('snippets') || INCLUDE_ALL)
-  const INCLUDE_CONFIG = INCLUDE_ANY && (argv.includes.includes('config') || INCLUDE_ALL)
-  const INCLUDE_SCHEMA = INCLUDE_ANY && (argv.includes.includes('schema') || INCLUDE_ALL)
+  const EXT_NAME = name.toLowerCase()
+  const INCLUDE_ANY = starters
+  const INCLUDE_ALL = INCLUDE_ANY && starters.includes('all')
+  const INCLUDE_SCRIPT = INCLUDE_ANY && (starters.includes('scripts') || INCLUDE_ALL)
+  const INCLUDE_STYLE = INCLUDE_ANY && (starters.includes('styles') || INCLUDE_ALL)
+  const INCLUDE_INSTALL = INCLUDE_ANY && (starters.includes('install') || INCLUDE_ALL)
+  const INCLUDE_SECTION = INCLUDE_ANY && (starters.includes('sections') || INCLUDE_ALL)
+  const INCLUDE_SNIPPET = INCLUDE_ANY && (starters.includes('snippets') || INCLUDE_ALL)
+  const INCLUDE_CONFIG = INCLUDE_ANY && (starters.includes('config') || INCLUDE_ALL)
+  const INCLUDE_SCHEMA = INCLUDE_ANY && (starters.includes('schema') || INCLUDE_ALL)
   const EXT_COMPONENT_NAME = EXT_NAME.indexOf('-') > -1 ? EXT_NAME : EXT_NAME + '-component'
   const EXT_CLASS_NAME = EXT_COMPONENT_NAME.split('-').map(part => upperFirstLetter(part)).join('')
   const EXT_READABLE_NAME = EXT_COMPONENT_NAME.split('-').map(part => upperFirstLetter(part)).join(' ')
@@ -135,5 +111,5 @@ module.exports = function() {
     }
   }
 
-  argv.type === 'element' ? loadDir(ELEMENTS) : loadDir(FEATURES)
+  type === 'element' ? loadDir(ELEMENTS) : loadDir(FEATURES)
 }

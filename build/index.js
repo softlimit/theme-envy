@@ -10,11 +10,11 @@ const webpack = require('webpack')
 const webpackConfig = require('#Build/theme-envy.config.js')
 const { buildWatch, build } = require('#Build/functions')
 
-module.exports = function({ argv }) {
+module.exports = function(env, opts = {}) {
   require('./requires')
   const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
-  const mode = (argv.P || argv.production) ? 'production' : 'development'
-  const watch = argv.watch || argv.W || false
+  const mode = env ? 'production' : 'development'
+  const watch = opts.watch || false
 
   build({ mode })
   if (watch) buildWatch({ build })
