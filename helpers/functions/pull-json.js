@@ -1,19 +1,15 @@
 const glob = require('glob')
 const path = require('path')
 const fs = require('fs')
-const { exec, spawn } = require('child_process')
-const { themeIgnore } = require('./theme-ignore')
+const { spawn } = require('child_process')
 
 module.exports = function() {
-  themeIgnore('pull')
-  exec('cd dist')
-  const shopify = spawn('shopify', ['theme', 'pull'], { cwd: path.resolve(process.cwd(), 'dist'), stdio: 'inherit' })
+  const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
+  const themePull = ['theme', 'pull', `--store=${ThemeConfig.store}`, '--path=dist', '--only=templates/*.json,config/settings_data.json,sections/*.json']
+  const shopify = spawn('shopify', themePull, { cwd: path.resolve(process.cwd(), 'dist'), stdio: 'inherit' })
 
   shopify.on('exit', function() {
-    const files = glob.sync(path.resolve(process.cwd(), 'dist/{templates,config}/**/*.json'))
-    files.forEach(file => {
-      if (file.indexOf('settings_schema') > -1) return
-      fs.copyFileSync(file, file.replace('/dist/', '/src/'))
-    })
+    const files = glob.sync(path.resolve(process.cwd(), 'dist/{templates,config,sections}/**/*.json')).filter(file => file.indexOf('settings_schema') > -1)
+    files.forEach(file => fs.copyFileSync(file, file.replace('/dist/', '/src/')))
   })
 }
