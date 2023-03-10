@@ -58,21 +58,11 @@ program
   })
 
 program
-  .command('import')
-  .description('Import an existing Shopify theme into a destination directory (default: "./src")')
-  .usage('npx theme-envy import [source]')
-  .argument('[source]', 'Specify the path to your theme source directory to process, defaults to project root ./src directory if not provided')
-  .option('-c, --convert', 'Convert theme sections to _features, add hooks, and install theme-envy feature on import')
-  .action((source, options, command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.import(source, options)
-  })
-
-program
   .command('init')
-  .description('Create skeleton structure for src folder into a destination directory (default: project root "./")')
+  .description('Initialize a new Shopify theme project with Theme Envy directory structure')
   .usage('npx theme-envy init [source] -e|--example')
-  .argument('[source]', 'Path to target directory to init shopify theme envy files in, defaults to current user directory')
+  .argument('[source]', 'Specify the path/git url to your theme source directory to process, if not provided will create the directory structure in /src')
+  .option('-c, --convert', 'Convert theme sections to _features, add hooks, and install theme-envy feature on import')
   .option('-e, --example', 'Output example feature structure and dummy files with readme documentation in each subdirectory')
   .action((source, options, command) => {
     scriptMessage(command.name())

@@ -11,6 +11,7 @@ module.exports = function({ dest }) {
   const initFeatures = glob.sync(`${featuresDir}/**`).filter(ref => fs.statSync(ref).isDirectory() && ref !== featuresDir)
   initFeatures.forEach(feature => {
     const target = path.resolve(dest, './_features', path.basename(feature))
+    if (fs.existsSync(target)) return
     fs.copy(feature, target, err => {
       if (err) return console.error(err)
       console.log(

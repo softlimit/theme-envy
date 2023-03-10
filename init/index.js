@@ -12,25 +12,44 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
-const { ensureDirectories } = require('#EnsureDirectories')
+const { directories, ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs } = require('#Convert/functions')
+const themeEnvyConvert = require('#Convert')
 const {
   ifShopifyThemeExists,
   copyStarterConfigFiles,
   addThemeEnvyFeatures,
   createSettingsSchema,
   createEmptySettingsData,
-  copyExampleFeature
+  copyExampleFeature,
+  importFromGit,
+  validateSourceTheme
 } = require('#Init/functions')
 
-module.exports = function(source, opts = {}) {
-  const target = path.resolve(process.cwd(), (source || './'))
+module.exports = async function(source, opts = {}) {
+  const target = path.resolve(process.cwd())
 
   const dest = path.join(target, 'src')
-
   fs.ensureDirSync(dest)
 
-  ifShopifyThemeExists({ target, dest })
+  if (source) {
+    // we have a source directory, so we're importing a theme from a folder that is not the root
+    if (source.includes('.git')) {
+      source = await importFromGit({ source, dest })
+    }
+    const sourceTheme = path.resolve(process.cwd(), source)
+    const destTheme = path.resolve(process.cwd(), dest)
+    validateSourceTheme({ sourceTheme })
+    // Copy files from source to destination
+    if (sourceTheme !== destTheme) {
+      directories.forEach(dir => {
+        fs.copySync(path.resolve(sourceTheme, dir), path.resolve(destTheme, dir))
+      })
+    }
+  } else {
+    // if no source directory is provided, check if there is a Shopify theme in the current directory and move it to /src
+    ifShopifyThemeExists({ target, dest })
+  }
 
   // setup our Theme Envy directories
   ensureDirectories({ root: dest, envy: true })
@@ -52,10 +71,15 @@ module.exports = function(source, opts = {}) {
     createSettingsSchema({ dest })
   }
 
+  // only runs if settings_data.json does not exist
   createEmptySettingsData({ dest })
 
-  // if --example-feature or --ef flag is present, copy example-feature folder into _features
+  // if --example or --e flag is present, copy example-feature folder into _features
   if (opts.example) {
     copyExampleFeature({ dest })
+  }
+
+  if (opts.convert) {
+    await themeEnvyConvert({ source: dest, addThemeEnvy: false })
   }
 }

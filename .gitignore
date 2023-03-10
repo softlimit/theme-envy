@@ -124,5 +124,6 @@ tmp
 /tailwind.config.js
 /theme.config.js
 /src
+/utils
 /build/requires/scripts/elements.js
 /build/requires/scripts/features.js
