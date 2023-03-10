@@ -15,6 +15,7 @@ module.exports = function(env, opts = {}) {
   const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
   const mode = env ? 'production' : 'development'
   const watch = opts.watch || false
+  const verbose = opts.verbose || false
 
   build({ mode })
   if (watch) buildWatch({ build })
@@ -24,7 +25,8 @@ module.exports = function(env, opts = {}) {
   const tailwindOpts = ['tailwindcss', 'build', '-i', tailwindCss, '-o', './dist/assets/theme-envy.css']
   if (mode === 'production') tailwindOpts.push('--minify')
   if (watch) tailwindOpts.push('--watch')
-  spawn('npx', tailwindOpts, { stdio: 'inherit' })
+  const tailwindOutput = verbose ? { stdio: 'inherit' } : {}
+  spawn('npx', tailwindOpts, tailwindOutput)
 
   // run webpack
   // set our webpack mode

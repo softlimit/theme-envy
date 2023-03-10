@@ -24,6 +24,7 @@ program
   .usage('npx theme-envy development|production -w|--watch')
   .addArgument(new commander.Argument('[env]', 'Specify the build environment to run').choices(['development', 'production']))
   .option('-w, --watch', 'Watch for changed files and update dist')
+  .option('-v, --verbose', 'Show Tailwind and Webpack in output')
   .action((env, options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.build(env, options)
@@ -43,7 +44,7 @@ program
   .description('Convert an existing Shopify theme to Theme Envy directory structure')
   .usage('npx theme-envy convert [source]')
   .argument('[source]', 'Specify the path to your theme source directory to process, defaults to project root ./src directory if not provided')
-  .action((source, command) => {
+  .action((source, options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.convert(source)
   })
@@ -51,7 +52,7 @@ program
 program
   .command('dev')
   .description('Start development process and sync with Shopify using the Shopify CLI')
-  .action((command) => {
+  .action((options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.dev()
   })
