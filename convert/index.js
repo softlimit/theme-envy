@@ -9,14 +9,10 @@ const path = require('path')
 const fs = require('fs-extra')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs, convertSectionsToFeatures, installHooks } = require('#Convert/functions')
+const { addThemeEnvyFeatures } = require('#Init/functions')
 
 module.exports = async function(opts = {}) {
-  const source = opts.source
-
-  if (!source) {
-    console.error('Source theme directory not supplied. Use --source=path/to/theme')
-    process.exit(1)
-  }
+  const source = opts.source || './src'
   const sourceTheme = path.resolve(process.cwd(), source)
   // verify source theme exists
   if (!fs.existsSync(sourceTheme)) {
@@ -34,6 +30,8 @@ module.exports = async function(opts = {}) {
 
   // Create directories _features and _elements
   ensureDirectories({ root: sourceTheme, envy: true })
+
+  addThemeEnvyFeatures({ dest: sourceTheme })
 
   convertSectionsToFeatures({ sourceTheme })
 
