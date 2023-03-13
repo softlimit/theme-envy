@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 module.exports = function({ dest }) {
   // define and create the destination example-feature
@@ -13,10 +14,6 @@ module.exports = function({ dest }) {
   // now copy the files
   fs.copy(exampleSrc, target, err => {
     if (err) return console.error(err)
-    console.log(
-      chalk.green.bold('Example Feature'),
-      'copied to',
-      chalk.green(target)
-    )
+    console.log(logSymbols.success, chalk.green.bold('Example Feature'), 'copied')
   })
 }

@@ -2,8 +2,16 @@ const fs = require('fs-extra')
 const path = require('path')
 const buildLiquid = require('./build-liquid')
 const getAll = require('./get-all')
+const chalk = require('chalk')
+const emoji = require('node-emoji')
 
 module.exports = function({ mode, files = [] }) {
+  console.log(
+    emoji.get('hammer'),
+    chalk.cyan('Building ./dist in'),
+    mode === 'development' ? chalk.yellow.bold(mode) : chalk.magenta.bold(mode),
+    chalk.cyan('mode')
+  )
   if (files.length > 0) {
     // remove partials and schema = require(files list)
     files = files.filter((file) => !file.includes('partials/') && !file.includes('schema/'))

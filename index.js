@@ -1,27 +1,35 @@
 #!/usr/bin/env node
 
+const emoji = require('node-emoji')
 const commander = require('commander')
 const program = new commander.Command()
 const chalk = require('chalk')
 const themeEnvyCommands = require('#Root/theme-envy-commands.js')
 
 const scriptMessage = (scriptName) => {
-  console.log(
-    chalk.green.bold('Starting Softlimit Theme Envy script'),
-    chalk.bgGreen(`theme-envy ${scriptName}\n`)
-  )
+  console.log(`\n ${emoji.get('rocket')} Shopify Theme Envy ${chalk.green.bgBlack.bold(`\n    theme-envy ${scriptName}\n`)}`)
 }
 
 program
   .description('Theme Envy CLI Tools')
   .addHelpText('beforeAll', `
-${chalk.green.bold('Welcome to Shopify Theme Envy <3')}
+${emoji.get('green_heart') + chalk.green.bold(' Softlimit Shopify Theme Envy ') + emoji.get('green_heart')}
+${chalk.green.bold('===================================')}
+  `)
+  .addHelpText('afterAll', `
+${chalk.cyan.bold('===================================')}
+${chalk.cyan.bold.underline('Need more help?')}
+We are always looking for ways to improve our tools
+and make your Shopify development life smoother.
+
+Let us know what we missed! Create an issue on our github repo:
+${chalk.dim.underline('https://github.com/softlimit/shopify-env/issues')}
   `)
 
 program
   .command('build')
   .description('Build Shopify theme dist from src in either production or development context with watch process option for serving')
-  .usage('npx theme-envy development|production -w|--watch')
+  .usage('[development|production] -w|--watch')
   .addArgument(new commander.Argument('[env]', 'Specify the build environment to run').choices(['development', 'production']))
   .option('-w, --watch', 'Watch for changed files and update dist')
   .option('-v, --verbose', 'Show Tailwind and Webpack in output')
@@ -33,8 +41,7 @@ program
 program
   .command('clean')
   .description('Clear dist folder contents')
-  .usage('npx theme-envy clean')
-  .action((command) => {
+  .action((options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.clean()
   })
@@ -42,8 +49,9 @@ program
 program
   .command('convert')
   .description('Convert an existing Shopify theme to Theme Envy directory structure')
-  .usage('npx theme-envy convert [source]')
+  .usage('[source] -a|--add-theme-envy-feature')
   .argument('[source]', 'Specify the path to your theme source directory to process, defaults to project root ./src directory if not provided')
+  .option('-a, --add-theme-envy-feature', 'Add theme-envy feature and install to hook')
   .action((source, options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.convert(source)
@@ -60,7 +68,7 @@ program
 program
   .command('init')
   .description('Initialize a new Shopify theme project with Theme Envy directory structure')
-  .usage('npx theme-envy init [source] -e|--example')
+  .usage('[source] -e|--example -c|--convert')
   .argument('[source]', 'Specify the path/git url to your theme source directory to process, if not provided will create the directory structure in /src')
   .option('-c, --convert', 'Convert theme sections to _features, add hooks, and install theme-envy feature on import')
   .option('-e, --example', 'Output example feature structure and dummy files with readme documentation in each subdirectory')
@@ -72,7 +80,7 @@ program
 program
   .command('new')
   .description('Create named directory in _features or _elements with starter files to build new feature|element')
-  .usage('npx theme-envy <type> <name> [include]')
+  .usage('<type> <name> [include]')
   .addArgument(new commander.Argument('<type>', 'Define the type of scaffold to create').choices(['feature', 'element']))
   .argument('<name>', 'Handleized name for the new element|feature')
   .argument('[include]', 'Comma-separated list of starter directories and files to include in your scaffold. Defaults to all if not provided.')

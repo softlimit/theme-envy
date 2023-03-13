@@ -13,7 +13,7 @@ module.exports = function(env, opts = {}) {
   require('./requires')
   const { buildWatch, build } = require('#Build/functions')
   const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
-  const mode = env ? 'production' : 'development'
+  const mode = env || 'production'
   const watch = opts.watch || false
   const verbose = opts.verbose || false
 

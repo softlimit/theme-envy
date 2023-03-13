@@ -2,7 +2,7 @@
   @param {target} [optional] string: --target --t: path to target directory to init shopify theme envy files, defaults to current user directory
   @param [optional]: --example-feature --ef: outputs example feature structure and dummy files with readme documentation in each subdirectory
 
-  npx theme-envy init --target=path/to/dest
+  theme-envy init --target=path/to/dest
 
   creates skeleton structure for src folder
     - Shopify directories
@@ -12,6 +12,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 const { directories, ensureDirectories } = require('#EnsureDirectories')
 const { setSettingsSchemaJs } = require('#Convert/functions')
 const themeEnvyConvert = require('#Convert')
@@ -31,11 +32,17 @@ module.exports = async function(source, opts = {}) {
 
   const dest = path.join(target, 'src')
   fs.ensureDirSync(dest)
+  console.log(logSymbols.success, 'Destination directory created:', `\n${chalk.dim(dest)}\n`)
 
   if (source) {
     // we have a source directory, so we're importing a theme from a folder that is not the root
     if (source.includes('.git')) {
+      console.log(
+        logSymbols.info,
+        chalk.cyan('Importing source from repo...')
+      )
       source = await importFromGit({ source, dest })
+      console.log(`${logSymbols.success} ${chalk.green('Git repo cloned as source')}`)
     }
     const sourceTheme = path.resolve(process.cwd(), source)
     const destTheme = path.resolve(process.cwd(), dest)
@@ -45,6 +52,7 @@ module.exports = async function(source, opts = {}) {
       directories.forEach(dir => {
         fs.copySync(path.resolve(sourceTheme, dir), path.resolve(destTheme, dir))
       })
+      console.log(`${logSymbols.success} Source copied to destination folder`)
     }
   } else {
     // if no source directory is provided, check if there is a Shopify theme in the current directory and move it to /src
@@ -54,11 +62,7 @@ module.exports = async function(source, opts = {}) {
   // setup our Theme Envy directories
   ensureDirectories({ root: dest, envy: true })
 
-  console.log(
-    chalk.green.bold('Theme Envy directories'),
-    'created in',
-    chalk.green(dest)
-  )
+  console.log(`${logSymbols.success} Directory structure set up`)
 
   copyStarterConfigFiles({ target })
 
@@ -80,6 +84,6 @@ module.exports = async function(source, opts = {}) {
   }
 
   if (opts.convert) {
-    await themeEnvyConvert({ source: dest, addThemeEnvy: false })
+    await themeEnvyConvert(dest, { addThemeEnvy: false })
   }
 }

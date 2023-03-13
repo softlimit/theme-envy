@@ -2,6 +2,9 @@
   "name": "@softlimit/shopify-theme-env",
   "version": "1.0.0",
   "description": "Softlimit Shopify Theme Development Environment",
+  "bin": {
+    "theme-envy": "./index.js"
+  },
   "imports": {
     "#Build": "./build/index.js",
     "#Build/*": "./build/*",
@@ -24,6 +27,7 @@
     "#Init/*": "./init/*",
     "#Init/functions": "./init/functions/index.js",
     "#Init/functions/*": "./init/functions/*",
+    "#LogSymbols": "./helpers/functions/log-symbols.js",
     "#ParentTheme": "./parent-theme/index.js",
     "#Root/*": "./*"
   },
@@ -31,9 +35,6 @@
     "type": "git",
     "url": "https://bitbucket.org/softlimit/shopify-env",
     "directory": "@softlimit/shopify-env"
-  },
-  "bin": {
-    "theme-envy": "bin/theme-envy.js"
   },
   "engines": {
     "npm": "8.x"
@@ -61,6 +62,7 @@
     "fs-extra": "^11.1.0",
     "glob": "^8.1.0",
     "mini-css-extract-plugin": "^2.7.2",
+    "node-emoji": "^1.11.0",
     "path": "^0.12.7",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.0.2",

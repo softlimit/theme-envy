@@ -1,6 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 const glob = require('glob')
+const logSymbols = require('#LogSymbols')
 const detectChildren = require('./detect-children')
 
 module.exports = function({ sourceTheme }) {
@@ -50,4 +51,6 @@ module.exports = function({ sourceTheme }) {
       })
     }
   })
+
+  console.log(`${logSymbols.success} Theme sections converted to features`)
 }
