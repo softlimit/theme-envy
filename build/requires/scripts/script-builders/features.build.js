@@ -3,8 +3,7 @@ const fs = require('fs')
 const { getAll } = require('#Build/functions')
 
 const features = getAll('features').map(file => {
-  const name = path.basename(path.dirname(file))
-  return `import 'Features/${name}/index.js'`
+  return `import '${file}'`
 })
 
 const markup = features.join('\n')
