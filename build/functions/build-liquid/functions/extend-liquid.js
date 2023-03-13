@@ -11,6 +11,8 @@ const fs = require('fs')
 const listDependencies = require('./extend-liquid-dependencies')
 const getAll = require('#Build/functions/get-all.js')
 const globbedPartials = getAll('partials')
+const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 const strings = {
   tags: ['partial', 'hook', 'theme']
@@ -43,6 +45,11 @@ function replaceTag({ tag, source, filePath } = {}) {
   const name = tag[3]
   if (action === 'partial') {
     const partialPath = globbedPartials.filter(partial => partial.includes(`/${`${name}.liquid`}`))[0]
+    // if partialPath doesn't return anything, exit process and output error
+    if (!partialPath) {
+      console.error(`${logSymbols.error} ${chalk.red('Error:')} The partial ${name}.liquid does not exist. Check partial references to resolve.`)
+      process.exit()
+    }
     const partialSource = fs.readFileSync(partialPath, 'utf8')
     const file = extendLiquid({ source: partialSource, filePath: partialPath })
     source = source.replace(replace, whitespace(replace, file))

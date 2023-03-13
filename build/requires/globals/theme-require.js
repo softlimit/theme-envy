@@ -8,6 +8,8 @@ const glob = require('glob')
 const path = require('path')
 const requiredModules = []
 const { getAll } = require('#Build/functions')
+const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 let allSchema
 
@@ -30,7 +32,7 @@ const ThemeRequire = (file, options) => {
   const ref = getFile(file)
 
   if (ref.length === 0) {
-    console.error(`Could not find file ${file}`)
+    console.error(logSymbols.error, chalk.red('Error:'), `Could not find file ${file}`)
     process.exit()
   }
 
@@ -70,7 +72,7 @@ const ThemeRequire = (file, options) => {
 
   if (options?.extend || options?.delete || options?.loop || options?.suffix || options?.args) {
     // make copy of the schema to modify so we don't transform the original
-    content = JSON.parse(JSON.stringify(content))
+    content = parseJson(content)
   }
 
   if (options?.delete) {
@@ -80,10 +82,10 @@ const ThemeRequire = (file, options) => {
     content = schemaExtend(content, options.extend)
   }
   if (options?.loop) {
-    content = schemaLoop(content, options.loop)
+    content = schemaLoop(file, content, options.loop)
   }
   if (options?.suffix) {
-    content = schemaSuffix(content, options.suffix)
+    content = schemaSuffix(file, content, options.suffix)
   }
 
   if (options?.loader) {
@@ -94,7 +96,7 @@ const ThemeRequire = (file, options) => {
   return content
 }
 
-function schemaDelete(src, del) {
+function schemaDelete(file, src, del) {
   const replaceWith = src.filter(entry => {
     if (entry.settings) {
       entry.settings = schemaDelete(entry.settings, del)
@@ -123,10 +125,10 @@ function schemaExtend(src, exts) {
   return replaceWith
 }
 
-function schemaLoop(src, loop) {
+function schemaLoop(file, src, loop) {
   const replaceWith = []
   for (let i = 1; i < (loop + 1); i++) {
-    const srcCopy = JSON.parse(JSON.stringify(src))
+    const srcCopy = parseJson(src)
     srcCopy.map(entry => {
       if (entry.id) entry.id = `${entry.id}_${i}`
       if (entry.label) entry.label = `${entry.label} ${i}`
@@ -138,8 +140,8 @@ function schemaLoop(src, loop) {
   return replaceWith
 }
 
-function schemaSuffix(src, suffix) {
-  const replaceWith = JSON.parse(JSON.stringify(src))
+function schemaSuffix(file, src, suffix) {
+  const replaceWith = parseJson(src)
   replaceWith.map(entry => {
     if (entry.id) entry.id = `${entry.id}_${suffix}`
     if (entry.label) entry.label = `${entry.label} ${suffix}`
@@ -162,6 +164,18 @@ function getFile(file) {
       res.push(...glob.sync(path.resolve(process.build.parentTheme, `**/${file}`)))
     }
     return res
+  }
+}
+
+/* parse JSON for schema extend functions, return error if JSON not readable
+  @param src [object] - the file contents to be extended
+  @param schemaRef [string] - source schema file name being extended
+*/
+function parseJson(src, schemaRef) {
+  try {
+    return JSON.parse(JSON.stringify(src))
+  } catch (e) {
+    console.log(logSymbols.error, chalk.red('Error:'), `Invalid JSON in ${schemaRef}`)
   }
 }
 
