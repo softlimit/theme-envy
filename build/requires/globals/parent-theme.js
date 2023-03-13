@@ -8,7 +8,8 @@ const path = require('path');
   const ThemeConfig = require('#Root/theme.config.js')
 
   // look for parent theme in node_modules
-  const parentThemePath = ThemeConfig.parentTheme.path
+  const parentThemePath = ThemeConfig.parentTheme?.path
+  if (!parentThemePath) return
   const parentThemePkg = fs.existsSync(path.resolve(process.cwd(), 'node_modules', parentThemePath))
     ? path.resolve(process.cwd(), 'node_modules', parentThemePath)
     : false
