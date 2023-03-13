@@ -1,13 +1,12 @@
 /*
   DO NOT EDIT, PRECOMPILED DURING BUILD FROM LIST OF ALL DIRECTORIES IN _elements
 */
-const glob = require('glob')
 const path = require('path')
 const fs = require('fs')
-
-const elements = glob.sync(path.resolve(process.cwd(), './src/_elements/**/index.js')).map(file => {
+const { getAll } = require('#Build/functions')
+const elements = getAll('elements').map(file => {
   const name = path.basename(path.dirname(file))
-  return `'${name}': () => import(/* webpackChunkName: "${name}" */ 'Elements/${name}/index.js')`
+  return `'${name}': () => import(/* webpackChunkName: "${name}" */ '${file}')`
 })
 
 const markup = elements.length

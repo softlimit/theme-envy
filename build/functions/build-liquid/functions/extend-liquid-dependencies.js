@@ -4,11 +4,11 @@
   * @param {string} source - source code of file to find dependencies for
   * @returns {array} - list of files that reference the given file
 */
-const glob = require('glob')
 const path = require('path')
 const fs = require('fs')
+const getAll = require('#Build/functions/get-all.js')
 // pre glob all liquid partials
-const globbedPartials = glob.sync('./src/**/partials/**/*.liquid')
+const globbedPartials = getAll('partials')
 
 const listDependencies = ({ filePath, source }) => {
   const dependencies = []

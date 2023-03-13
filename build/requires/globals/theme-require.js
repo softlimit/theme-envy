@@ -6,13 +6,13 @@
 */
 const glob = require('glob')
 const path = require('path')
-const caller = require('caller')
 const requiredModules = []
+const { getAll } = require('#Build/functions')
 
-let allJsonSchema
+let allSchema
 
 const setPreGlobs = () => {
-  allJsonSchema = glob.sync('./src/**/{_schema,schema}/**/*.js')
+  allSchema = getAll('schema')
 }
 
 // uncache all required files after a build is complete so changes can be made to partials and schemas in between watch events
@@ -26,17 +26,8 @@ process.build.events.on('watch:start', () => {
 })
 
 const ThemeRequire = (file, options) => {
-  // if file is a relative path... use caller() to determine path of parent file and set relative path to that file
-  let globStr
-  options?.globStr ? globStr = options.globStr : globStr = './src/'
-
-  if (file.includes('./')) {
-    globStr = `./src/${path.dirname(caller()).split('src/')[1]}`
-    file = path.basename(file)
-  }
-
   // check for file in our pre-globbed arrays
-  const ref = getFile(file, globStr)
+  const ref = getFile(file)
 
   if (ref.length === 0) {
     console.error(`Could not find file ${file}`)
@@ -159,19 +150,18 @@ function schemaSuffix(src, suffix) {
 }
 
 function getSchemaFile(file) {
-  // remove leading ./
-  if (file.includes('./')) {
-    file = file.replace('./', '')
-  }
-  file = `/${file.replace('.{js,json}', '.js')}`
-  return allJsonSchema.filter(schema => schema.includes(file))
+  return allSchema.filter(schema => path.basename(schema) === path.basename(file))
 }
 
-function getFile(file, globStr) {
-  if (globStr.includes('schema') || file.includes('schema')) {
+function getFile(file) {
+  if (file.includes('schema')) {
     return getSchemaFile(file)
   } else {
-    return glob.sync(`${globStr}${file}`)
+    const res = glob.sync(path.resolve(process.build.themeRoot, `**/${file}`))
+    if (process.build.parentTheme && res.length === 0) {
+      res.push(...glob.sync(path.resolve(process.build.parentTheme, `**/${file}`)))
+    }
+    return res
   }
 }
 

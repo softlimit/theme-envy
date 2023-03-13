@@ -11,7 +11,7 @@ module.exports = function({ source, filePath }) {
   // regexp for a quoted string within our schema match
   const schemaFile = schema[0].match(/'(.*)'/)[1] || schema[0].match(/"(.*)"/)[1]
   // load the file export
-  const schemaSource = ThemeRequire(schemaFile, { globStr: 'src/**/{schema,_schema}/', loader: filePath })
+  const schemaSource = ThemeRequire(schemaFile, { loader: filePath })
   // replace the {% schema %} tag with the schema string and update asset
   return source.replace(schema[0], formatSchema(schemaSource))
 }

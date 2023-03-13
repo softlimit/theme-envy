@@ -1,10 +1,9 @@
-const glob = require('glob')
 const path = require('path')
 const fs = require('fs')
+const { getAll } = require('#Build/functions')
 
-const features = glob.sync(path.resolve(process.cwd(), './src/_features/**/index.js')).map(file => {
-  const name = path.basename(path.dirname(file))
-  return `import 'Features/${name}/index.js'`
+const features = getAll('features').map(file => {
+  return `import '${file}'`
 })
 
 const markup = features.join('\n')

@@ -28,6 +28,7 @@
     "#Init/functions": "./init/functions/index.js",
     "#Init/functions/*": "./init/functions/*",
     "#LogSymbols": "./helpers/functions/log-symbols.js",
+    "#ParentTheme": "./parent-theme/index.js",
     "#Root/*": "./*"
   },
   "repository": {
