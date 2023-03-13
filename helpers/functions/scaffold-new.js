@@ -1,9 +1,11 @@
 /*
-  npx theme new feature|element feature-name all|sections|snippets|scripts|schema|install|styles|config
+  theme new feature|element feature-name all|sections|snippets|scripts|schema|install|styles|config
   creates a directory in _features or _elements with starter files to build your feature or element
 */
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
+const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 const starterConfigs = {
   config: 'starter-config.js',
@@ -16,11 +18,17 @@ const starterConfigs = {
 // returns starter content of file name
 // checks for file in user root first, otherwise use package file
 const starterContent = (fileName, args) => {
+  const fileExists = fs.existsSync(path.join(process.cwd(), '/utils/', fileName))
+  if (!fileExists) {
+    console.log(logSymbols.error, chalk.red('Error:'), `Starter file ${fileName} not found`)
+    process.exit()
+  }
   const content = require(path.join(process.cwd(), '/utils/', fileName))
   return content(...args)
 }
 
 module.exports = function(type, name, include) {
+  console.log(logSymbols.info, chalk.cyan('Creating new'), chalk.green.bold(name), chalk.underline.bold(type), chalk.cyan('...'))
   const ELEMENTS = path.resolve(process.cwd(), 'src/_elements')
   const FEATURES = path.resolve(process.cwd(), 'src/_features')
 
@@ -97,7 +105,10 @@ module.exports = function(type, name, include) {
   FILES['index.js'] = `${scriptImport}${styleImport}`
 
   function loadDir(location) {
-    console.log('loadDir', location)
+    if (fs.existsSync(path.resolve(location, EXT_NAME))) {
+      console.log(logSymbols.error, chalk.red('Error:'), `Feature ${EXT_NAME} already exists. Rename or update feature directly instead.`)
+      process.exit()
+    }
     fs.mkdirSync(path.resolve(location, EXT_NAME))
 
     for (const DIR of DIRS) {
@@ -106,9 +117,11 @@ module.exports = function(type, name, include) {
 
     for (const FILE of Object.entries(FILES)) {
       fs.writeFileSync(path.resolve(location, EXT_NAME, FILE[0]), FILE[1], (err) => {
-        if (err) throw new Error(`Error creating file ${FILE[0]}`)
+        if (err) throw new Error(`${logSymbols.error} Error creating file ${FILE[0]}`)
       })
     }
+
+    console.log(`${logSymbols.success} ${chalk.green.bold(EXT_NAME)} created\n ${chalk.dim(location)}`)
   }
 
   type === 'element' ? loadDir(ELEMENTS) : loadDir(FEATURES)

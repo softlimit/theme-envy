@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs-extra')
+const logSymbols = require('#LogSymbols')
 const { liquidPrettify } = require('#Helpers')
 
 const hooks = {
@@ -63,4 +64,5 @@ module.exports = function() {
     source = liquidPrettify(source, themeLiquid)
     fs.writeFileSync(themeLiquid, source, 'utf8')
   }
+  console.log(`${logSymbols.success} Hooks installed\n`)
 }

@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 module.exports = function({ dest }) {
   // create settings_data.json
@@ -8,11 +9,7 @@ module.exports = function({ dest }) {
   if (!fs.existsSync(settingsData)) {
     fs.writeFile(settingsData, '{}', 'utf8', (err) => {
       if (err) throw err
-      console.log(
-        chalk.green.bold('settings_data.json'),
-        'created in',
-        chalk.green(dest)
-      )
+      console.log(`${logSymbols.success} ${chalk.green.bold('settings_data.json')} created`)
     })
   }
 }

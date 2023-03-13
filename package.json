@@ -27,6 +27,7 @@
     "#Init/*": "./init/*",
     "#Init/functions": "./init/functions/index.js",
     "#Init/functions/*": "./init/functions/*",
+    "#LogSymbols": "./helpers/functions/log-symbols.js",
     "#Root/*": "./*"
   },
   "repository": {
@@ -59,8 +60,8 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^11.1.0",
     "glob": "^8.1.0",
-    "log-symbols": "^5.1.0",
     "mini-css-extract-plugin": "^2.7.2",
+    "node-emoji": "^1.11.0",
     "path": "^0.12.7",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.0.2",
