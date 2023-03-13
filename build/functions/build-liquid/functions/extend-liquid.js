@@ -7,9 +7,10 @@
 */
 
 const path = require('path')
-const glob = require('glob')
 const fs = require('fs')
 const listDependencies = require('./extend-liquid-dependencies')
+const getAll = require('#Build/functions/get-all.js')
+const globbedPartials = getAll('partials')
 
 const strings = {
   tags: ['partial', 'hook', 'theme']
@@ -41,7 +42,7 @@ function replaceTag({ tag, source, filePath } = {}) {
   const action = tag[2]
   const name = tag[3]
   if (action === 'partial') {
-    const partialPath = path.resolve(glob.sync(`./src/**/partials/${name}.liquid`)[0])
+    const partialPath = globbedPartials.filter(partial => partial.includes(`/${`${name}.liquid`}`))[0]
     const partialSource = fs.readFileSync(partialPath, 'utf8')
     const file = extendLiquid({ source: partialSource, filePath: partialPath })
     source = source.replace(replace, whitespace(replace, file))

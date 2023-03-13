@@ -1,4 +1,6 @@
 require('./process-build-object')
+require('./theme-paths')
+require('./parent-theme')
 require('./setup-build-events')
 require('./theme-require')
 require('./prepare-install-hooks-schema')

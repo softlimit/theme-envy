@@ -24,6 +24,7 @@
     "#Init/*": "./init/*",
     "#Init/functions": "./init/functions/index.js",
     "#Init/functions/*": "./init/functions/*",
+    "#ParentTheme": "./parent-theme/index.js",
     "#Root/*": "./*"
   },
   "repository": {
@@ -68,6 +69,7 @@
     "stmux": "^1.8.5",
     "tailwindcss": "^3.2.7",
     "terser-webpack-plugin": "^5.3.6",
+    "theme-framework": "github:softlimit/theme-framework",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   },

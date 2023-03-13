@@ -14,9 +14,10 @@
       }
     ]
 */
+const { getAll } = require('#Build/functions')
 const path = require('path');
 (() => {
-  const installs = require('glob').sync('./src/**/install.js')
+  const installs = getAll('installs')
   // collect all installs
   process.build.installs = installs.map(file => require(path.resolve(file))).flat()
 
