@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 module.exports = function({ dest }) {
   // create settings_schema.js
@@ -19,10 +20,6 @@ module.exports = function({ dest }) {
 
   fs.writeFile(settingsSchema, settingsSchemaMarkup, 'utf8', (err) => {
     if (err) throw err
-    console.log(
-      chalk.green.bold('settings_schema.js'),
-      'created in',
-      chalk.green(dest)
-    )
+    console.log(`${logSymbols.success} ${chalk.green.bold('settings_schema.js')} created`)
   })
 }

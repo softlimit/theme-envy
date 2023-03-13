@@ -5,6 +5,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const glob = require('glob')
 const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 module.exports = function({ dest }) {
   const featuresDir = path.resolve(__dirname, './_features')
@@ -14,11 +15,7 @@ module.exports = function({ dest }) {
     if (fs.existsSync(target)) return
     fs.copy(feature, target, err => {
       if (err) return console.error(err)
-      console.log(
-        chalk.green.bold(path.basename(feature)),
-        'feature copied to',
-        chalk.green(target),
-      )
+      console.log(`${logSymbols.success} ${chalk.green.bold(path.basename(feature))} feature copied and connected`)
     })
   })
 }
