@@ -42,7 +42,7 @@ const ThemeRequire = (file, options) => {
     content = require(filePath)
     if (requiredModules.indexOf(filePath) === -1) requiredModules.push(filePath)
   } catch (error) {
-    console.error(filePath, error)
+    console.error('\n', logSymbols.error, chalk.red('Error:'), `Invalid JSON, ${error}\n`, chalk.dim(error.stack.split(error)[0]))
     process.exit()
   }
 
