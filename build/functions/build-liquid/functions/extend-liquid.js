@@ -11,8 +11,6 @@ const fs = require('fs')
 const listDependencies = require('./extend-liquid-dependencies')
 const getAll = require('#Build/functions/get-all.js')
 const globbedPartials = getAll('partials')
-const chalk = require('chalk')
-const logSymbols = require('#LogSymbols')
 
 const strings = {
   tags: ['partial', 'hook', 'theme']
