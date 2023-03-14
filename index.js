@@ -99,7 +99,7 @@ program
 program
   .command('pull-json')
   .description('Pull json template, section, and settings_data files from theme using Shopify CLI')
-  .action((command) => {
+  .action((options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands['pull-json']()
   })
