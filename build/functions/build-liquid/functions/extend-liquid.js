@@ -47,7 +47,7 @@ function replaceTag({ tag, source, filePath } = {}) {
     const partialPath = globbedPartials.filter(partial => partial.includes(`/${`${name}.liquid`}`))[0]
     // if partialPath doesn't return anything, exit process and output error
     if (!partialPath) {
-      console.error(`${logSymbols.error} ${chalk.red('Error:')} The partial ${name}.liquid does not exist. Check partial references to resolve.`)
+      console.log(`\n${logSymbols.error} ${chalk.red.bold('Error:')}\n\n${chalk.red(`${name}.liquid`)} partial file not found, referenced in:\n${chalk.dim.underline(filePath)}\n\nTo resolve, confirm the partial file exists and that the file\nname reference in the {% partial %} tag matches the partial file.\n`)
       process.exit()
     }
     const partialSource = fs.readFileSync(partialPath, 'utf8')
