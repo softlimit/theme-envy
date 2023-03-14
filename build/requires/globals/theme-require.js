@@ -174,8 +174,8 @@ function getFile(file) {
 function parseJson(src, schemaRef) {
   try {
     return JSON.parse(JSON.stringify(src))
-  } catch (e) {
-    console.log(logSymbols.error, chalk.red('Error:'), `Invalid JSON in ${schemaRef}`)
+  } catch (error) {
+    console.error('\n', logSymbols.error, chalk.red('Error:'), `Invalid JSON, ${error}\n`, chalk.dim(error.stack.split(error)[0]))
   }
 }
 
