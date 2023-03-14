@@ -9,6 +9,8 @@ const fs = require('fs')
 const getAll = require('#Build/functions/get-all.js')
 // pre glob all liquid partials
 const globbedPartials = getAll('partials')
+const chalk = require('chalk')
+const logSymbols = require('#LogSymbols')
 
 const listDependencies = ({ filePath, source }) => {
   const dependencies = []
@@ -20,8 +22,9 @@ const listDependencies = ({ filePath, source }) => {
     const name = tag[3]
     if (action === 'partial') {
       const file = globbedPartials.filter(partial => partial.includes(`/${`${name}.liquid`}`))
+      // if partialPath doesn't return anything, exit process and output error
       if (file.length === 0) {
-        console.log(`Partial ${name} not found`)
+        console.log(`\n${logSymbols.error} ${chalk.red.bold('Error:')}\n\n${chalk.red(`${name}.liquid`)} partial file not found, referenced in:\n${chalk.dim.underline(filePath)}\n\nTo resolve, confirm the partial file exists and that the file\nname reference in the {% partial %} tag matches the partial file.\n`)
         process.exit()
       }
       if (file[0] === filePath) return

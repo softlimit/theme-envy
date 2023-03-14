@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const emoji = require('node-emoji')
 const commander = require('commander')
 const program = new commander.Command()
 const chalk = require('chalk')
+const emoji = require('node-emoji')
 const themeEnvyCommands = require('#Root/theme-envy-commands.js')
 
 const scriptMessage = (scriptName) => {
@@ -18,12 +18,12 @@ ${chalk.green.bold('===================================')}
   `)
   .addHelpText('afterAll', `
 ${chalk.cyan.bold('===================================')}
-${chalk.cyan.bold.underline('Need more help?')}
+${emoji.get('thinking_face')} ${chalk.cyan.bold.underline('Need more help?')}
 We are always looking for ways to improve our tools
 and make your Shopify development life smoother.
 
-Let us know what we missed! Create an issue on our github repo:
-${chalk.dim.underline('https://github.com/softlimit/shopify-env/issues')}
+  Let us know what we missed! Create an issue on our github repo:
+  ${chalk.dim.underline('https://github.com/softlimit/shopify-env/issues')}
   `)
 
 program
