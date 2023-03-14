@@ -2,10 +2,11 @@ const fs = require('fs-extra')
 const path = require('path');
 
 (() => {
-  if (!fs.existsSync(path.resolve(process.cwd(), 'theme.config.js'))) return
+  const ThemeConfigPath = path.resolve(process.cwd(), 'theme.config.js')
+  if (!fs.existsSync(ThemeConfigPath)) return
   process.build = process.build || {}
   process.build.childPreferred = process.build.childPreferred || []
-  const ThemeConfig = require('#Root/theme.config.js')
+  const ThemeConfig = require(ThemeConfigPath)
 
   // look for parent theme in node_modules
   const parentThemePath = ThemeConfig.parentTheme?.path

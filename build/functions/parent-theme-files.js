@@ -4,8 +4,8 @@
   * @param {array} childFiles - array of file paths from the child theme that we check against
   * @return {array} - array of file paths from the parent theme that are not in the child
 */
-const ThemeConfig = require('#Root/theme.config.js')
 const path = require('path')
+const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
 const { directories } = require('#EnsureDirectories')
 module.exports = (func, childFiles, type) => {
   const childRelative = childFiles.map(file => path.relative(process.build.themeRoot, file))
