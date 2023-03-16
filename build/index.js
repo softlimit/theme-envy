@@ -54,6 +54,6 @@ module.exports = function(env, opts = {}) {
     }
     // Done processing - finish up progress bar and make up for our initial increment
     process.build.progress.bar.increment()
-    process.build.progress.container.stop()
+    process.build.progress.bar.stop()
   })
 }
