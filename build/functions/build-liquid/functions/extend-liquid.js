@@ -48,7 +48,7 @@ function replaceTag({ tag, source, filePath } = {}) {
     source = source.replace(replace, whitespace(replace, file))
   }
   if (action === 'hook') {
-    const replacedContent = process.build.hooks[name] ? extendLiquid({ source: process.build.hooks[name], filePath }) : ''
+    const replacedContent = process.build.hooks[name] ? extendLiquid({ source: process.build.hooks[name].content, filePath }) : ''
     if (process.build.hooks[name]) process.build.hooks[name].replaced = true
     source = source.replace(replace, replacedContent)
   }
