@@ -36,7 +36,9 @@ const path = require('path');
   })
   // sort hook content by priority and concat into a single string
   Object.keys(process.build.hooks).forEach(hook => {
-    process.build.hooks[hook] = process.build.hooks[hook].sort((a, b) => a.priority - b.priority).map(entry => entry.content).join('\n')
+    process.build.hooks[hook] = {
+      content: process.build.hooks[hook].sort((a, b) => a.priority - b.priority).map(entry => entry.content).join('\n')
+    }
   })
 
   // TODO: LOOK INTO THIS
