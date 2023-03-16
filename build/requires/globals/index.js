@@ -1,3 +1,4 @@
+require('./build-progress')
 require('./process-build-object')
 require('./theme-paths')
 require('./parent-theme')

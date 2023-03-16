@@ -61,7 +61,7 @@ module.exports = function() {
         })
       }
     })
-    source = liquidPrettify(source, themeLiquid)
+    source = liquidPrettify({ source, pathname: themeLiquid })
     fs.writeFileSync(themeLiquid, source, 'utf8')
   }
   console.log(`${logSymbols.success} Hooks installed\n`)

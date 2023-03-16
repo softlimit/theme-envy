@@ -3,16 +3,8 @@ const path = require('path')
 const buildLiquid = require('./build-liquid')
 const getAll = require('./get-all')
 const failedHookInstalls = require('./failed-hook-installs')
-const chalk = require('chalk')
-const emoji = require('node-emoji')
 
-module.exports = function({ mode, files = [] }) {
-  console.log(
-    emoji.get('hammer'),
-    chalk.cyan('Building ./dist in'),
-    mode === 'development' ? chalk.yellow.bold(mode) : chalk.magenta.bold(mode),
-    chalk.cyan('mode')
-  )
+module.exports = function({ mode, files = [], verbose }) {
   if (files.length > 0) {
     // remove partials and schema = require(files list)
     files = files.filter((file) => !file.includes('partials/') && !file.includes('schema/'))
@@ -31,16 +23,21 @@ module.exports = function({ mode, files = [] }) {
 
   // process all liquid files and output to dist directory
   if (liquid.length > 0) {
-    liquid.forEach((file) => buildLiquid(file, mode))
+    liquid.forEach((file) => {
+      buildLiquid({ file, mode, verbose })
+    })
+    process.build.progress.bar.increment()
   }
 
   // check for install hooks that reference non-existent hooks
   failedHookInstalls()
+  process.build.progress.bar.increment()
 
   // copy sectionGroup files to dist
   if (sectionGroups.length > 0) {
     sectionGroups.forEach((file) => {
       fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
+      process.build.progress.bar.increment()
     })
   }
 }

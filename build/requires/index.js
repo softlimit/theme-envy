@@ -1,7 +1,15 @@
 require('./globals')
-require('./assets')
-require('./config')
-require('./locales')
-require('./scripts')
-require('./snippets')
-require('./templates')
+
+const requires = [
+  './assets',
+  './config',
+  './locales',
+  './scripts',
+  './snippets',
+  './templates',
+]
+
+requires.forEach((requirePath) => {
+  require(requirePath)
+  process.build.progress.bar.increment()
+})
