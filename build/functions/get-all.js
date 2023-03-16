@@ -9,6 +9,10 @@ const globs = {
   assets: {
     glob: '**/assets/**/*',
   },
+  config: {
+    glob: '**/config/*.js',
+    filter: file => path.basename(file) !== 'settings_schema.js',
+  },
   elements: {
     glob: '_elements/**/index.js',
   },
