@@ -8,17 +8,27 @@ const { spawn } = require('child_process')
 const path = require('path')
 const webpack = require('webpack')
 const webpackConfig = require('#Build/theme-envy.config.js')
+const chalk = require('chalk')
+const emoji = require('node-emoji')
 
 module.exports = function(env, opts = {}) {
-  require('./requires')
-  const { buildWatch, build } = require('#Build/functions')
-  const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
   const mode = env || 'production'
   const watch = opts.watch || false
   const verbose = opts.verbose || false
 
-  build({ mode })
-  if (watch) buildWatch({ build })
+  // log message to console about what we're doing
+  console.log(
+    emoji.get('hammer'),
+    chalk.cyan('Building ./dist in'),
+    mode === 'development' ? chalk.yellow.bold(mode) : chalk.magenta.bold(mode),
+    chalk.cyan('mode')
+  )
+  require('./requires')
+  const { buildWatch, build } = require('#Build/functions')
+  const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
+
+  build({ mode, verbose })
+  if (watch) buildWatch({ build, mode })
 
   // run tailwind
   const tailwindCss = path.resolve(__dirname, '../build/styles/theme-envy.css')
@@ -27,6 +37,7 @@ module.exports = function(env, opts = {}) {
   if (watch) tailwindOpts.push('--watch')
   const tailwindOutput = verbose ? { stdio: 'inherit' } : {}
   spawn('npx', tailwindOpts, tailwindOutput)
+  process.build.progress.bar.increment()
 
   // run webpack
   // set our webpack mode
@@ -41,6 +52,8 @@ module.exports = function(env, opts = {}) {
     if (err || stats.hasErrors()) {
       console.log(stats, err)
     }
-    // Done processing
+    // Done processing - finish up progress bar and make up for our initial increment
+    process.build.progress.bar.increment()
+    process.build.progress.container.stop()
   })
 }
