@@ -2,6 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const buildLiquid = require('./build-liquid')
 const getAll = require('./get-all')
+const failedHookInstalls = require('./failed-hook-installs')
 const chalk = require('chalk')
 const emoji = require('node-emoji')
 
@@ -32,6 +33,9 @@ module.exports = function({ mode, files = [] }) {
   if (liquid.length > 0) {
     liquid.forEach((file) => buildLiquid(file, mode))
   }
+
+  // check for install hooks that reference non-existent hooks
+  failedHookInstalls()
 
   // copy sectionGroup files to dist
   if (sectionGroups.length > 0) {
