@@ -34,7 +34,10 @@ const globs = {
   },
   sectionGroups: {
     glob: '**/sections/*.json',
-  }
+  },
+  templates: {
+    glob: '**/templates/*.json',
+  },
 }
 
 module.exports = function(type) {

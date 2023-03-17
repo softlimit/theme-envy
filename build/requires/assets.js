@@ -5,14 +5,16 @@ const fs = require('fs-extra')
 const path = require('path')
 const glob = require('glob')
 
-const assets = glob.sync(path.resolve(process.cwd(), './src/**/assets/**/*.*'))
+const assets = glob.sync(path.resolve(process.build.themeRoot, '**/assets/**/*.*'))
+
 // if dist/assets doesn't exist create it
-if (!fs.existsSync(path.resolve(process.cwd(), 'dist/assets'))) {
-  fs.mkdirSync(path.resolve(process.cwd(), 'dist/assets'), { recursive: true })
-}
+fs.ensureDirSync(path.resolve(process.build.outputPath, 'assets'))
+
 assets.forEach(asset => {
   try {
-    fs.copySync(asset, path.resolve(process.cwd(), 'dist/assets', path.basename(asset)))
+    fs.copySync(asset, path.resolve(process.build.outputPath, 'assets', path.basename(asset)))
+    // update progress bar
+    process.build.progress.bar.increment()
   } catch (err) {
     console.error(err)
   }

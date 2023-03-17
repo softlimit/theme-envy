@@ -5,11 +5,12 @@ const fs = require('fs-extra')
 const path = require('path')
 
 // if dist/locales does not exist, create it
-if (!fs.existsSync(path.resolve(process.cwd(), 'dist/locales'))) {
-  fs.mkdirSync(path.resolve(process.cwd(), 'dist/locales'), { recursive: true })
-}
+fs.ensureDirSync(path.resolve(process.build.outputPath, 'locales'))
+
 try {
   fs.copySync(path.resolve(process.cwd(), 'src/locales'), path.resolve(process.cwd(), 'dist/locales'))
+  // update progress bar
+  process.build.progress.bar.increment()
 } catch (err) {
   console.error(err)
 }

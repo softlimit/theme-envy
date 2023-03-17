@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')
 const requiredModules = []
 // glob all our config/*.js files
@@ -18,12 +18,11 @@ const writeSettingsSchema = () => {
 
   const config = [...settingsSchema, ...globbedConfigs].flat()
 
-  // create dist/config if it doesn't exist
-  if (!fs.existsSync(path.resolve(process.cwd(), './dist/config'))) {
-    fs.mkdirSync(path.resolve(process.cwd(), './dist/config'), { recursive: true })
-  }
-  fs.writeFileSync(path.resolve(process.cwd(), './dist/config/settings_schema.json'), JSON.stringify(config, null, 2))
-  fs.copyFileSync(path.resolve(process.build.themeRoot, 'config/settings_data.json'), path.resolve(process.cwd(), './dist/config/settings_data.json'))
+  fs.ensureDirSync(path.resolve(process.build.outputPath, 'config'))
+  fs.writeFileSync(path.resolve(process.build.outputPath, 'config/settings_schema.json'), JSON.stringify(config, null, 2))
+  fs.copyFileSync(path.resolve(process.build.themeRoot, 'config/settings_data.json'), path.resolve(process.build.outputPath, 'config/settings_data.json'))
+  // update progress bar
+  process.build.progress.bar.increment()
 }
 
 writeSettingsSchema()

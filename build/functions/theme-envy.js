@@ -1,10 +1,21 @@
 const fs = require('fs-extra')
 const path = require('path')
-const buildLiquid = require('./build-liquid')
+const liquid = require('./liquid')
 const getAll = require('./get-all')
 const failedHookInstalls = require('./failed-hook-installs')
 
-module.exports = function({ mode, files = [], verbose }) {
+module.exports = function({ mode, opts }) {
+  const verbose = opts.verbose || false
+
+  // clear dist directory
+  fs.emptyDirSync(path.resolve(process.cwd(), 'dist'))
+  // build files
+  build({ mode, verbose })
+  // watch for changes
+  if (opts.watch) watch({ mode, verbose })
+}
+
+function build({ mode, files = [], verbose }) {
   if (files.length > 0) {
     // remove partials and schema = require(files list)
     files = files.filter((file) => !file.includes('partials/') && !file.includes('schema/'))
@@ -13,7 +24,7 @@ module.exports = function({ mode, files = [], verbose }) {
    if we have files passed in (during watch process), use those
    otherwise glob for all liquid files
   */
-  const liquid = files.length > 0
+  const liquidFiles = files.length > 0
     ? files.filter(file => file.includes('.liquid'))
     : getAll('liquid')
 
@@ -22,12 +33,12 @@ module.exports = function({ mode, files = [], verbose }) {
     : getAll('sectionGroups')
 
   // process all liquid files and output to dist directory
-  if (liquid.length > 0) {
-    liquid.forEach((file) => {
-      buildLiquid({ file, mode, verbose })
+  if (liquidFiles.length > 0) {
+    liquidFiles.forEach((file) => {
+      liquid({ file, mode, verbose })
     })
-    process.build.progress.bar.increment()
   }
+  process.build.progress.bar.increment()
 
   // check for install hooks that reference non-existent hooks
   failedHookInstalls()
@@ -37,7 +48,20 @@ module.exports = function({ mode, files = [], verbose }) {
   if (sectionGroups.length > 0) {
     sectionGroups.forEach((file) => {
       fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
-      process.build.progress.bar.increment()
     })
   }
+  process.build.progress.bar.increment()
+}
+
+function watch({ mode, verbose }) {
+  const chokidar = require('chokidar')
+  console.log('watching for changes...')
+  chokidar.watch(process.build.themeRoot).on('change', (path) => {
+    process.build.events.emit('watch:start')
+    const isJSONTemplate = path.includes('templates/') && path.extname(path) === '.json'
+    if (!isJSONTemplate) {
+      build({ files: [path], mode })
+      console.log(`updated: ${path.split('/src/')[1]}`)
+    }
+  })
 }
