@@ -1,6 +1,5 @@
 require('./progress-bar')
 require('./parent-theme')
-require('./setup-build-events')
 require('./theme-require')
 require('./prepare-install-hooks-schema')
 ThemeEnvy.progressBar.increment()

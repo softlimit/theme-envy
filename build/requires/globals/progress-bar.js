@@ -2,8 +2,6 @@ const { getAll } = require('#Build/functions')
 const cliProgress = require('cli-progress')
 const colors = require('ansi-colors')
 
-ThemeEnvy = ThemeEnvy || {}
-
 ThemeEnvy.progressBar = new cliProgress.SingleBar({
   format: colors.cyan('{bar}') + ' {percentage}% | {duration_formatted}',
   barCompleteChar: '\u2588',
