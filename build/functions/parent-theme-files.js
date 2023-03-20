@@ -5,20 +5,20 @@
   * @return {array} - array of file paths from the parent theme that are not in the child
 */
 const path = require('path')
-const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
 const { directories } = require('#EnsureDirectories')
+
 module.exports = (func, childFiles, type) => {
-  const childRelative = childFiles.map(file => path.relative(process.build.themeRoot, file))
+  const childRelative = childFiles.map(file => path.relative(ThemeEnvy.themePath, file))
   // get all files from the parent theme, using only directories listed in ThemeConfig
-  const only = [...ThemeConfig.parentTheme.elements, ...ThemeConfig.parentTheme.features]
+  const only = [...ThemeEnvy.parentTheme.elements, ...ThemeEnvy.parentTheme.features]
   if (type === 'schema') {
     only.push('_schema')
   }
   if (type === 'liquid') {
-    only.push(...directories.map(dir => path.resolve(process.build.parentTheme, dir)))
+    only.push(...directories.map(dir => path.resolve(ThemeEnvy.parentTheme, dir)))
   }
   if (type === 'sectionGroups') {
-    only.push(path.resolve(process.build.parentTheme, 'sections'))
+    only.push(path.resolve(ThemeEnvy.parentTheme, 'sections'))
   }
-  return func(process.build.parentTheme, only).filter(file => !childRelative.includes(path.relative(process.build.parentTheme, file)))
+  return func(ThemeEnvy.parentTheme, only).filter(file => !childRelative.includes(path.relative(ThemeEnvy.parentTheme, file)))
 }

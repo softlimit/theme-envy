@@ -4,6 +4,8 @@ const commander = require('commander')
 const program = new commander.Command()
 const chalk = require('chalk')
 const emoji = require('node-emoji')
+require('#Helpers/functions/global-theme-envy.js')
+
 const themeEnvyCommands = require('#Root/theme-envy-commands.js')
 
 const scriptMessage = (scriptName) => {

@@ -42,7 +42,7 @@ const globs = {
 
 module.exports = function(type) {
   function getFiles(src, only) {
-    // src is either the themeRoot or the parentTheme
+    // src is either the themePath or the parentTheme
     // only is a list of directory names to filter against, used for parentTheme
     let files = glob.sync(path.resolve(src, globs[type].glob))
     if (only) {
@@ -55,8 +55,8 @@ module.exports = function(type) {
     }
     return files
   }
-  const files = getFiles(process.build.themeRoot)
-  if (process.build.parentTheme) {
+  const files = getFiles(ThemeEnvy.themePath)
+  if (ThemeEnvy.parentTheme) {
     files.push(...parentThemeFiles(getFiles, files, type))
   }
 

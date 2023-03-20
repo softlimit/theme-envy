@@ -12,7 +12,11 @@ module.exports = function({ mode, opts }) {
   // build files
   build({ mode, verbose })
   // watch for changes
-  if (opts.watch) watch({ mode, verbose })
+  if (opts.watch) {
+    ThemeEnvy.events.on('build:complete', () => {
+      watch({ mode, verbose })
+    })
+  }
 }
 
 function build({ mode, files = [], verbose }) {
@@ -38,11 +42,11 @@ function build({ mode, files = [], verbose }) {
       liquid({ file, mode, verbose })
     })
   }
-  process.build.progress.bar.increment()
+  ThemeEnvy.progressBar.increment()
 
   // check for install hooks that reference non-existent hooks
   failedHookInstalls()
-  process.build.progress.bar.increment()
+  ThemeEnvy.progressBar.increment()
 
   // copy sectionGroup files to dist
   if (sectionGroups.length > 0) {
@@ -50,14 +54,14 @@ function build({ mode, files = [], verbose }) {
       fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
     })
   }
-  process.build.progress.bar.increment()
+  ThemeEnvy.progressBar.increment()
 }
 
 function watch({ mode, verbose }) {
   const chokidar = require('chokidar')
   console.log('watching for changes...')
-  chokidar.watch(process.build.themeRoot).on('change', (path) => {
-    process.build.events.emit('watch:start')
+  chokidar.watch(ThemeEnvy.themePath).on('change', (path) => {
+    ThemeEnvy.events.emit('watch:start')
     const isJSONTemplate = path.includes('templates/') && path.extname(path) === '.json'
     if (!isJSONTemplate) {
       build({ files: [path], mode })

@@ -7,7 +7,7 @@
 const chalk = require('chalk')
 const emoji = require('node-emoji')
 
-module.exports = function(env, opts = {}) {
+module.exports = async function(env, opts = {}) {
   const mode = env || 'production'
 
   // log message to console about what we're doing
@@ -25,5 +25,7 @@ module.exports = function(env, opts = {}) {
 
   tailwind({ mode, opts })
 
-  webpack({ mode, opts })
+  await webpack({ mode, opts })
+
+  ThemeEnvy.events.emit('build:complete')
 }

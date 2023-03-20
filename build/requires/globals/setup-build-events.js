@@ -4,5 +4,5 @@
   * watch:start - emitted when a watch event is triggered and resets the node cache in ThemeRequire
 */
 const EventEmitter = require('events')
-process.build = process.build || {}
-process.build.events = new EventEmitter()
+ThemeEnvy = ThemeEnvy || {}
+ThemeEnvy.events = new EventEmitter()

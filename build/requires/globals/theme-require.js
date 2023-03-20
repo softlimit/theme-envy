@@ -18,7 +18,7 @@ const setPreGlobs = () => {
 }
 
 // uncache all required files after a build is complete so changes can be made to partials and schemas in between watch events
-process.build.events.on('watch:start', () => {
+ThemeEnvy.events.on('watch:start', () => {
   // clear node cache of ThemeRequired modules
   requiredModules.forEach(module => {
     delete require.cache[require.resolve(module)]
@@ -89,8 +89,8 @@ const ThemeRequire = (file, options) => {
   }
 
   if (options?.loader) {
-    process.build.dependencies[options.loader] = process.build.dependencies[options.loader] || []
-    process.build.dependencies[options.loader].push(filePath)
+    ThemeEnvy.dependencies[options.loader] = ThemeEnvy.dependencies[options.loader] || []
+    ThemeEnvy.dependencies[options.loader].push(filePath)
   }
 
   return content
@@ -159,9 +159,9 @@ function getFile(file) {
   if (file.includes('schema')) {
     return getSchemaFile(file)
   } else {
-    const res = glob.sync(path.resolve(process.build.themeRoot, `**/${file}`))
-    if (process.build.parentTheme && res.length === 0) {
-      res.push(...glob.sync(path.resolve(process.build.parentTheme, `**/${file}`)))
+    const res = glob.sync(path.resolve(ThemeEnvy.themePath, `**/${file}`))
+    if (ThemeEnvy.parentTheme && res.length === 0) {
+      res.push(...glob.sync(path.resolve(ThemeEnvy.parentTheme, `**/${file}`)))
     }
     return res
   }

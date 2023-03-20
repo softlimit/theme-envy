@@ -14,7 +14,7 @@ module.exports = function({ file, mode, verbose }) {
   // skip files that don't need to be processed because they don't have an output path
   if (!shopifyPath) return
 
-  const outputPath = `${process.build.outputPath}/${shopifyPath}`
+  const outputPath = `${ThemeEnvy.outputPath}/${shopifyPath}`
   let source = fs.readFileSync(file, 'utf8')
 
   // inject schema .js into liquid section files
@@ -31,5 +31,5 @@ module.exports = function({ file, mode, verbose }) {
   // save our file
   fs.writeFileSync(outputPath, source)
   // update progress bar
-  process.build.progress.bar.increment()
+  ThemeEnvy.progressBar.increment()
 }
