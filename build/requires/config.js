@@ -4,7 +4,10 @@ const { getAll } = require('#Build/functions')
 const requiredModules = []
 // glob all our config/*.js files
 const writeSettingsSchema = () => {
-  const settingsSchemaPath = path.resolve(ThemeEnvy.themePath, 'config/settings_schema.js')
+  const configInputPath = path.resolve(ThemeEnvy.themePath, 'config')
+  const configOutputPath = path.resolve(ThemeEnvy.outputPath, 'config')
+
+  const settingsSchemaPath = path.resolve(configInputPath, 'settings_schema.js')
   const settingsSchema = require(settingsSchemaPath)
   if (requiredModules.indexOf(settingsSchemaPath) === -1) requiredModules.push(settingsSchemaPath)
   const globbedConfigs = getAll('config')
@@ -18,11 +21,11 @@ const writeSettingsSchema = () => {
 
   const config = [...settingsSchema, ...globbedConfigs].flat()
 
-  fs.ensureDirSync(path.resolve(ThemeEnvy.outputPath, 'config'))
-  fs.writeFileSync(path.resolve(ThemeEnvy.outputPath, 'config/settings_schema.json'), JSON.stringify(config, null, 2))
-  fs.copyFileSync(path.resolve(ThemeEnvy.themePath, 'config/settings_data.json'), path.resolve(ThemeEnvy.outputPath, 'config/settings_data.json'))
+  fs.ensureDirSync(configOutputPath)
+  fs.writeFileSync(path.resolve(configOutputPath, 'settings_schema.json'), JSON.stringify(config, null, 2))
+  fs.copyFileSync(path.resolve(configInputPath, 'settings_data.json'), path.resolve(configOutputPath, 'settings_data.json'))
   // update progress bar
-  ThemeEnvy.progressBar.increment()
+  ThemeEnvy.progress.increment('config')
 }
 
 writeSettingsSchema()

@@ -11,5 +11,5 @@ const requires = [
 
 requires.forEach((requirePath) => {
   require(requirePath)
-  ThemeEnvy.progressBar.increment()
+  ThemeEnvy.progress.increment('requires', 1)
 })

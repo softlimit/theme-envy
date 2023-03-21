@@ -29,8 +29,8 @@ const starterContent = (fileName, args) => {
 
 module.exports = function(type, name, include) {
   console.log(logSymbols.info, chalk.cyan('Creating new'), chalk.green.bold(name), chalk.underline.bold(type), chalk.cyan('...'))
-  const ELEMENTS = path.resolve(process.cwd(), 'src/_elements')
-  const FEATURES = path.resolve(process.cwd(), 'src/_features')
+  const ELEMENTS = path.resolve(ThemeEnvy.themePath, '_elements')
+  const FEATURES = path.resolve(ThemeEnvy.themePath, '_features')
 
   const starters = include?.split(',') || 'all'
 

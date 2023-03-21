@@ -14,7 +14,7 @@ assets.forEach(asset => {
   try {
     fs.copySync(asset, path.resolve(ThemeEnvy.outputPath, 'assets', path.basename(asset)))
     // update progress bar
-    ThemeEnvy.progressBar.increment()
+    ThemeEnvy.progress.increment('assets', 1)
   } catch (err) {
     console.error(err)
   }

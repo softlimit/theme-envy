@@ -8,7 +8,7 @@ module.exports = function() {
   const shopify = spawn('shopify', themePull, { cwd: path.resolve(process.cwd(), 'dist'), stdio: 'inherit' })
 
   shopify.on('exit', function() {
-    const files = glob.sync(path.resolve(process.cwd(), 'dist/{templates,config,sections}/**/*.json')).filter(file => file.indexOf('settings_schema') > -1)
-    files.forEach(file => fs.copyFileSync(file, file.replace('/dist/', '/src/')))
+    const files = glob.sync(path.resolve(ThemeEnvy.outputPath, '{templates,config,sections}/**/*.json')).filter(file => file.indexOf('settings_schema') > -1)
+    files.forEach(file => fs.copyFileSync(file, file.replace(ThemeEnvy.outputPath, ThemeEnvy.themePath)))
   })
 }

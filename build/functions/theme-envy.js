@@ -5,56 +5,59 @@ const getAll = require('./get-all')
 const failedHookInstalls = require('./failed-hook-installs')
 
 module.exports = function({ mode, opts }) {
-  const verbose = opts.verbose || false
-
-  // clear dist directory
-  fs.emptyDirSync(path.resolve(process.cwd(), 'dist'))
-  // build files
-  build({ mode, verbose })
-  // watch for changes
-  if (opts.watch) {
-    ThemeEnvy.events.on('build:complete', () => {
-      watch({ mode, verbose })
-    })
-  }
+  return new Promise((resolve, reject) => {
+    const verbose = opts.verbose || false
+    // build files
+    build({ mode, verbose })
+      .then(() => {
+        // watch for changes
+        if (opts.watch) {
+          ThemeEnvy.events.on('build:complete', () => {
+            watch({ mode, verbose })
+          })
+        }
+        resolve()
+      })
+  })
 }
 
 function build({ mode, files = [], verbose }) {
-  if (files.length > 0) {
+  return new Promise((resolve, reject) => {
+    if (files.length > 0) {
     // remove partials and schema = require(files list)
-    files = files.filter((file) => !file.includes('partials/') && !file.includes('schema/'))
-  }
-  /*
+      files = files.filter((file) => !file.includes('partials/') && !file.includes('schema/'))
+    }
+    /*
    if we have files passed in (during watch process), use those
    otherwise glob for all liquid files
   */
-  const liquidFiles = files.length > 0
-    ? files.filter(file => file.includes('.liquid'))
-    : getAll('liquid')
+    const liquidFiles = files.length > 0
+      ? files.filter(file => file.includes('.liquid'))
+      : getAll('liquid')
 
-  const sectionGroups = files.length > 0
-    ? files.filter(file => file.includes('.json'))
-    : getAll('sectionGroups')
+    const sectionGroups = files.length > 0
+      ? files.filter(file => file.includes('.json'))
+      : getAll('sectionGroups')
 
-  // process all liquid files and output to dist directory
-  if (liquidFiles.length > 0) {
-    liquidFiles.forEach((file) => {
-      liquid({ file, mode, verbose })
-    })
-  }
-  ThemeEnvy.progressBar.increment()
+    // process all liquid files and output to dist directory
+    if (liquidFiles.length > 0) {
+      liquidFiles.forEach((file) => {
+        liquid({ file, mode, verbose })
+      })
+    }
+    // check for install hooks that reference non-existent hooks
+    failedHookInstalls()
+    ThemeEnvy.progress.increment('failedHookInstalls')
 
-  // check for install hooks that reference non-existent hooks
-  failedHookInstalls()
-  ThemeEnvy.progressBar.increment()
-
-  // copy sectionGroup files to dist
-  if (sectionGroups.length > 0) {
-    sectionGroups.forEach((file) => {
-      fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
-    })
-  }
-  ThemeEnvy.progressBar.increment()
+    // copy sectionGroup files to dist
+    if (sectionGroups.length > 0) {
+      sectionGroups.forEach((file) => {
+        fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
+      })
+    }
+    ThemeEnvy.progress.increment('sectionGroups')
+    resolve()
+  })
 }
 
 function watch({ mode, verbose }) {
@@ -64,8 +67,11 @@ function watch({ mode, verbose }) {
     ThemeEnvy.events.emit('watch:start')
     const isJSONTemplate = path.includes('templates/') && path.extname(path) === '.json'
     if (!isJSONTemplate) {
+      console.log(`updated: ${path.split(ThemeEnvy.themePath + '/')[1]}`)
       build({ files: [path], mode })
-      console.log(`updated: ${path.split('/src/')[1]}`)
+        .then(() => {
+          // rebuild complete
+        })
     }
   })
 }
