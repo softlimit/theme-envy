@@ -2,7 +2,7 @@
   DO NOT EDIT, PRECOMPILED DURING BUILD FROM LIST OF ALL DIRECTORIES IN _elements
 */
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')
 const elements = getAll('elements').map(file => {
   const name = path.basename(path.dirname(file))

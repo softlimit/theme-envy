@@ -5,7 +5,7 @@
   * @returns {array} - list of files that reference the given file
 */
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const getAll = require('#Build/functions/get-all.js')
 // pre glob all liquid partials
 const globbedPartials = getAll('partials')

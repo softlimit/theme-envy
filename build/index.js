@@ -27,7 +27,7 @@ module.exports = async function(env, opts = {}) {
 
   await themeEnvy({ mode, opts })
 
-  await tailwind({ mode, opts })
+  if (ThemeEnvy?.tailwind !== false) await tailwind({ mode, opts })
 
   await webpack({ mode, opts })
 

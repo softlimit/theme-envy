@@ -52,7 +52,7 @@ function build({ mode, files = [], verbose }) {
     // copy sectionGroup files to dist
     if (sectionGroups.length > 0) {
       sectionGroups.forEach((file) => {
-        fs.copyFileSync(file, path.resolve(process.cwd(), 'dist', 'sections', path.basename(file)))
+        fs.copyFileSync(file, path.resolve(ThemeEnvy.outputPath, 'sections', path.basename(file)))
       })
     }
     ThemeEnvy.progress.increment('sectionGroups')
