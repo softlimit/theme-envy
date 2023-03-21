@@ -41,7 +41,7 @@ const hooks = {
 }
 
 module.exports = function() {
-  const themeLiquid = path.resolve(process.cwd(), 'src/layout/theme.liquid')
+  const themeLiquid = path.resolve(ThemeEnvy.themePath, 'layout/theme.liquid')
   if (fs.existsSync(themeLiquid)) {
     const theme = fs.readFileSync(themeLiquid, 'utf8')
     let source = theme

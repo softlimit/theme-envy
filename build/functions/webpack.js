@@ -4,7 +4,7 @@
 const webpack = require('webpack')
 
 module.exports = function({ mode, opts }) {
-  const prom = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const watch = opts.watch || false
 
     const webpackConfig = require('#Build/theme-envy.config.js')
@@ -20,12 +20,11 @@ module.exports = function({ mode, opts }) {
     webpack(webpackConfig, (err, stats) => {
       if (err || stats.hasErrors()) {
         console.log(stats, err)
+        reject(err)
       }
       // Done processing - finish up progress bar and make up for our initial increment
-      ThemeEnvy.progressBar.increment()
-      ThemeEnvy.progressBar.stop()
+      ThemeEnvy.progress.increment('webpack')
       resolve(stats)
     })
   })
-  return prom
 }

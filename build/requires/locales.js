@@ -8,9 +8,9 @@ const path = require('path')
 fs.ensureDirSync(path.resolve(ThemeEnvy.outputPath, 'locales'))
 
 try {
-  fs.copySync(path.resolve(process.cwd(), 'src/locales'), path.resolve(process.cwd(), 'dist/locales'))
+  fs.copySync(path.resolve(ThemeEnvy.themePath, 'locales'), path.resolve(ThemeEnvy.outputPath, 'locales'))
   // update progress bar
-  ThemeEnvy.progressBar.increment()
+  ThemeEnvy.progress.increment('locales')
 } catch (err) {
   console.error(err)
 }

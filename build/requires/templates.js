@@ -5,11 +5,12 @@ const { getAll } = require('#Build/functions')
 const globbedTemplates = getAll('templates')
 
 const templateOutputPath = path.resolve(ThemeEnvy.outputPath, 'templates')
+
 // if dist/templates doesn't exist, create it
 fs.ensureDirSync(templateOutputPath)
 globbedTemplates.forEach(file => {
   // write each file to dist
   fs.copyFileSync(file, path.resolve(templateOutputPath, path.basename(file)))
   // update progress bar
-  ThemeEnvy.progressBar.increment()
+  ThemeEnvy.progress.increment('templates', 1)
 })

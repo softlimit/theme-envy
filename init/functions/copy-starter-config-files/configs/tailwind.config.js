@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 const theme = require('./theme.config.js')
+const path = require('path')
+const ThemeEnvy = require('./theme.config.js')
+
 module.exports = {
-  content: ['./src/**/*.{liquid,js}'],
+  content: [path.resolve(ThemeEnvy.themePath, '**/*.{liquid,js}')],
   theme: {
     extend: {},
   },

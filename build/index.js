@@ -6,24 +6,28 @@
 
 const chalk = require('chalk')
 const emoji = require('node-emoji')
+const { themeEnvy, webpack, tailwind } = require('#Build/functions')
+const { distClean } = require('#Helpers')
 
 module.exports = async function(env, opts = {}) {
   const mode = env || 'production'
 
-  // log message to console about what we're doing
+  // empty dist folder for a clean build, do not log the clean message
+  distClean({ quiet: true })
+
+  // our pretty build message
   console.log(
     emoji.get('hammer'),
     chalk.cyan('Building ./dist in'),
     mode === 'development' ? chalk.yellow.bold(mode) : chalk.magenta.bold(mode),
     chalk.cyan('mode')
   )
+
   require('./requires')
 
-  const { themeEnvy, webpack, tailwind } = require('#Build/functions')
+  await themeEnvy({ mode, opts })
 
-  themeEnvy({ mode, opts })
-
-  tailwind({ mode, opts })
+  await tailwind({ mode, opts })
 
   await webpack({ mode, opts })
 

@@ -31,5 +31,5 @@ module.exports = function({ file, mode, verbose }) {
   // save our file
   fs.writeFileSync(outputPath, source)
   // update progress bar
-  ThemeEnvy.progressBar.increment()
+  ThemeEnvy.progress.increment('liquid', 1)
 }
