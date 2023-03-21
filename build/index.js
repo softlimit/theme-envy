@@ -4,6 +4,7 @@
     -w, --watch: watch for changes and re-run the script
 */
 
+const path = require('path')
 const chalk = require('chalk')
 const emoji = require('node-emoji')
 const { themeEnvy, webpack, tailwind } = require('#Build/functions')
@@ -16,9 +17,10 @@ module.exports = async function(env, opts = {}) {
   distClean({ quiet: true })
 
   // our pretty build message
+  const relativeDistPath = path.relative(process.cwd(), ThemeEnvy.outputPath)
   console.log(
     emoji.get('hammer'),
-    chalk.cyan('Building ./dist in'),
+    chalk.cyan(`Building ./${relativeDistPath} in`),
     mode === 'development' ? chalk.yellow.bold(mode) : chalk.magenta.bold(mode),
     chalk.cyan('mode')
   )
