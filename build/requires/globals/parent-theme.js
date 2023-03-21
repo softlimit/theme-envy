@@ -4,12 +4,10 @@ const path = require('path');
 (() => {
   const ThemeConfigPath = path.resolve(process.cwd(), 'theme.config.js')
   if (!fs.existsSync(ThemeConfigPath)) return
-  process.build = process.build || {}
-  process.build.childPreferred = process.build.childPreferred || []
-  const ThemeConfig = require(ThemeConfigPath)
+  ThemeEnvy.childPreferred = ThemeEnvy.childPreferred || []
 
   // look for parent theme in node_modules
-  const parentThemePath = ThemeConfig.parentTheme?.path
+  const parentThemePath = ThemeEnvy.parentTheme?.path
   if (!parentThemePath) return
   const parentThemePkg = fs.existsSync(path.resolve(process.cwd(), 'node_modules', parentThemePath))
     ? path.resolve(process.cwd(), 'node_modules', parentThemePath)
@@ -21,5 +19,5 @@ const path = require('path');
   // prefer node_modules over relative path
   const parentTheme = parentThemePkg || parentThemeRelative
 
-  process.build.parentTheme = parentTheme
+  ThemeEnvy.parentTheme = parentTheme
 })()

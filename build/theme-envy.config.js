@@ -8,7 +8,7 @@ module.exports = {
     'theme-envy': path.resolve(__dirname, 'requires/scripts/theme-envy.js'),
   },
   output: {
-    path: path.resolve(process.cwd(), 'dist/assets'),
+    path: path.resolve(ThemeEnvy.outputPath, 'assets'),
     publicPath: '',
     filename: '[name].js?h=[contenthash:5]',
     chunkFilename: (pathData) => {

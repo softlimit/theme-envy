@@ -4,8 +4,7 @@ const fs = require('fs')
 const { spawn } = require('child_process')
 
 module.exports = function() {
-  const ThemeConfig = require(path.resolve(process.cwd(), 'theme.config.js'))
-  const themePull = ['theme', 'pull', `--store=${ThemeConfig.store}`, '--path=dist', '--only=templates/*.json,config/settings_data.json,sections/*.json']
+  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, '--path=dist', '--only=templates/*.json,config/settings_data.json,sections/*.json']
   const shopify = spawn('shopify', themePull, { cwd: path.resolve(process.cwd(), 'dist'), stdio: 'inherit' })
 
   shopify.on('exit', function() {

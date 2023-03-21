@@ -1,6 +1,7 @@
 module.exports = {
-  buildLiquid: require('./build-liquid'),
-  buildWatch: require('./build-watch'),
-  build: require('./build'),
   getAll: require('./get-all'),
+  liquid: require('./liquid'),
+  tailwind: require('./tailwind'),
+  themeEnvy: require('./theme-envy'),
+  webpack: require('./webpack'),
 }

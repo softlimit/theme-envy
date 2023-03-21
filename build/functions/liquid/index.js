@@ -8,14 +8,13 @@ const path = require('path')
 const fs = require('fs-extra')
 const { extendLiquid, flattenShopifyDirectoryStructure, sectionSchemaInject } = require('./functions')
 const { liquidPrettify } = require('#Helpers')
-const webpackConfig = require('#Build/theme-envy.config.js')
 
 module.exports = function({ file, mode, verbose }) {
   const shopifyPath = flattenShopifyDirectoryStructure(file)
   // skip files that don't need to be processed because they don't have an output path
   if (!shopifyPath) return
 
-  const outputPath = `${webpackConfig.output.path.replace('/assets', '')}/${shopifyPath}`
+  const outputPath = `${ThemeEnvy.outputPath}/${shopifyPath}`
   let source = fs.readFileSync(file, 'utf8')
 
   // inject schema .js into liquid section files
@@ -31,4 +30,6 @@ module.exports = function({ file, mode, verbose }) {
   fs.ensureDirSync(path.dirname(outputPath))
   // save our file
   fs.writeFileSync(outputPath, source)
+  // update progress bar
+  ThemeEnvy.progressBar.increment()
 }

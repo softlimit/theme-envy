@@ -3,6 +3,8 @@ module.exports = {
     // main: './src/scripts/main.js',
   },
   store: 'my-store.myshopify.com',
+  themePath: 'src',
+  outputPath: 'dist',
   breakpoints: {
     sm: '640px',
     // => @media (min-width: 640px) { ... }

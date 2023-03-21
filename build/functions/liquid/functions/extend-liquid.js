@@ -8,7 +8,7 @@
 
 const path = require('path')
 const fs = require('fs')
-const listDependencies = require('./extend-liquid-dependencies')
+const listDependencies = require('./list-dependencies')
 const getAll = require('#Build/functions/get-all.js')
 const globbedPartials = getAll('partials')
 
@@ -28,7 +28,7 @@ const extendLiquid = ({ source, filePath }) => {
   const foundTags = [...source.matchAll(tags), ...source.matchAll(inLiquid)]
   // gather dependencies, will be used to trigger rebuilds
   const dependencies = listDependencies({ source, filePath })
-  process.build.dependencies[filePath] = dependencies
+  ThemeEnvy.dependencies[filePath] = dependencies
 
   foundTags.forEach(tag => {
     source = replaceTag({ tag, source, filePath })
@@ -48,8 +48,8 @@ function replaceTag({ tag, source, filePath } = {}) {
     source = source.replace(replace, whitespace(replace, file))
   }
   if (action === 'hook') {
-    const replacedContent = process.build.hooks[name] ? extendLiquid({ source: process.build.hooks[name].content, filePath }) : ''
-    if (process.build.hooks[name]) process.build.hooks[name].replaced = true
+    const replacedContent = ThemeEnvy.hooks[name] ? extendLiquid({ source: ThemeEnvy.hooks[name].content, filePath }) : ''
+    if (ThemeEnvy.hooks[name]) ThemeEnvy.hooks[name].replaced = true
     source = source.replace(replace, replacedContent)
   }
   if (action === 'theme') {

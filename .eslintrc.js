@@ -8,6 +8,7 @@ module.exports = {
   ],
   globals: {
     ThemeRequire: true,
+    ThemeEnvy: true,
   },
   parserOptions: {
     ecmaVersion: 2021,
