@@ -5,6 +5,7 @@ module.exports = {
   store: 'my-store.myshopify.com',
   themePath: 'src',
   outputPath: 'dist',
+  // tailwind: false,
   breakpoints: {
     sm: '640px',
     // => @media (min-width: 640px) { ... }

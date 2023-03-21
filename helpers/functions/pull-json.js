@@ -1,11 +1,12 @@
 const glob = require('glob')
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const { spawn } = require('child_process')
 
 module.exports = function() {
-  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, '--path=dist', '--only=templates/*.json,config/settings_data.json,sections/*.json']
-  const shopify = spawn('shopify', themePull, { cwd: path.resolve(process.cwd(), 'dist'), stdio: 'inherit' })
+  const relativeDistPath = path.relative(process.cwd(), ThemeEnvy.outputPath)
+  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, `--path=${relativeDistPath}`, '--only=templates/*.json,config/settings_data.json,sections/*.json']
+  const shopify = spawn('shopify', themePull, { cwd: ThemeEnvy.outputPath, stdio: 'inherit' })
 
   shopify.on('exit', function() {
     const files = glob.sync(path.resolve(ThemeEnvy.outputPath, '{templates,config,sections}/**/*.json')).filter(file => file.indexOf('settings_schema') > -1)

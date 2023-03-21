@@ -3,8 +3,8 @@
 */
 const fs = require('fs-extra')
 const path = require('path')
-const dist = path.resolve(process.cwd(), 'dist')
+require('./liquid-builders/theme-envy.liquid.build')
 
-fs.ensureDirSync(path.resolve(dist, 'snippets'))
+fs.ensureDirSync(path.resolve(ThemeEnvy.outputPath, 'snippets'))
 
-fs.copyFileSync(path.resolve(__dirname, 'theme-envy.liquid'), path.resolve(dist, 'snippets/theme-envy.liquid'))
+fs.copyFileSync(path.resolve(__dirname, 'theme-envy.liquid'), path.resolve(ThemeEnvy.outputPath, 'snippets/theme-envy.liquid'))

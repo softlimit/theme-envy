@@ -7,7 +7,7 @@
 */
 
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const listDependencies = require('./list-dependencies')
 const getAll = require('#Build/functions/get-all.js')
 const globbedPartials = getAll('partials')

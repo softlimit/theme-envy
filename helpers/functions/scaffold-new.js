@@ -109,10 +109,10 @@ module.exports = function(type, name, include) {
       console.log(logSymbols.error, chalk.red('Error:'), `Feature ${EXT_NAME} already exists. Rename or update feature directly instead.`)
       process.exit()
     }
-    fs.mkdirSync(path.resolve(location, EXT_NAME))
+    fs.ensureDirSync(path.resolve(location, EXT_NAME))
 
     for (const DIR of DIRS) {
-      fs.mkdirSync(path.resolve(location, EXT_NAME, DIR))
+      fs.ensureDirSync(path.resolve(location, EXT_NAME, DIR))
     }
 
     for (const FILE of Object.entries(FILES)) {

@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')
 
 const features = getAll('features').map(file => {

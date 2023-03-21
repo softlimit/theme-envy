@@ -12,7 +12,7 @@ const colors = require('ansi-colors');
     locales: 1,
     requires: 6,
     sectionGroups: 1,
-    tailwind: 1,
+    tailwind: ThemeEnvy?.tailwind !== false ? 1 : 0,
     templates: getAll('templates').length,
     webpack: 1,
   }
