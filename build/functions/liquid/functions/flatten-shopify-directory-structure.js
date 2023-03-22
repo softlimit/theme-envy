@@ -1,8 +1,10 @@
-/*
-  * Helper function to determine correct output path for input file
+/**
+  * @private
+  * @file Helper function to determine correct output path for input file
   * @param {string} path - path to file
   * @returns {string} - output path
-*/
+  */
+
 module.exports = function(path) {
   const filename = path.slice(path.lastIndexOf('/') + 1)
   if (path.includes('snippets/')) {

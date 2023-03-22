@@ -1,3 +1,11 @@
+/**
+ * @file check if a Shopify theme exists in the target directory and move it to the destination
+ * @description Used during the init process to move an existing Shopify theme to the new source folder
+ * @param {object} options - options object
+ * @param {string} options.target - target directory
+ * @param {string} options.dest - destination directory
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const { directories } = require('#EnsureDirectories')

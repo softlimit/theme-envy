@@ -1,3 +1,7 @@
+/**
+ * @file Creates basic settings_schema.js file during init command
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')

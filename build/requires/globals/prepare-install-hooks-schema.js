@@ -1,6 +1,8 @@
-/*
-  * Before a build starts, we need to collect all the installs that insert code into the theme hooks
-  * This is done by looking for all files in the src directory that end with install.js
+/**
+  * @private
+  * @file Collect all the install.js files that insert code into the theme hooks
+  * @description
+  * Find all files in the src directory that end with install.js
   * These files should export an array of objects with the following properties:
   *  hook: the name of the hook to insert the code into
   *  content: the code to insert
@@ -13,7 +15,7 @@
         priority: 50
       }
     ]
-*/
+  */
 const { getAll } = require('#Build/functions')
 const path = require('path');
 (() => {

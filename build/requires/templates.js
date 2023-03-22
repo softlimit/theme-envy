@@ -1,3 +1,7 @@
+/**
+ * @file Copies all templates from the src folder to the dist folder with no transformations
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')

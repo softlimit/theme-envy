@@ -1,3 +1,9 @@
+/**
+ * @private
+ * @file Copy the example feature to the destination, used during init command
+ * @param {object} options - options object
+ * @param {string} options.dest - destination directory
+ */
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')

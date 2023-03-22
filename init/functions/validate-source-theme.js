@@ -1,3 +1,10 @@
+/**
+ * @file Validates source theme directory structure
+ * @description Used during the init process to validate the source theme directory structure
+ * @param {object} options - options object
+ * @param {string} options.sourceTheme - source theme directory
+ */
+
 const fs = require('fs-extra')
 const path = require('path')
 const { directories } = require('#EnsureDirectories')

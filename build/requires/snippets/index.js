@@ -1,6 +1,7 @@
-/*
-  Creates/copies theme-envy snippet in dist/snippets during build
+/**
+  @file Pre-builds the theme-envy.liquid snippet and adds it to dist/snippets
 */
+
 const fs = require('fs-extra')
 const path = require('path')
 require('./liquid-builders/theme-envy.liquid.build')

@@ -1,8 +1,9 @@
-/*
+/**
   * Get all files from the parent theme that are not in the child
+  * @private
   * @param {function} func - function to get files with a glob, should return an array of file paths
   * @param {array} childFiles - array of file paths from the child theme that we check against
-  * @return {array} - array of file paths from the parent theme that are not in the child
+  * @returns {array} - array of file paths from the parent theme that are not in the child
 */
 const path = require('path')
 const { directories } = require('#EnsureDirectories')

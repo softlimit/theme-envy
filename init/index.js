@@ -1,13 +1,11 @@
 /*
-  @param {target} [optional] string: --target --t: path to target directory to init shopify theme envy files, defaults to current user directory
-  @param [optional]: --example-feature --ef: outputs example feature structure and dummy files with readme documentation in each subdirectory
-
-  theme-envy init --target=path/to/dest
-
-  creates skeleton structure for src folder
+  @file init/index.js
+  @param [optional]: --example --e: outputs example feature structure and dummy files with readme documentation in each subdirectory
+  @description creates skeleton structure for src folder
     - Shopify directories
     - Adds "_features" and "_elements" directories
     - config files
+  @example npx theme-envy init [source|git] [options]
 */
 const path = require('path')
 const fs = require('fs-extra')

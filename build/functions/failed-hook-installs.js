@@ -1,3 +1,8 @@
+/**
+ * @private
+ * @file checks for failed hook installs and exits with an error
+ */
+
 const chalk = require('chalk')
 const logSymbols = require('#LogSymbols')
 

@@ -1,6 +1,7 @@
-/*
-  Copies all locales files from the src folder to the dist folder with no transformations
-*/
+/**
+  * @file Copies all locales files from the src folder to the dist folder with no transformations
+  */
+
 const fs = require('fs-extra')
 const path = require('path')
 const glob = require('glob')

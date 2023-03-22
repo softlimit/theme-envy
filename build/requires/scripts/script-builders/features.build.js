@@ -1,3 +1,7 @@
+/**
+ * @file Builds our features.js file imports based on the features directory
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')

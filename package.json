@@ -45,7 +45,8 @@
     }
   },
   "scripts": {
-    "version": "standard-version"
+    "version": "standard-version",
+    "jsdoc": "./node_modules/.bin/jsdoc ./{build,convert,helpers,init}/**/*.js"
   },
   "author": "Softlimit LLC",
   "license": "MIT",
@@ -79,6 +80,7 @@
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "jsdoc": "^4.0.2"
   }
 }

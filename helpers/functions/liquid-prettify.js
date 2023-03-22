@@ -1,6 +1,12 @@
-/*
-  Attempts to run prettier-plugin-liquid on source string
+/**
+  * @file Attempts to run prettier-plugin-liquid on source string
+  * @param {Object} options
+  * @param {string} options.source - The source string to prettify
+  * @param {string} options.pathname - The pathname of the file being prettified
+  * @param {boolean} options.verbose - Whether or not to log warnings
+  * @returns {string} - The prettified source string or the original source string if prettier fails
 */
+
 const liquidPlugin = require('@shopify/prettier-plugin-liquid/standalone')
 const prettier = require('prettier/standalone')
 const chalk = require('chalk')

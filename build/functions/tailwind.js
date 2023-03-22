@@ -1,5 +1,7 @@
-/*
-  * spawns a child process to run tailwind during build
+/**
+ * @private
+ * @file Runs Tailwind using the Tailwind CLI during build
+ * @see https://tailwindcss.com/docs/installation#using-tailwind-cli
 */
 const { spawn } = require('child_process')
 const path = require('path')

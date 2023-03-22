@@ -1,3 +1,7 @@
+/**
+ * @file collects and concatenates all config/*.js files into a single settings_schema.json file
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')

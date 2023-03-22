@@ -1,3 +1,7 @@
+/**
+ * @file Builds the theme-envy.liquid snippet, which is used to load the theme-envy.js script and critical css
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 

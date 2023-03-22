@@ -1,6 +1,8 @@
-/*
-  DO NOT EDIT, PRECOMPILED DURING BUILD FROM LIST OF ALL DIRECTORIES IN _elements
-*/
+/**
+ * @file Builds our elements.js file based on the elements in our src/elements directory
+ * @description Lazy loads our elements based on their presence in the DOM and the loading attribute
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')

@@ -1,10 +1,12 @@
-/*
-  Exports a function that ensures our directory structure is in place.
-  @param {string} root - The root directory to ensure the directories are in place.
-  @param {boolean} envy - Whether or not to ensure the _features and _elements directories.
-  Example: const { directories, ensureDirectories } = require('#EnsureDirectories')
-  ensureDirectories({ root: ThemeEnvy.themePath, envy: true })
-*/
+/**
+  * @description Exports a function that ensures our directory structure is in place.
+  * @param {string} root - The root directory to ensure the directories are in place.
+  * @param {boolean} envy - Whether or not to ensure the _features and _elements directories.
+  * @example
+  * ensureDirectories({ root: ThemeEnvy.themePath, envy: true })
+  * @returns {Void}
+  */
+
 const fs = require('fs-extra')
 const path = require('path')
 

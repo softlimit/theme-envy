@@ -1,9 +1,14 @@
-/*
- * Pre-processes .liquid files to allow for our custom tags: partial, hook, and theme
- * Examples:
- * {% partial '_cart-item-title' %} -- includes the contents of _cart-item-title.liquid
- * {% hook 'cart-item-title' %} -- adds a hook (point) to the cart-item-title.liquid file that can be added to from install.js files
- * {% theme 'breakpoints.md' %} -- can reference any object in the theme.js file
+/**
+ * @file Pre-processes .liquid files to allow for our custom tags: partial, hook, and theme
+ * @example
+ * // partial tag copies the contents of _cart-item-title.liquid
+ * {% partial '_cart-item-title' %}
+ * @example
+ * // adds a hook (point) to the liquid file that can be injected to from install.js files
+ * {% hook 'cart-item-title' %}
+ * @example
+ * // references any object in the theme.config.js file
+ * {% theme 'breakpoints.md' %}
 */
 
 const path = require('path')

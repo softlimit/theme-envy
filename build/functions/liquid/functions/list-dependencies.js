@@ -1,5 +1,6 @@
-/*
-  * Helper function that returns a list of files that reference the given file
+/**
+  * @private
+  * @file Helper function that returns a list of files that reference the given liquid file
   * @param {string} filePath - path to file to find dependencies for
   * @param {string} source - source code of file to find dependencies for
   * @returns {array} - list of files that reference the given file
