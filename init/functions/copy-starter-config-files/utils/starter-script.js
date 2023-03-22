@@ -6,7 +6,7 @@
 
 module.exports = (elementName, elementClass) => {
   return `class ${elementClass} extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     console.log(this)
   }

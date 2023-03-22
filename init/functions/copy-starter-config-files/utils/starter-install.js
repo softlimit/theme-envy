@@ -4,10 +4,11 @@
  */
 
 module.exports = (elementName) => {
-  return `[
+  return `module.exports = [
   {
-    "hook": "hook-body-end",
-    "content": "{% render '${elementName}' %}"
+    hook: 'body-end',
+    content: "{% render '${elementName}' %}"
   }
-]`
+]
+`
 }
