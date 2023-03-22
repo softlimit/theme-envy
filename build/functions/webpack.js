@@ -1,6 +1,13 @@
-/*
-  * Runs webpack during theme-envy build command
-*/
+/**
+  * @private
+  * @file Runs webpack during ThemeEnvy build
+  * @param {Object} options - options object
+  * @param {string} options.mode - webpack mode, either 'development' or 'production'
+  * @param {Object} options.opts - options object
+  * @param {Boolean} options.opts.watch - whether or not to run webpack in watch mode
+  * @returns {Promise}
+  */
+
 const webpack = require('webpack')
 
 module.exports = function({ mode, opts }) {

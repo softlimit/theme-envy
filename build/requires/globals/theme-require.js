@@ -1,9 +1,14 @@
-/*
-  Function: accepts a filename and a glob string and returns the file contents from /src
-  Works for .js files
+/**
+ * @file defines our global ThemeRequire function used for loading schema files
   @param {string} file - the filename to load
-  @param {string} globStr - the glob string to search for the file: defaults to ./src/
+  @param {object} options - options to pass to the ThemeRequire function
+  @param {array} options.delete - an array of schema keys to delete
+  @param {object} options.extend - an object of schema keys to extend
+  @param {number} options.loop - a number of times to loop the schema
+  @param {object} options.suffix
+  @returns {object} - the schema object
 */
+
 const glob = require('glob')
 const path = require('path')
 const requiredModules = []

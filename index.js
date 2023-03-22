@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+/**
+ * @file Theme Envy CLI
+ * @description Theme Envy CLI Tools
+ * @example npx theme-envy
+ */
 
 const commander = require('commander')
 const program = new commander.Command()
@@ -6,7 +11,15 @@ const chalk = require('chalk')
 const emoji = require('node-emoji')
 require('#Helpers/functions/global-theme-envy.js')
 
-const themeEnvyCommands = require('#Root/theme-envy-commands.js')
+const themeEnvyCommands = {
+  build: require('#Build'),
+  clean: require('#Helpers/functions/dist-clean.js'),
+  convert: require('#Convert'),
+  dev: require('#Helpers/functions/dev.js'),
+  init: require('#Init'),
+  new: require('#Helpers/functions/scaffold-new.js'),
+  'pull-json': require('#Helpers/functions/pull-json.js'),
+}
 
 const scriptMessage = (scriptName) => {
   console.log(`\n ${emoji.get('rocket')} Shopify Theme Envy ${chalk.green.bgBlack.bold(`\n    theme-envy ${scriptName}\n`)}`)

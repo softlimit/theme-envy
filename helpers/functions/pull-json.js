@@ -1,3 +1,10 @@
+/**
+  * @file A function that pulls the JSON files from Shopify and copies them to the theme directory.
+  * @example
+  * npx theme-envy pull-json
+  * @returns {Void}
+  */
+
 const glob = require('glob')
 const path = require('path')
 const fs = require('fs-extra')

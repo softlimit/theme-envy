@@ -1,8 +1,13 @@
-module.exports = (elName) => {
+/**
+ * @file Used as a template for a new install.js file for a new feature or element
+ * @param {string} elementName - The name of the feature or element
+ */
+
+module.exports = (elementName) => {
   return `[
   {
     "hook": "hook-body-end",
-    "content": "{% render '${elName}' %}"
+    "content": "{% render '${elementName}' %}"
   }
 ]`
 }

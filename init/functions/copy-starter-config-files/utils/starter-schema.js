@@ -1,8 +1,14 @@
-module.exports = (elName, readName) => {
+/**
+ * @file Used as a template for a new schema file for a new feature section
+ * @param {string} elementName - The name of the feature or element
+ * @param {string} readableName - The readable name of the feature or element
+ */
+
+module.exports = (elementName, readableName) => {
   return `module.exports = {
-  name: '${readName}',
+  name: '${readableName}',
   tag: 'section',
-  class: '${elName}',
+  class: '${elementName}',
   settings: [
     ...ThemeRequire('schema-colors'),
     ...ThemeRequire('schema-full-width'),
@@ -16,7 +22,7 @@ module.exports = (elName, readName) => {
   ],
   presets: [
     {
-      name: '${readName}',
+      name: '${readableName}',
       category: 'General',
       settings: {},
     },

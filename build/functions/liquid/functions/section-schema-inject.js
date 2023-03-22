@@ -1,8 +1,10 @@
-/*
-  * This is a prebuild helper script that will inject the schema js file into the liquid file
-  * Usage: {% schema 'schema-file.js' %}
-  * This will replace the {% schema %} tag with the schema
-*/
+/**
+  * @file Prebuild helper script that will inject the schema js file into the corresponding sections/*.liquid file
+  * @example
+  * // include the schema in the section liquid file
+  * {% schema 'schema-file.js' %}
+  */
+
 module.exports = function({ source, filePath }) {
   if (!filePath.includes('sections')) return source
   const schema = source.match(/{% schema '(.*)' %}/g) || source.match(/{% schema "(.*)" %}/g)

@@ -1,3 +1,8 @@
+/**
+ * @private
+ * @file Our global requires
+ */
+
 require('./progress-bar')
 require('./parent-theme')
 require('./theme-require')

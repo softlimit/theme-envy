@@ -1,3 +1,11 @@
+/**
+ * @private
+ * @file Manages ThemeEnvy build process
+ * @param {Object} opts
+ * @param {Boolean} opts.watch
+ * @param {Boolean} opts.verbose
+ * @returns {Promise}
+ */
 const fs = require('fs-extra')
 const path = require('path')
 const liquid = require('./liquid')

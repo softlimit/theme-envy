@@ -1,6 +1,9 @@
-/*
-  * theme-envy dev starts development process and syncs with Shopify using the Shopify CLI
-*/
+/**
+  * @description theme-envy dev starts development process and syncs with Shopify using the Shopify CLI
+  * @example npx theme-envy dev
+  * @returns {Void}
+  */
+
 const { spawn } = require('child_process')
 const path = require('path')
 

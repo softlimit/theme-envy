@@ -1,3 +1,7 @@
+/**
+ * @file Creates an empty settings_data.json file if it doesn't exist during init command
+ */
+
 const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')

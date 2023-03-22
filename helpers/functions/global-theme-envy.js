@@ -1,6 +1,7 @@
-/*
-  * Establishes our global ThemeEnvy object based on theme.config.js
-*/
+/**
+  * @file Establishes our global ThemeEnvy object based on theme.config.js
+  */
+
 const path = require('path')
 const fs = require('fs-extra')
 const EventEmitter = require('events')

@@ -1,3 +1,8 @@
+/**
+ * @private
+ * @file Checks for a parent theme in node_modules or relative path and sets ThemeEnvy.parentTheme to the path
+ */
+
 const fs = require('fs-extra')
 const path = require('path');
 

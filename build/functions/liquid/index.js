@@ -1,8 +1,9 @@
-/*
-  * Processes our liquid files during build/watch to the dist folder
+/**
+  * @file Processes our liquid files during build
+  * @description replaces our custom hooks, partials, and theme tags, and injects section schema into section files
   * @param {string} file - path to file
   * @param {string} mode - 'development' or 'production'
-  * @returns {void}
+  * @returns {Void}
 */
 const path = require('path')
 const fs = require('fs-extra')

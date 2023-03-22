@@ -1,3 +1,9 @@
+/**
+  * @file Returns the appropriate log symbols based on unicode support
+  * @example
+  * console.log(logSymbols.info, 'Info message')
+  * @returns {Object} - An object containing the appropriate log symbols
+*/
 // based on https://github.com/sindresorhus/log-symbols
 
 const chalk = require('chalk')

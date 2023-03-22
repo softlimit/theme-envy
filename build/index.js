@@ -1,8 +1,16 @@
-/*
-  This script will process all liquid files in the src directory and output them to the dist directory.
-  Flags:
-    -w, --watch: watch for changes and re-run the script
-*/
+/**
+  * @file Processes all liquid files in the themePath directory and output them to the outputPath directory.
+  * @param {string} env - The mode to build in, either 'development' or 'production'
+  * @param {Object} opts - The options object
+  * @param {boolean} opts.verbose - Whether or not to log warnings
+  * @param {boolean} opts.watch - Whether or not to watch for changes
+  * @example
+  * // build in production mode
+  * build('production')
+  * @example
+  * // run from the CLI
+  * npx theme-envy build [production|development] [--watch|w] [--verbose|v]
+  */
 
 const path = require('path')
 const chalk = require('chalk')

@@ -1,6 +1,14 @@
-/*
-  * use getAll(type) to get all files of a given type
-*/
+/**
+  * @file Gets all files of a given type
+  * @param {string} type - The type of files to get
+  * @example
+  * // get all liquid files
+  * getAll('liquid')
+  * @example
+  * // get all config files
+  * getAll('config')
+  * @returns {array} - array of file paths
+  */
 const path = require('path')
 const glob = require('glob')
 const parentThemeFiles = require('./parent-theme-files')
