@@ -4,13 +4,14 @@
  */
 
 module.exports = (readableName) => {
-  return `[
-  {
-    "name": "${readableName}",
-    "settings": [
-      
-    ]
-  }
-]
+  return `module.exports = [
+    {
+      name: '${readableName}',
+      settings: [
+  
+      ]
+    }
+  ]
+  
 `
 }

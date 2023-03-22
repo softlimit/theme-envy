@@ -70,7 +70,7 @@ module.exports = function(type, name, include) {
   if (INCLUDE_CONFIG) {
     DIRS.push('config')
 
-    FILES[`config/${EXT_NAME}.json`] = starterContent(starterConfigs.config, [EXT_READABLE_NAME])
+    FILES[`config/${EXT_NAME}.js`] = starterContent(starterConfigs.config, [EXT_READABLE_NAME])
   }
 
   if (INCLUDE_SCHEMA) {
@@ -79,7 +79,7 @@ module.exports = function(type, name, include) {
   }
 
   if (INCLUDE_INSTALL) {
-    FILES['install.json'] = starterContent(starterConfigs.install, [EXT_NAME])
+    FILES['install.js'] = starterContent(starterConfigs.install, [EXT_NAME])
   }
   if (INCLUDE_SCRIPT) {
     scriptImport = `import './scripts/${EXT_NAME}.js'
