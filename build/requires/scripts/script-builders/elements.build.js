@@ -7,7 +7,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const { getAll } = require('#Build/functions')
 const elements = getAll('elements').map(file => {
-  const name = path.basename(path.dirname(file))
+  const name = path.basename === 'index.js' ? path.basename(path.dirname(file)) : path.basename(file, '.js')
   return `'${name}': () => import(/* webpackChunkName: "${name}" */ '${file}')`
 })
 

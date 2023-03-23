@@ -1,47 +1,13 @@
-/**
-  * @file Creates a directory in _features or _elements with starter files to build your feature or element
-  * @param {string} type - The type of feature or element to create.
-  * @param {string} name - The name of the feature or element to create.
-  * @param {string} include - A comma separated list of files/directory to include in the new feature or element.
-  * @example
-  * npx theme-envy new <feature|element> <feature-name> [all|sections|snippets|scripts|schema|install|styles|config]
-  */
-
-const fs = require('fs-extra')
 const path = require('path')
-const chalk = require('chalk')
-const logSymbols = require('#LogSymbols')
+const loadDir = require('./load-dir')
+const upperFirstLetter = require('./upper-first-letter')
+const starterContent = require('./starter-content')
+const { starterConfigs } = require('../objects')
 
-const starterConfigs = {
-  config: 'starter-config.js',
-  install: 'starter-install.js',
-  schema: 'starter-schema.js',
-  script: 'starter-script.js',
-  section: 'starter-section.js',
-}
-
-// returns starter content of file name
-// checks for file in user root first, otherwise use package file
-const starterContent = (fileName, args) => {
-  const fileExists = fs.existsSync(path.join(process.cwd(), '/utils/', fileName))
-  if (!fileExists) {
-    console.log(logSymbols.error, chalk.red('Error:'), `Starter file ${fileName} not found`)
-    process.exit()
-  }
-  const content = require(path.join(process.cwd(), '/utils/', fileName))
-  return content(...args)
-}
-
-module.exports = function(type, name, include) {
-  console.log(logSymbols.info, chalk.cyan('Creating new'), chalk.green.bold(name), chalk.underline.bold(type), chalk.cyan('...'))
-  const ELEMENTS = path.resolve(ThemeEnvy.themePath, '_elements')
+module.exports = (name, include) => {
   const FEATURES = path.resolve(ThemeEnvy.themePath, '_features')
-
   const starters = include?.split(',') || 'all'
 
-  function upperFirstLetter(string) {
-    return string[0].toUpperCase() + string.substring(1)
-  }
   const DIRS = []
   const EXT_NAME = name.toLowerCase()
   const INCLUDE_ANY = starters
@@ -63,7 +29,7 @@ module.exports = function(type, name, include) {
 
   /*
   DEFAULT FILE CONTENTS & import strings
-*/
+  */
 
   const FILES = {}
 
@@ -109,25 +75,5 @@ module.exports = function(type, name, include) {
 
   FILES['index.js'] = `${scriptImport}${styleImport}`
 
-  function loadDir(location) {
-    if (fs.existsSync(path.resolve(location, EXT_NAME))) {
-      console.log(logSymbols.error, chalk.red('Error:'), `Feature ${EXT_NAME} already exists. Rename or update feature directly instead.`)
-      process.exit()
-    }
-    fs.ensureDirSync(path.resolve(location, EXT_NAME))
-
-    for (const DIR of DIRS) {
-      fs.ensureDirSync(path.resolve(location, EXT_NAME, DIR))
-    }
-
-    for (const FILE of Object.entries(FILES)) {
-      fs.writeFileSync(path.resolve(location, EXT_NAME, FILE[0]), FILE[1], (err) => {
-        if (err) throw new Error(`${logSymbols.error} Error creating file ${FILE[0]}`)
-      })
-    }
-
-    console.log(`${logSymbols.success} ${chalk.green.bold(EXT_NAME)} created\n ${chalk.dim(location)}`)
-  }
-
-  type === 'element' ? loadDir(ELEMENTS) : loadDir(FEATURES)
+  loadDir({ location: FEATURES, DIRS, EXT_NAME, FILES })
 }

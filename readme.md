@@ -8,7 +8,8 @@ Table of Contents
   - [Elements](#elements)
   - [Features](#features)
   - [Hooks/installs](#hooksinstalls)
-  - [Schema](#schema)
+  - [Schema/Theme Require](#schematheme-require)
+    - [JS Section Schema](#js-section-schema)
   - [Partials](#partials)
   - [Theme](#theme)
 - [Theme.config.js](#themeconfigjs)
@@ -76,9 +77,22 @@ Commands:
 ```
 
 ## Build Tools
-Features and Elements are subdirectories of `src/_elements` and `src/_features`. They share the same directory structure but differ in one important way:
-* **Elements**: index.js is loaded *only* when the element is present in the DOM
-* **Features**: index.js is concatenated and loaded sitewide
+
+### Elements
+Theme Envy is optimized for using [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components). You can initialize a new Web Component using `utils/starter-element.js` in your project with this command in your terminal:
+```bash
+npx theme-envy new element <your-element>
+```
+Your **element** file must have the same name as your new CustomElement (Web Component). Theme Envy will only load the asset(s) for `your-element` if element is present in the DOM.
+
+> To take advantage of Theme Envy's smart loading of **elements** they must be inside the `_elements` directory
+
+You can also setup an **element** as a subdirectory of `_elements` by using an index.js file (`_elements/your-element/index.js`). In this case your subdirectory must have the same name as your Web Component.
+
+### Features
+Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets associated with a feature will be loaded as part of the main `theme-envy.js` file on all templates in your theme.
+
+> Features are subdirectories of `src/_features`.
   
 ```bash
 /config # .js files concatenated and added to settings_schema.json
@@ -87,18 +101,9 @@ Features and Elements are subdirectories of `src/_elements` and `src/_features`.
 /sections # .liquid files only, included in build automatically
 /snippets # .liquid files only, included in build automatically
 /styles # contains any .css files, must be imported into index.js
-index.js # loaded differently depending on whether a feature or an element
+index.js # is concatenated and loaded sitewide
 install.js # defines where to inject code into hooks
 ```
-### Elements
-Theme Envy is optimized for using [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components). You can initialize a new Web Component in your project with this command in your terminal:
-```bash
-npx theme-envy new element <your-element>
-```
-Your element must have an `index.js` file and the directory name must be the same as the Web Component name, ie `your-element`. Theme Envy will only load the assets for `your-element` if element is present in the DOM.
-
-### Features
-Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets associated with a feature will be loaded as part of the main `theme-envy.js` file on all templates in your theme.
 
 ### Hooks/installs
 Hooks are places in our theme code where *Features* and *Elements* can insert code during build. This allows us to keep integrations discrete and easily undoable. To define a hook in the theme, we only need to add a `hook` tag like so:
@@ -117,13 +122,24 @@ module.exports = [
 ```
 During the build, all code for the `head-end` hook will be collected, sorted by priority (where 0 is highest in the code), and will replace the `{% hook 'head-end' %}` tag.
 
-### Schema
+### Schema/Theme Require
+We were frustrated by how difficult it is to share smaller pieces of Shopify Section schema across sections. Theme Envy includes a couple of tools to make this easier.
+#### JS Section Schema
+Use this syntax in section `.liquid` files in place of the normal `{% schema %}{% endschema %}` tags:
+```javascript
+{% schema 'schema-your-section.js' %}
+```
+> Don't worry about relative/absolute paths here, Theme Envy will find your uniquely named schema js file within your project.
+
+When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory.
+
 ### Partials
 By using the syntax 
 ```javascript 
 {% partial '_file-name' %}
 ```
 the contents of the liquid file named `_file-name.liquid` are inserted directly into the output file. Our practice is to name these files with a leading _, but it is not required.
+> **Partials** files must be within a directory called "partials"
 
 ### Theme
 We can use this markup to access properties of our `theme.config.js` file within liquid files. This is especially helpful for when you have to access a breakpoint value within your markup.

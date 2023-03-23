@@ -4,5 +4,5 @@ module.exports = {
   globalThemeEnvy: require('./functions/global-theme-envy.js'),
   liquidPrettify: require('./functions/liquid-prettify.js'),
   pullJson: require('./functions/pull-json.js'),
-  scaffoldNew: require('./functions/scaffold-new.js'),
+  scaffoldNew: require('./functions/scaffold-new'),
 }
