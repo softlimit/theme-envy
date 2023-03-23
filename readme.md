@@ -1,5 +1,19 @@
 Theme Envy is a Shopify development environment optimized for performance using Node, Webpack, Tailwind, and custom build processes for repeatable code beyond liquid snippets.
 
+What you can do with Theme Envy
+* Easily share schema across sections and theme settings
+* Tailwind, Webpack, out of the box
+* Manage section schema with Javascript files `{% schema 'schema-section.js' %}`
+* Use subdirectories in `/snippets`, `/sections`, etc.
+* Manage app and feature integrations using our `hooks` and `installs` system.
+* Directly reference breakpoints and other values in `theme.config.js` from your liquid files eg: `{% theme 'breakpoints.md' %}`
+* Share code around your theme using `partials`, even within `{% liquid %}` tags. Theme Envy replaces the `{% partial '_example-file' %}` with the code from the referenced file.
+* Set starter content for new features and elements to establish consistency in your code base.
+* Manage all code for discrete features in their own subdirectories.
+* Import an existing Shopify theme
+* Automatically load Web Components/HTML Custom Elements only when they are in the DOM
+* Super fast build and watch times
+
 Table of Contents
 - [Installation](#installation)
 - [Getting Started](#getting-started)
@@ -29,8 +43,8 @@ npm install @softlimit/theme-envy --save-dev
 
 ## Getting Started
 You can get started one of three ways:
-* With an empty directory structure
-* By importing an existing theme from Github or a local directory
+* `npx theme-envy init` in an empty directory will give you the directory structure for Theme Envy.
+* `npx theme-envy init https://github.com/Organization/repo.git --convert` imports an existing theme from Github and sets up Theme Envy
 * By running `npx theme-envy init` in an existing Shopify theme directory
 
 To get started with an existing theme, we can use Shopify's [Dawn](https://github.com/Shopify/dawn) as an example, but you can also specify a local path.
@@ -61,23 +75,24 @@ npx theme-envy dev
 Theme Envy directories are prefixed with `_`.
 The other directories are the [Shopify standard directories](https://shopify.dev/docs/themes/architecture#directory-structure-and-component-types).
 ```bash
-.
-|-- _elements # for Custom Elements/Web Components
-|-- _features # individual directories of discrete features
-|-- _partials # small .liquid files that are reusable/inserted across the theme
-|-- _schema # .js files for sharing bits of section/config schema across the theme
-|-- assets
-|-- config
-|-- layout
-|-- locales
-|-- sections
-|-- snippets
-`-- templates
-  `--customers
+/
+└── _elements/ # for Custom Elements/Web Components
+└── _features/ # individual directories of discrete features
+└── _partials/ # small .liquid files that are reusable/inserted across the theme
+└── _schema/ # .js files for sharing bits of section/config schema across the theme
+└── assets/
+└── config/
+└── layout/
+└── locales/
+└── sections/
+└── snippets/
+└── templates/
+    └── customers/
 ```
 
 ## Theme Envy CLI
-```bash
+> Precede all commands with `npx theme-envy`
+```
 Usage: theme-envy [options] [command]
 
 Theme Envy CLI Tools
@@ -115,16 +130,16 @@ Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets
 > Features are subdirectories of `src/_features`.
   
 ```bash
-.
-|-- config # .js files concatenated and added to settings_schema.json
-|-- partials # .liquid files that are referenced using Theme Envy {% partial 'file-name' %} tag
-|-- schema # .js files with module.exports to be injected into section files, or referenced with ThemeRequire()
-|-- scripts # .js files to be imported into index.js
-|-- sections # .liquid files only, included in build automatically
-|-- snippets # .liquid files only, included in build automatically
-|-- styles # contains any .css files, must be imported into index.js
-|- index.js # is concatenated and loaded sitewide
-`- install.js # defines where to inject code into hooks
+/
+└── config # .js files concatenated and added to settings_schema.json
+└── partials/ # .liquid files that are referenced using Theme Envy {% partial 'file-name' %} tag
+└── schema/ # .js files with module.exports to be injected into section files, or referenced with ThemeRequire()
+└── scripts/ # .js files to be imported into index.js
+└── sections/ # .liquid files only, included in build automatically
+└── snippets/ # .liquid files only, included in build automatically
+└── styles/ # contains any .css files, must be imported into index.js
+└── index.js # is concatenated and loaded sitewide
+└── install.js # defines where to inject code into hooks
 ```
 
 ### Hooks/installs
@@ -203,8 +218,9 @@ module.exports = {
 ```
 
 ## Tailwind
-
+[Tailwind](https://tailwindcss.com/) is enabled automatically. It can be disabled in `theme.config.js`, and customized in `tailwind.config.js`
 ## Webpack
+[Webpack](https://webpack.js.org/) is used to bundle and manage JS and CSS. By default, the only entry point is Theme Envy which will handle all `elements` and `features`. Any additional scripts or stylesheets can be added to the `entry` in `theme.config.js`.
 
 ## Contributing
 
