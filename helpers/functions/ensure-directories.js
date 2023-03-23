@@ -11,7 +11,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 const directories = ['assets', 'config', 'layout', 'locales', 'sections', 'snippets', 'templates']
-const envyDirectories = ['_features', '_elements']
+const envyDirectories = ['_elements', '_features', '_partials', '_schema']
 function ensureDirectory(root, dir) {
   fs.ensureDirSync(path.resolve(root, dir))
 }

@@ -3,6 +3,7 @@ Theme Envy is a Shopify development environment optimized for performance using 
 Table of Contents
 - [Installation](#installation)
 - [Getting Started](#getting-started)
+- [Theme Directory Structure](#theme-directory-structure)
 - [Theme Envy CLI](#theme-envy-cli)
 - [Build Tools](#build-tools)
   - [Elements](#elements)
@@ -56,6 +57,25 @@ You are now ready to start developing! Get started with this simple command in y
 npx theme-envy dev
 ```
 
+## Theme Directory Structure
+Theme Envy directories are prefixed with `_`.
+The other directories are the [Shopify standard directories](https://shopify.dev/docs/themes/architecture#directory-structure-and-component-types).
+```bash
+.
+|-- _elements # for Custom Elements/Web Components
+|-- _features # individual directories of discrete features
+|-- _partials # small .liquid files that are reusable/inserted across the theme
+|-- _schema # .js files for sharing bits of section/config schema across the theme
+|-- assets
+|-- config
+|-- layout
+|-- locales
+|-- sections
+|-- snippets
+`-- templates
+  `--customers
+```
+
 ## Theme Envy CLI
 ```bash
 Usage: theme-envy [options] [command]
@@ -95,20 +115,22 @@ Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets
 > Features are subdirectories of `src/_features`.
   
 ```bash
-/config # .js files concatenated and added to settings_schema.json
-/schema # .js files with module.exports to be injected into section files, or referenced with ThemeRequire()
-/scripts # .js files to be imported into index.js
-/sections # .liquid files only, included in build automatically
-/snippets # .liquid files only, included in build automatically
-/styles # contains any .css files, must be imported into index.js
-index.js # is concatenated and loaded sitewide
-install.js # defines where to inject code into hooks
+.
+|-- config # .js files concatenated and added to settings_schema.json
+|-- partials # .liquid files that are referenced using Theme Envy {% partial 'file-name' %} tag
+|-- schema # .js files with module.exports to be injected into section files, or referenced with ThemeRequire()
+|-- scripts # .js files to be imported into index.js
+|-- sections # .liquid files only, included in build automatically
+|-- snippets # .liquid files only, included in build automatically
+|-- styles # contains any .css files, must be imported into index.js
+|- index.js # is concatenated and loaded sitewide
+`- install.js # defines where to inject code into hooks
 ```
 
 ### Hooks/installs
 Hooks are places in our theme code where *Features* and *Elements* can insert code during build. This allows us to keep integrations discrete and easily undoable. To define a hook in the theme, we only need to add a `hook` tag like so:
 ```javascript
-  {% hook 'head-end' %}
+{% hook 'head-end' %}
 ```
 We can then reference this spot in our theme code with an install.js file in a feature or element.
 ```javascript
@@ -131,7 +153,8 @@ Use this syntax in section `.liquid` files in place of the normal `{% schema %}{
 ```
 > Don't worry about relative/absolute paths here, Theme Envy will find your uniquely named schema js file within your project.
 
-When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory.
+When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory. Schema that is shared across multiple features/sections should go in `src/_schema`
+> All **schema** files must be within a `schema` or `_schema` directory
 
 ### Partials
 By using the syntax 
@@ -139,7 +162,7 @@ By using the syntax
 {% partial '_file-name' %}
 ```
 the contents of the liquid file named `_file-name.liquid` are inserted directly into the output file. Our practice is to name these files with a leading _, but it is not required.
-> **Partials** files must be within a directory called "partials"
+> All **partial** files must be within a `partials` or `_partials` directory
 
 ### Theme
 We can use this markup to access properties of our `theme.config.js` file within liquid files. This is especially helpful for when you have to access a breakpoint value within your markup.

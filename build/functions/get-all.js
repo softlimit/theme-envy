@@ -48,7 +48,7 @@ const globs = {
   },
   partials: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/partials/*.liquid'))
+      return glob.sync(path.resolve(src, '**/{partials,_partials}/*.liquid'))
     },
   },
   schema: {
