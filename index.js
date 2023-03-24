@@ -98,7 +98,7 @@ program
   .usage('<type> <name> [include]')
   .addArgument(new commander.Argument('<type>', 'Define the type of scaffold to create').choices(['feature', 'element']))
   .argument('<name>', 'Handleized name for the new element|feature')
-  .argument('[include]', 'Comma-separated list of starter directories and files to include in your scaffold. Defaults to all if not provided. all|config|install|sections|snippets|schema|styles')
+  .argument('[include]', 'Comma-separated list of starter directories and files to include in your scaffold. Defaults to all if not provided. all,config,install,sections,snippets,schema,styles')
   .action((type, name, include, options, command) => {
     scriptMessage(command.name())
     if (name.includes(',') || name.includes(' ')) {
