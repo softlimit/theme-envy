@@ -27,12 +27,12 @@ const globs = {
   },
   elements: {
     glob(src) {
-      return [...glob.sync(path.resolve(src, '_elements/**/index.js')), ...glob.sync(path.resolve(src, '_elements/*.js'))]
+      return [...glob.sync(path.resolve(src, '**/elements/**/index.js')), ...glob.sync(path.resolve(src, '**/elements/*.js'))]
     }
   },
   features: {
     glob(src) {
-      return glob.sync(path.resolve(src, '_features/**/index.js'))
+      return glob.sync(path.resolve(src, 'theme-envy/features/**/index.js'))
     },
   },
   installs: {

@@ -1,5 +1,5 @@
 /**
-  * @file Creates a directory in _features or _elements with starter files to build your feature or element
+  * @file Creates a directory in theme-envy/features or theme-envy/elements with starter files to build your feature or element
   * @param {string} type - The type of feature or element to create.
   * @param {string} name - The name of the feature or element to create.
   * @param {string} include - A comma separated list of files/directory to include in a new feature (not applicable to elements).

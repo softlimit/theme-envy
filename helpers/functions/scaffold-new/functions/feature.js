@@ -5,14 +5,14 @@ const starterContent = require('./starter-content')
 const { starterConfigs } = require('../objects')
 
 module.exports = (name, include) => {
-  const FEATURES = path.resolve(ThemeEnvy.themePath, '_features')
+  const FEATURES = path.resolve(ThemeEnvy.themePath, 'theme-envy/features')
   const starters = include?.split(',') || 'all'
 
   const DIRS = []
   const EXT_NAME = name.toLowerCase()
   const INCLUDE_ANY = starters
   const INCLUDE_ALL = INCLUDE_ANY && starters.includes('all')
-  const INCLUDE_SCRIPT = INCLUDE_ANY && (starters.includes('scripts') || INCLUDE_ALL)
+  const INCLUDE_ELEMENT = INCLUDE_ANY && (starters.includes('elements') || INCLUDE_ALL)
   const INCLUDE_STYLE = INCLUDE_ANY && (starters.includes('styles') || INCLUDE_ALL)
   const INCLUDE_INSTALL = INCLUDE_ANY && (starters.includes('install') || INCLUDE_ALL)
   const INCLUDE_SECTION = INCLUDE_ANY && (starters.includes('sections') || INCLUDE_ALL)
@@ -24,7 +24,7 @@ module.exports = (name, include) => {
   const EXT_READABLE_NAME = EXT_COMPONENT_NAME.split('-').map(part => upperFirstLetter(part)).join(' ')
 
   // import strings
-  let scriptImport = ''
+  const scriptImport = ''
   let styleImport = ''
 
   /*
@@ -32,7 +32,6 @@ module.exports = (name, include) => {
   */
 
   const FILES = {}
-
   if (INCLUDE_CONFIG) {
     DIRS.push('config')
 
@@ -47,11 +46,9 @@ module.exports = (name, include) => {
   if (INCLUDE_INSTALL) {
     FILES['install.js'] = starterContent(starterConfigs.install, [EXT_NAME])
   }
-  if (INCLUDE_SCRIPT) {
-    scriptImport = `import './scripts/${EXT_NAME}.js'
-`
-    DIRS.push('scripts')
-    FILES[`scripts/${EXT_NAME}.js`] = starterContent(starterConfigs.script, [EXT_NAME, EXT_CLASS_NAME])
+  if (INCLUDE_ELEMENT) {
+    DIRS.push('elements')
+    FILES[`elements/${EXT_COMPONENT_NAME}.js`] = starterContent(starterConfigs.element, [EXT_COMPONENT_NAME, EXT_CLASS_NAME])
   }
   if (INCLUDE_STYLE) {
     styleImport = `import './styles/${EXT_NAME}.css'
@@ -60,11 +57,11 @@ module.exports = (name, include) => {
     const COMPONENT_CSS = `${EXT_COMPONENT_NAME} {
 
 }`
-    FILES[`styles/${EXT_NAME}.css`] = INCLUDE_SCRIPT ? COMPONENT_CSS : ''
+    FILES[`styles/${EXT_NAME}.css`] = INCLUDE_ELEMENT ? COMPONENT_CSS : ''
   }
   if (INCLUDE_SECTION) {
     DIRS.push('sections')
-    const TAG = INCLUDE_SCRIPT ? EXT_COMPONENT_NAME : 'div'
+    const TAG = INCLUDE_ELEMENT ? EXT_COMPONENT_NAME : 'div'
     FILES[`sections/${EXT_NAME}.liquid`] = starterContent(starterConfigs.section, [TAG, EXT_NAME])
   }
 

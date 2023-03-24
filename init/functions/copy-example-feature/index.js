@@ -11,7 +11,7 @@ const logSymbols = require('#LogSymbols')
 
 module.exports = function({ dest }) {
   // define and create the destination example-feature
-  const target = path.resolve(dest, './_features/example-feature')
+  const target = path.resolve(dest, './theme-envy/features/example-feature')
   fs.ensureDirSync(target)
 
   // define the src example-feature path

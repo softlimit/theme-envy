@@ -5,7 +5,7 @@ const logSymbols = require('#LogSymbols')
 const detectChildren = require('./detect-children')
 
 module.exports = function({ sourceTheme }) {
-  // figure out if we can separate any sections into _features
+  // figure out if we can separate any sections into features
   const sections = glob.sync(path.resolve(sourceTheme, 'sections/*.liquid'))
 
   const children = sections.map(section => {
@@ -33,21 +33,21 @@ module.exports = function({ sourceTheme }) {
     return { section: child.section, snippets, assets }
   }).filter(section => section.snippets.length || section.assets.length)
 
-  // move sections with unique children to _features
+  // move sections with unique children to theme-envy/features
   sectionsWithUniqueChildren.forEach(section => {
     const sectionName = path.basename(section.section, '.liquid')
-    fs.ensureDirSync(path.resolve(sourceTheme, '_features', sectionName))
-    fs.moveSync(section.section, path.resolve(sourceTheme, '_features', sectionName, `sections/${sectionName}.liquid`))
+    fs.ensureDirSync(path.resolve(sourceTheme, 'theme-envy/features', sectionName))
+    fs.moveSync(section.section, path.resolve(sourceTheme, 'theme-envy/features', sectionName, `sections/${sectionName}.liquid`))
     if (section.snippets.length) {
-      fs.ensureDirSync(path.resolve(sourceTheme, '_features', sectionName, 'snippets'))
+      fs.ensureDirSync(path.resolve(sourceTheme, 'theme-envy/features', sectionName, 'snippets'))
       section.snippets.forEach(snippet => {
-        fs.moveSync(path.resolve(sourceTheme, `snippets/${snippet}.liquid`), path.resolve(sourceTheme, '_features', sectionName, 'snippets', `${snippet}.liquid`))
+        fs.moveSync(path.resolve(sourceTheme, `snippets/${snippet}.liquid`), path.resolve(sourceTheme, 'theme-envy/features', sectionName, 'snippets', `${snippet}.liquid`))
       })
     }
     if (section.assets.length) {
-      fs.ensureDirSync(path.resolve(sourceTheme, '_features', sectionName, 'assets'))
+      fs.ensureDirSync(path.resolve(sourceTheme, 'theme-envy/features', sectionName, 'assets'))
       section.assets.forEach(asset => {
-        fs.moveSync(path.resolve(sourceTheme, `assets/${asset}`), path.resolve(sourceTheme, '_features', sectionName, 'assets', `${asset}`))
+        fs.moveSync(path.resolve(sourceTheme, `assets/${asset}`), path.resolve(sourceTheme, 'theme-envy/features', sectionName, 'assets', `${asset}`))
       })
     }
   })
