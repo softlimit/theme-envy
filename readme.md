@@ -131,15 +131,17 @@ Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets
   
 ```bash
 /
-└── config/ # .js files concatenated and added to settings_schema.json
-└── partials/ # .liquid files that are referenced using Theme Envy {% partial 'file-name' %} tag
-└── schema/ # .js files with module.exports to be injected into section files, or referenced with ThemeRequire()
-└── scripts/ # .js files to be imported into index.js
-└── sections/ # .liquid files only, included in build automatically
-└── snippets/ # .liquid files only, included in build automatically
-└── styles/ # contains any .css files, must be imported into index.js
-└── index.js # is concatenated and loaded sitewide
-└── install.js # defines where to inject code into hooks
+└── _features
+   └── your-feature/
+      └── config/ # .js files concatenated and added to settings_schema.json
+      └── partials/ # .liquid files that are referenced using Theme Envy {% partial 'file-name' %} tag
+      └── schema/ # .js files with module.exports to be injected into section files, or referenced with ThemeRequire()
+      └── scripts/ # .js files to be imported into index.js
+      └── sections/ # .liquid files only, included in build automatically
+      └── snippets/ # .liquid files only, included in build automatically
+      └── styles/ # contains any .css files, must be imported into index.js
+      └── index.js # is concatenated and loaded sitewide
+      └── install.js # defines where to inject code into hooks
 ```
 
 ### Hooks/installs
