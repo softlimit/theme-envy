@@ -15,36 +15,56 @@ const parentThemeFiles = require('./parent-theme-files')
 
 const globs = {
   assets: {
-    glob: '**/assets/**/*',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/assets/**/*'))
+    },
   },
   config: {
-    glob: '**/config/*.js',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/config/*.js'))
+    },
     filter: file => path.basename(file) !== 'settings_schema.js',
   },
   elements: {
-    glob: '_elements/**/index.js',
+    glob(src) {
+      return [...glob.sync(path.resolve(src, '_elements/**/index.js')), ...glob.sync(path.resolve(src, '_elements/*.js'))]
+    }
   },
   features: {
-    glob: '_features/**/index.js',
+    glob(src) {
+      return glob.sync(path.resolve(src, '_features/**/index.js'))
+    },
   },
   installs: {
-    glob: '**/install.js',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/install.js'))
+    },
   },
   liquid: {
-    glob: '**/*.liquid',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/*.liquid'))
+    },
     filter: file => !file.includes('partials'),
   },
   partials: {
-    glob: '**/partials/*.liquid',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/{partials,_partials}/*.liquid'))
+    },
   },
   schema: {
-    glob: '**/{schema,_schema}/*.js',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/{schema,_schema}/*.js'))
+    },
   },
   sectionGroups: {
-    glob: '**/sections/*.json',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/sections/*.json'))
+    },
   },
   templates: {
-    glob: '**/templates/*.json',
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/templates/*.json'))
+    },
   },
 }
 
@@ -52,7 +72,7 @@ module.exports = function(type) {
   function getFiles(src, only) {
     // src is either the themePath or the parentTheme
     // only is a list of directory names to filter against, used for parentTheme
-    let files = glob.sync(path.resolve(src, globs[type].glob))
+    let files = globs[type].glob(src)
     if (only) {
       files = files.filter(file => {
         return only.some(dir => file.indexOf(dir) > -1)

@@ -17,7 +17,7 @@ const themeEnvyCommands = {
   convert: require('#Convert'),
   dev: require('#Helpers/functions/dev.js'),
   init: require('#Init'),
-  new: require('#Helpers/functions/scaffold-new.js'),
+  new: require('#Helpers/functions/scaffold-new/index.js'),
   'pull-json': require('#Helpers/functions/pull-json.js'),
 }
 
@@ -94,11 +94,11 @@ program
 
 program
   .command('new')
-  .description('Create named directory in _features or _elements with starter files to build new feature|element')
+  .description('Create new Feature (_features) or Element (_elements) from starter files')
   .usage('<type> <name> [include]')
   .addArgument(new commander.Argument('<type>', 'Define the type of scaffold to create').choices(['feature', 'element']))
   .argument('<name>', 'Handleized name for the new element|feature')
-  .argument('[include]', 'Comma-separated list of starter directories and files to include in your scaffold. Defaults to all if not provided.')
+  .argument('[include]', 'Comma-separated list of starter directories and files to include in your scaffold. Defaults to all if not provided. all,config,install,sections,snippets,schema,styles')
   .action((type, name, include, options, command) => {
     scriptMessage(command.name())
     if (name.includes(',') || name.includes(' ')) {
