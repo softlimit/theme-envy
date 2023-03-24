@@ -35,9 +35,9 @@ module.exports = async function(src, opts = {}) {
     }
   })
 
-  // Create directories _features and _elements
+  // Create theme-envy directories
   ensureDirectories({ root: sourceTheme, envy: true })
-  console.log(`${logSymbols.success} ${chalk.green('_features')} and ${chalk.green('_elements')} directories created`)
+  console.log(`${logSymbols.success} ${chalk.green('theme-envy')} directories created`)
 
   if (opts.addThemeEnvy !== false) addThemeEnvyFeatures({ dest: sourceTheme })
 

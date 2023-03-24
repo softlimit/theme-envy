@@ -53,8 +53,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      Elements: path.resolve(ThemeEnvy.themePath, '_elements/'),
-      Features: path.resolve(ThemeEnvy.themePath, '_features/'),
+      Elements: path.resolve(ThemeEnvy.themePath, 'theme-envy/elements/'),
+      Features: path.resolve(ThemeEnvy.themePath, 'theme-envy/features/'),
       Root: path.resolve(process.cwd()),
       Scripts: path.resolve(ThemeEnvy.themePath, 'scripts/'),
     },

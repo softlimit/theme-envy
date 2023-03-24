@@ -1,7 +1,7 @@
 /**
   * @description Exports a function that ensures our directory structure is in place.
   * @param {string} root - The root directory to ensure the directories are in place.
-  * @param {boolean} envy - Whether or not to ensure the _features and _elements directories.
+  * @param {boolean} envy - Whether or not to ensure the theme-envy specific directories.
   * @example
   * ensureDirectories({ root: ThemeEnvy.themePath, envy: true })
   * @returns {Void}
@@ -11,7 +11,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 const directories = ['assets', 'config', 'layout', 'locales', 'sections', 'snippets', 'templates']
-const envyDirectories = ['_elements', '_features', '_partials', '_schema']
+const envyDirectories = ['theme-envy/elements', 'theme-envy/features', 'theme-envy/partials', 'theme-envy/schema']
 function ensureDirectory(root, dir) {
   fs.ensureDirSync(path.resolve(root, dir))
 }

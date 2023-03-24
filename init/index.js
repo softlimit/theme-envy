@@ -3,7 +3,7 @@
   @param [optional]: --example --e: outputs example feature structure and dummy files with readme documentation in each subdirectory
   @description creates skeleton structure for src folder
     - Shopify directories
-    - Adds "_features" and "_elements" directories
+    - Adds theme-envy directories
     - config files
   @example npx theme-envy init [source|git] [options]
 */
@@ -62,7 +62,7 @@ module.exports = async function(source, opts = {}) {
 
   console.log(`${logSymbols.success} Directory structure set up`)
 
-  copyStarterConfigFiles({ target })
+  copyStarterConfigFiles({ target, opts })
 
   addThemeEnvyFeatures({ dest })
 
@@ -76,7 +76,7 @@ module.exports = async function(source, opts = {}) {
   // only runs if settings_data.json does not exist
   createEmptySettingsData({ dest })
 
-  // if --example or --e flag is present, copy example-feature folder into _features
+  // if --example or --e flag is present, copy example-feature folder into theme-envy/features
   if (opts.example) {
     copyExampleFeature({ dest })
   }

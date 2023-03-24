@@ -5,7 +5,7 @@ const starterContent = require('./starter-content')
 const { starterConfigs } = require('../objects')
 
 module.exports = (name) => {
-  const ELEMENTS = path.resolve(ThemeEnvy.themePath, '_elements')
+  const ELEMENTS = path.resolve(ThemeEnvy.themePath, 'theme-envy/elements')
   const EXT_NAME = name.toLowerCase()
 
   const EXT_COMPONENT_NAME = EXT_NAME.indexOf('-') > -1 ? EXT_NAME : EXT_NAME + '-component'

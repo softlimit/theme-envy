@@ -85,7 +85,8 @@ program
   .description('Initialize a new Shopify theme project with Theme Envy directory structure')
   .usage('[source] -e|--example -c|--convert')
   .argument('[source]', 'Specify the path/git url to your theme source directory to process, if not provided will create the directory structure in /src')
-  .option('-c, --convert', 'Convert theme sections to _features, add hooks, and install theme-envy feature on import')
+  .option('-s, --store <store>', 'Specify the myshopify domain for your store', 'my-store.myshopify.com')
+  .option('-c, --convert', 'Convert theme sections to features, add hooks, and install theme-envy feature on import')
   .option('-e, --example', 'Output example feature structure and dummy files with readme documentation in each subdirectory')
   .action((source, options, command) => {
     scriptMessage(command.name())
@@ -94,7 +95,7 @@ program
 
 program
   .command('new')
-  .description('Create new Feature (_features) or Element (_elements) from starter files')
+  .description('Create new Feature or Element from starter files')
   .usage('<type> <name> [include]')
   .addArgument(new commander.Argument('<type>', 'Define the type of scaffold to create').choices(['feature', 'element']))
   .argument('<name>', 'Handleized name for the new element|feature')

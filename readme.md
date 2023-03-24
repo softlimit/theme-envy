@@ -64,7 +64,7 @@ module.exports = {
 }
 ```
 
-> During the `init` command a new "Feature" is added to your project called `theme-envy` in `src/_features/theme-envy`. This feature will add a snippet and `{% render 'theme-envy' %}` to the end of your `<head>` tag in `layout/theme.liquid` during project build. This handles all the Theme Envy JS and CSS.
+> During the `init` command a new "Feature" is added to your project called `theme-envy` in `src/theme-envy/features/theme-envy`. This feature will add a snippet and `{% render 'theme-envy' %}` to the end of your `<head>` tag in `layout/theme.liquid` during project build. This handles all the Theme Envy JS and CSS.
 
 You are now ready to start developing! Get started with this simple command in your terminal
 ```bash
@@ -72,14 +72,9 @@ npx theme-envy dev
 ```
 
 ## Theme Directory Structure
-Theme Envy directories are prefixed with `_`.
-The other directories are the [Shopify standard directories](https://shopify.dev/docs/themes/architecture#directory-structure-and-component-types).
+The directories are [Shopify standard directories](https://shopify.dev/docs/themes/architecture#directory-structure-and-component-types) except for `theme-envy`.
 ```bash
 /
-└── _elements/ # for Custom Elements/Web Components
-└── _features/ # individual directories of discrete features
-└── _partials/ # small .liquid files that are reusable/inserted across the theme
-└── _schema/ # .js files for sharing bits of section/config schema across the theme
 └── assets/
 └── config/
 └── layout/
@@ -88,6 +83,11 @@ The other directories are the [Shopify standard directories](https://shopify.dev
 └── snippets/
 └── templates/
     └── customers/
+└── theme-envy/
+    └── elements/ # for Custom Elements/Web Components
+    └── features/ # individual directories of discrete features
+    └── partials/ # small .liquid files that are reusable/inserted across the theme
+    └── schema/ # .js files for sharing bits of section/config schema across the theme
 ```
 
 ## Theme Envy CLI
@@ -106,7 +106,7 @@ Commands:
   convert [options] [source]   Convert an existing Shopify theme to Theme Envy directory structure
   dev                          Start development process and sync with Shopify using the Shopify CLI
   init [options] [source]      Initialize a new Shopify theme project with Theme Envy directory structure
-  new <type> <name> [include]  Create named directory in _features or _elements with starter files to build new feature|element
+  new <type> <name> [include]  Create named directory in theme-envy/features or theme-envy/elements from starter files
   pull-json                    Pull json template, section, and settings_data files from theme using Shopify CLI
   help [command]               display help for command
 ```
@@ -120,18 +120,18 @@ npx theme-envy new element <your-element>
 ```
 Your **element** file must have the same name as your new CustomElement (Web Component). Theme Envy will only load the asset(s) for `your-element` if element is present in the DOM.
 
-> To take advantage of Theme Envy's smart loading of **elements** they must be inside the `_elements` directory
+> To take advantage of Theme Envy's smart loading of **elements** they must be inside an `elements` directory
 
-You can also setup an **element** as a subdirectory of `_elements` by using an index.js file (`_elements/your-element/index.js`). In this case your subdirectory must have the same name as your Web Component.
+You can also setup an **element** as a subdirectory of `theme-envy/elements` by using an index.js file (`theme-envy/elements/your-element/index.js`). In this case your subdirectory must have the same name as your Web Component.
 
 ### Features
 Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets associated with a feature will be loaded as part of the main `theme-envy.js` file on all templates in your theme.
 
-> Features are subdirectories of `src/_features`.
+> Features are subdirectories of `src/theme-envy/features`.
   
 ```bash
 /
-└── _features
+└── theme-envy/features
    └── your-feature/
       └── config/ # .js files concatenated and added to settings_schema.json
       └── partials/ # .liquid files that are referenced using Theme Envy {% partial 'file-name' %} tag
