@@ -68,6 +68,7 @@
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.0.2",
     "prettier": "^2.8.4",
+    "promptly": "^3.2.0",
     "simple-git": "^3.17.0",
     "stmux": "^1.8.5",
     "tailwindcss": "^3.2.7",

@@ -5,10 +5,14 @@
  * @example npx theme-envy
  */
 
-const commander = require('commander')
-const program = new commander.Command()
 const chalk = require('chalk')
+const commander = require('commander')
 const emoji = require('node-emoji')
+const fs = require('fs-extra')
+const program = new commander.Command()
+const promptly = require('promptly')
+
+const { directories } = require('#EnsureDirectories')
 require('#Helpers/functions/global-theme-envy.js')
 
 const themeEnvyCommands = {
@@ -88,8 +92,51 @@ program
   .option('-s, --store <store>', 'Specify the myshopify domain for your store', 'my-store.myshopify.com')
   .option('-c, --convert', 'Convert theme sections to features, add hooks, and install theme-envy feature on import')
   .option('-e, --example', 'Output example feature structure and dummy files with readme documentation in each subdirectory')
-  .action((source, options, command) => {
+  .action(async (source, options, command) => {
     scriptMessage(command.name())
+    if (!source) {
+      let choice = await promptly.choose(`${chalk.yellow('Would you like to:')}
+  a) Import an existing repo from a .git url
+  b) Initialize from a Shopify theme in the current directory, or initialize empty directories if no Shopify theme exists?
+
+(a/b)?`, ['a', 'b', 'A', 'B'])
+      choice = choice.toLowerCase()
+      if (choice === 'a') {
+        const gitUrl = await promptly.prompt(chalk.yellow('Please provide the git url for your source theme:\n'), {
+          validator(value) {
+            if (value.includes('git@') || value.includes('https://')) return value
+            throw new Error(chalk.red.bold('Please enter a valid git url'))
+          }
+        })
+        if (gitUrl) {
+          source = gitUrl
+        }
+      }
+    }
+    // check for existing Shopify theme in root
+    const rootDirs = fs.readdirSync(process.cwd()).filter(res => !res.includes('.'))
+    const shopifyThemeExistsInRoot = directories.every(dir => rootDirs.includes(dir))
+    if (!options.convert && (shopifyThemeExistsInRoot || source)) {
+      const convert = await promptly.confirm(`
+${chalk.yellow('Do you want to convert the existing theme and install Theme Envy?')} ${chalk.green('(recommended)')}
+This does the following things:
+  • Converts your theme sections to Theme Envy features (where possible)
+  • Adds ${chalk.cyan('{% hook %}')} tags to ${chalk.cyan('theme.liquid')}
+  • Installs the Theme Envy integration feature to ${chalk.cyan('theme-envy/features')}
+(Y/n)`)
+      if (convert) {
+        options.convert = true
+      }
+    }
+    if (!options.example) {
+      const example = await promptly.confirm(`${chalk.yellow('Would you like to output an example Theme Envy "Feature"?')}\n(Y/n)?`)
+      if (example) {
+        options.example = true
+      }
+    }
+    if (options.store === 'my-store.myshopify.com') {
+      options.store = await promptly.prompt(chalk.yellow('Please provide the myshopify.com domain of your store (this can be changed later in theme.config.js):\n '))
+    }
     themeEnvyCommands.init(source, options)
   })
 
