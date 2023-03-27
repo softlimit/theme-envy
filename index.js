@@ -5,12 +5,13 @@
  * @example npx theme-envy
  */
 
-const commander = require('commander')
 const chalk = require('chalk')
+const commander = require('commander')
 const emoji = require('node-emoji')
 const fs = require('fs-extra')
 const promptly = require('promptly')
 const program = new commander.Command()
+
 const { directories } = require('#EnsureDirectories')
 require('#Helpers/functions/global-theme-envy.js')
 
