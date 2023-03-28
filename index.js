@@ -61,7 +61,7 @@ program
 
 program
   .command('clean')
-  .description('Clear dist folder contents')
+  .description('Empty output directory')
   .action((options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.clean()

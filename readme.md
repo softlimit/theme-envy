@@ -104,7 +104,7 @@ Options:
 
 Commands:
   build [options] [env]        Build Shopify theme
-  clean                        Clear dist folder contents
+  clean                        Empty output directory
   convert [options] [source]   Convert an existing Shopify theme to Theme Envy directory structure
   dev                          Start development process and sync with Shopify using the Shopify CLI
   find-orphans                 Find unused snippets, partials, and assets in your Shopify theme
