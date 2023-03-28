@@ -32,69 +32,6 @@ const scriptMessage = (scriptName) => {
 }
 
 program
-  .description('Theme Envy CLI Tools')
-  .addHelpText('beforeAll', `
-${emoji.get('green_heart') + chalk.green.bold(' Softlimit Shopify Theme Envy ') + emoji.get('green_heart')}
-${chalk.green.bold('===================================')}
-  `)
-  .addHelpText('afterAll', `
-${chalk.cyan.bold('===================================')}
-${emoji.get('thinking_face')} ${chalk.cyan.bold.underline('Need more help?')}
-We are always looking for ways to improve our tools
-and make your Shopify development life smoother.
-
-  Let us know what we missed! Create an issue on our github repo:
-  ${chalk.dim.underline('https://github.com/softlimit/shopify-env/issues')}
-  `)
-
-program
-  .command('build')
-  .description('Build Shopify theme')
-  .usage('[development|production] -w|--watch')
-  .addArgument(new commander.Argument('[env]', 'Specify the build environment to run').choices(['development', 'production']))
-  .option('-w, --watch', 'Watch for changed files and update dist, serve with Shopify CLI')
-  .option('-v, --verbose', 'Show Tailwind and Webpack in output')
-  .action((env, options, command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.build(env, options)
-  })
-
-program
-  .command('clean')
-  .description('Empty output directory')
-  .action((options, command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.clean()
-  })
-
-program
-  .command('convert')
-  .description('Convert an existing Shopify theme to Theme Envy directory structure')
-  .usage('[source] -a|--add-theme-envy-feature')
-  .argument('[source]', 'Specify the path to your theme source directory to process, defaults to project root ./src directory if not provided')
-  .option('-a, --add-theme-envy-feature', 'Add theme-envy feature and install to hook')
-  .action((source, options, command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.convert(source)
-  })
-
-program
-  .command('dev')
-  .description('Start development process and sync with Shopify using the Shopify CLI')
-  .action((options, command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.dev()
-  })
-
-program
-  .command('find-orphans')
-  .description('Find unused snippets, partials, and assets in your Shopify theme')
-  .action((options, command) => {
-    scriptMessage(command.name())
-    themeEnvyCommands.orphans()
-  })
-
-program
   .command('init')
   .description('Initialize a new Shopify theme project with Theme Envy directory structure')
   .usage('[source] -e|--example -c|--convert')
@@ -151,6 +88,50 @@ This does the following things:
   })
 
 program
+  .command('dev')
+  .description('Start development process and sync with Shopify using the Shopify CLI')
+  .action((options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.dev()
+  })
+
+program
+  .description('Theme Envy CLI Tools')
+  .addHelpText('beforeAll', `
+${emoji.get('green_heart') + chalk.green.bold(' Softlimit Shopify Theme Envy ') + emoji.get('green_heart')}
+${chalk.green.bold('===================================')}
+  `)
+  .addHelpText('afterAll', `
+${chalk.cyan.bold('===================================')}
+${emoji.get('thinking_face')} ${chalk.cyan.bold.underline('Need more help?')}
+We are always looking for ways to improve our tools
+and make your Shopify development life smoother.
+
+  Let us know what we missed! Create an issue on our github repo:
+  ${chalk.dim.underline('https://github.com/softlimit/shopify-env/issues')}
+  `)
+
+program
+  .command('build')
+  .description('Build Shopify theme')
+  .usage('[development|production] -w|--watch')
+  .addArgument(new commander.Argument('[env]', 'Specify the build environment to run').choices(['development', 'production']))
+  .option('-w, --watch', 'Watch for changed files and update dist, serve with Shopify CLI')
+  .option('-v, --verbose', 'Show Tailwind and Webpack in output')
+  .action((env, options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.build(env, options)
+  })
+
+program
+  .command('clean')
+  .description('Empty output directory')
+  .action((options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.clean()
+  })
+
+program
   .command('new')
   .description('Create new Feature or Element from starter files')
   .usage('<type> <name> [include]')
@@ -170,6 +151,14 @@ program
   })
 
 program
+  .command('find-orphans')
+  .description('Find unused snippets, partials, and assets in your Shopify theme')
+  .action((options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.orphans()
+  })
+
+program
   .command('pull-json')
   .description('Pull json template, section, and settings_data files from theme using Shopify CLI')
   .action((options, command) => {
@@ -186,5 +175,16 @@ program
   .action((filepath, options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.tree(filepath, options)
+  })
+
+program
+  .command('convert')
+  .description('Convert an existing Shopify theme to Theme Envy directory structure')
+  .usage('[source] -a|--add-theme-envy-feature')
+  .argument('[source]', 'Specify the path to your theme source directory to process, defaults to project root ./src directory if not provided')
+  .option('-a, --add-theme-envy-feature', 'Add theme-envy feature and install to hook')
+  .action((source, options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.convert(source)
   })
 program.parse()
