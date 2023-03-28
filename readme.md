@@ -64,7 +64,7 @@ Get started by running the following command and answering the prompts:
 npx theme-envy init
 ```
 
-> **Note**
+> **Note**  
 > During the `init` command a new "Feature" is added to your project called `theme-envy` in `src/theme-envy/features/theme-envy`. This feature will add a snippet and `{% render 'theme-envy' %}` to the end of your `<head>` tag in `layout/theme.liquid` during project build. This handles all the Theme Envy JS and CSS.
 
 You are now ready to start developing! Get started with this simple command in your terminal
@@ -92,6 +92,7 @@ The directories are [Shopify standard directories](https://shopify.dev/docs/them
 ```
 
 ## CLI
+> **Note**  
 > Precede all commands with `npx theme-envy`
 ```
 Usage: theme-envy [options] [command]
@@ -122,7 +123,7 @@ npx theme-envy new element <your-element>
 ```
 Your **element** file must have the same name as your new CustomElement (Web Component). Theme Envy will only load the asset(s) for `your-element` if element is present in the DOM.
 
-> **Warning**
+> **Warning**  
 > To take advantage of Theme Envy's smart loading of **elements** they must be inside an `elements` directory
 
 You can also setup an **element** as a subdirectory of `theme-envy/elements` by using an index.js file (`theme-envy/elements/your-element/index.js`). In this case your subdirectory must have the same name as your Web Component.
@@ -131,7 +132,7 @@ You can also setup an **element** as a subdirectory of `theme-envy/elements` by 
 ### Features
 Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets associated with a feature will be loaded as part of the main `theme-envy.js` file on all templates in your theme.
 
-> **Note**
+> **Note**  
 > Features are subdirectories of `src/theme-envy/features`.
   
 ```bash
@@ -176,7 +177,7 @@ Use this syntax in section `.liquid` files in place of the normal `{% schema %}{
 ```javascript
 {% schema 'schema-your-section.js' %}
 ```
-> **Note**
+> **Note**  
 > Don't worry about relative/absolute paths here, Theme Envy will find your uniquely named schema js file within your project.
 
 When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory. Schema that is shared across multiple features/sections should go in `src/theme-envy/schema`
@@ -190,7 +191,7 @@ By using the syntax
 {% partial '_file-name' %}
 ```
 the contents of the liquid file named `_file-name.liquid` are inserted directly into the output file. Our practice is to name these files with a leading _, but it is not required.
-> **Warning**
+> **Warning**  
 > All **partial** files must be within a `partials` directory
 
 ***
