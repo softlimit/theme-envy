@@ -1,18 +1,32 @@
-Theme Envy is a Shopify development environment optimized for performance using Node, Webpack, Tailwind, and custom build processes for repeatable code beyond liquid snippets.
+# 💚 Theme Envy for Shopify Themes 💚
+## _The lean, mean development machine for your Shopify themes_
 
-What you can do with Theme Envy
-* Easily share schema across sections and theme settings
-* Tailwind, Webpack, out of the box
-* Manage section schema with Javascript files `{% schema 'schema-section.js' %}`
-* Use subdirectories in `/snippets`, `/sections`, etc.
-* Manage app and feature integrations using our `hooks` and `installs` system.
-* Directly reference breakpoints and other values in `theme.config.js` from your liquid files eg: `{% theme 'breakpoints.md' %}`
-* Share code around your theme using `partials`, even within `{% liquid %}` tags. Theme Envy replaces the `{% partial '_example-file' %}` with the code from the referenced file.
-* Set starter content for new features and elements to establish consistency in your code base.
-* Manage all code for discrete features in their own subdirectories.
-* Import an existing Shopify theme
-* Automatically load Web Components/HTML Custom Elements only when they are in the DOM
-* Super fast build and watch times
+[![Built by Softlimit](https://cdn.shopify.com/s/files/1/0581/4760/2587/files/softlimit-app-icons-03.png?v=1680017399)](https://www.softlimit.com/)
+
+Theme Envy is a feature-rich, performance-optimized Shopify theme development environment. With our extended liquid tools, you can move beyond liquid snippets with repeatable code. Theme Envy compiles everything for you using a combination of custom build processes, Node, Webpack, and Tailwind.
+
+## Theme Envy Features
+
+- **Get to work**:
+Use [`theme-envy`](#theme-envy-cli) CLI commands to build, serve, initialize, add new feature structure, and much more, without touching your package.json. ⚡ **Bonus**: *Our build and watch processes are super fast.* ⚡
+- **Stay organized**:
+Put related files together in their own [feature subdirectories](#features) instead of the default Shopify theme structure. You can also add subdirectories within the default Shopify `/snippets` and `/sections` folders to group files.
+- **Repeat yourself**:
+Break up code into smaller, reusable pieces with our extended liquid [partials](#partials) and [schema](#schematheme-require) files.
+- **Integrate with Ease**:
+Manage app and feature implementation using our [`hooks`](#hooksinstalls) and [`installs`](#hooksinstalls) system.
+- **Code in Style**:
+Nest custom styling or apply classes with PostCSS and [Tailwind](#tailwind) built in.
+- **Stay Consistent**:
+Customize new feature starter files with your own markup and settings to establish consistency in your theme code base.
+- **Customize your Configuration**:
+Add and update values in your `theme.config.js` for direct reference in liquid files using the [`{% theme %}`](#theme) tag
+- **Optimize Performance**:
+Automatically lazy-load custom JS elements only when they are present on the page and use [Webpack](#webpack) dynamic imports to conditionally load assets.
+- **Build for Production**:
+Automatically prettify liquid and minify javascript on production builds.
+
+---
 
 Table of Contents
 - [Installation](#installation)
