@@ -57,7 +57,7 @@ const ThemeRequire = (file, options) => {
   * Example usage:
   * ***********************
     const textLockupBlock = ThemeRequire(
-      '_schema/schema-text-lockup-block.json',
+      'schema/schema-text-lockup-block.json',
       {
         delete: ['Text Background', 'text_bg_opacity'],
         extend: {

@@ -21,7 +21,7 @@ const globs = {
   },
   config: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/config/*.js'))
+      return glob.sync(path.resolve(src, '**/config/**/*.js'))
     },
     filter: file => path.basename(file) !== 'settings_schema.js',
   },
@@ -48,22 +48,22 @@ const globs = {
   },
   partials: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/{partials,_partials}/*.liquid'))
+      return glob.sync(path.resolve(src, '**/partials/**/*.liquid'))
     },
   },
   schema: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/{schema,_schema}/*.js'))
+      return glob.sync(path.resolve(src, '**/schema/**/*.js'))
     },
   },
   sectionGroups: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/sections/*.json'))
+      return glob.sync(path.resolve(src, '**/sections/**/*.json'))
     },
   },
   templates: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/templates/*.json'))
+      return glob.sync(path.resolve(src, '**/templates/**/*.json'))
     },
   },
 }

@@ -1,29 +1,32 @@
+<!-- omit in toc -->
 # 💚 Theme Envy for Shopify Themes 💚
+
+<!-- omit in toc -->
 ## _The lean, mean development machine for your Shopify themes_
 
 [![Built by Softlimit](https://cdn.shopify.com/s/files/1/0581/4760/2587/files/softlimit-app-icons-03.png?v=1680017399)](https://www.softlimit.com/)
 
-Theme Envy is a feature-rich, performance-optimized Shopify theme development environment. With our extended liquid tools, you can move beyond liquid snippets with repeatable code. Theme Envy compiles everything for you using a combination of custom build processes, Node, Webpack, and Tailwind.
-
+Theme Envy is a feature-rich, performance-optimized Shopify theme development environment. With the extended liquid tools, you can move beyond liquid snippets with repeatable code. Theme Envy compiles everything for you using a combination of custom build processes, Node, Webpack, and Tailwind.
+<!-- omit in toc -->
 ## Theme Envy Features
 
-- **Get to work**:
-Use [`theme-envy`](#theme-envy-cli) CLI commands to build, serve, initialize, add new feature structure, and much more, without touching your package.json. ⚡ **Bonus**: *Our build and watch processes are super fast.* ⚡
-- **Stay organized**:
+- **Get to work**:  
+Use [`theme-envy`](#theme-envy-cli) CLI commands to build, serve, initialize, add new feature structure, and much more, without touching your package.json. ⚡ **Bonus**: *Theme Envy's build and watch processes are super fast.* ⚡
+- **Stay organized**:  
 Put related files together in their own [feature subdirectories](#features) instead of the default Shopify theme structure. You can also add subdirectories within the default Shopify `/snippets` and `/sections` folders to group files.
-- **Repeat yourself**:
-Break up code into smaller, reusable pieces with our extended liquid [partials](#partials) and [schema](#schematheme-require) files.
-- **Integrate with Ease**:
-Manage app and feature implementation using our [`hooks`](#hooksinstalls) and [`installs`](#hooksinstalls) system.
-- **Code in Style**:
+- **Repeat yourself**:  
+Break up code into smaller, reusable pieces with Theme Envy's extended liquid [partials](#partials) and [schema](#schematheme-require) files.
+- **Integrate with Ease**:  
+Manage app and feature implementation using Theme Envy's [`hooks`](#hooksinstalls) and [`installs`](#hooksinstalls) system.
+- **Code in Style**:  
 Nest custom styling or apply classes with PostCSS and [Tailwind](#tailwind) built in.
-- **Stay Consistent**:
+- **Stay Consistent**:  
 Customize new feature starter files with your own markup and settings to establish consistency in your theme code base.
-- **Customize your Configuration**:
+- **Customize your Configuration**:  
 Add and update values in your `theme.config.js` for direct reference in liquid files using the [`{% theme %}`](#theme) tag
-- **Optimize Performance**:
+- **Optimize Performance**:  
 Automatically lazy-load custom JS elements only when they are present on the page and use [Webpack](#webpack) dynamic imports to conditionally load assets.
-- **Build for Production**:
+- **Build for Production**:  
 Automatically prettify liquid and minify javascript on production builds.
 
 ---
@@ -32,13 +35,13 @@ Table of Contents
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Theme Directory Structure](#theme-directory-structure)
-- [Theme Envy CLI](#theme-envy-cli)
+- [CLI](#cli)
 - [Build Tools](#build-tools)
   - [Elements](#elements)
   - [Features](#features)
   - [Hooks/installs](#hooksinstalls)
   - [Schema/Theme Require](#schematheme-require)
-    - [JS Section Schema](#js-section-schema)
+  - [JS Section Schema](#js-section-schema)
   - [Partials](#partials)
   - [Theme](#theme)
 - [Theme.config.js](#themeconfigjs)
@@ -56,28 +59,12 @@ npm install @softlimit/theme-envy --save-dev
 ```
 
 ## Getting Started
-You can get started one of three ways:
-* `npx theme-envy init` in an empty directory will give you the directory structure for Theme Envy.
-* `npx theme-envy init https://github.com/Organization/repo.git --convert` imports an existing theme from Github and sets up Theme Envy
-* By running `npx theme-envy init` in an existing Shopify theme directory
-
-To get started with an existing theme, we can use Shopify's [Dawn](https://github.com/Shopify/dawn) as an example, but you can also specify a local path.
+Get started by running the following command and answering the prompts:
 ```bash
-# Imports Dawn, and with the --convert flag: 
-# Adds Theme Envy directories
-# Adds Theme Envy install hooks to layout/theme.liquid
-# Parses existing sections and creates Theme Envy "features" when possible
-npx theme-envy init https://github.com/Shopify/dawn.git --convert
-```
-Edit the new `theme.config.js` in your project root with your store's myshopify domain
-```javascript
-module.exports = {
-  ...
-  store: 'your-shop.myshopify.com',
-  ...
-}
+npx theme-envy init
 ```
 
+> **Note**
 > During the `init` command a new "Feature" is added to your project called `theme-envy` in `src/theme-envy/features/theme-envy`. This feature will add a snippet and `{% render 'theme-envy' %}` to the end of your `<head>` tag in `layout/theme.liquid` during project build. This handles all the Theme Envy JS and CSS.
 
 You are now ready to start developing! Get started with this simple command in your terminal
@@ -104,7 +91,7 @@ The directories are [Shopify standard directories](https://shopify.dev/docs/them
     └── schema/ # .js files for sharing bits of section/config schema across the theme
 ```
 
-## Theme Envy CLI
+## CLI
 > Precede all commands with `npx theme-envy`
 ```
 Usage: theme-envy [options] [command]
@@ -125,6 +112,7 @@ Commands:
   help [command]               display help for command
 ```
 
+***
 ## Build Tools
 
 ### Elements
@@ -134,13 +122,16 @@ npx theme-envy new element <your-element>
 ```
 Your **element** file must have the same name as your new CustomElement (Web Component). Theme Envy will only load the asset(s) for `your-element` if element is present in the DOM.
 
+> **Warning**
 > To take advantage of Theme Envy's smart loading of **elements** they must be inside an `elements` directory
 
 You can also setup an **element** as a subdirectory of `theme-envy/elements` by using an index.js file (`theme-envy/elements/your-element/index.js`). In this case your subdirectory must have the same name as your Web Component.
 
+***
 ### Features
 Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets associated with a feature will be loaded as part of the main `theme-envy.js` file on all templates in your theme.
 
+> **Note**
 > Features are subdirectories of `src/theme-envy/features`.
   
 ```bash
@@ -158,12 +149,13 @@ Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets
       └── install.js # defines where to inject code into hooks
 ```
 
+***
 ### Hooks/installs
-Hooks are places in our theme code where *Features* and *Elements* can insert code during build. This allows us to keep integrations discrete and easily undoable. To define a hook in the theme, we only need to add a `hook` tag like so:
+Hooks are places in the theme code where *Features* and *Elements* can insert code during build. This allows us to keep integrations discrete and easily undoable. To define a hook in the theme, we only need to add a `hook` tag like so:
 ```javascript
 {% hook 'head-end' %}
 ```
-We can then reference this spot in our theme code with an install.js file in a feature or element.
+We can then reference this hook's location with an install.js file in a feature or element.
 ```javascript
 module.exports = [
   {
@@ -175,34 +167,42 @@ module.exports = [
 ```
 During the build, all code for the `head-end` hook will be collected, sorted by priority (where 0 is highest in the code), and will replace the `{% hook 'head-end' %}` tag.
 
+***
 ### Schema/Theme Require
 We were frustrated by how difficult it is to share smaller pieces of Shopify Section schema across sections. Theme Envy includes a couple of tools to make this easier.
-#### JS Section Schema
+***
+### JS Section Schema
 Use this syntax in section `.liquid` files in place of the normal `{% schema %}{% endschema %}` tags:
 ```javascript
 {% schema 'schema-your-section.js' %}
 ```
+> **Note**
 > Don't worry about relative/absolute paths here, Theme Envy will find your uniquely named schema js file within your project.
 
-When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory. Schema that is shared across multiple features/sections should go in `src/_schema`
-> All **schema** files must be within a `schema` or `_schema` directory
+When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory. Schema that is shared across multiple features/sections should go in `src/theme-envy/schema`
+> **Warning**
+> All **schema** files must be within a `schema`
 
+***
 ### Partials
 By using the syntax 
 ```javascript 
 {% partial '_file-name' %}
 ```
 the contents of the liquid file named `_file-name.liquid` are inserted directly into the output file. Our practice is to name these files with a leading _, but it is not required.
-> All **partial** files must be within a `partials` or `_partials` directory
+> **Warning**
+> All **partial** files must be within a `partials` directory
 
+***
 ### Theme
-We can use this markup to access properties of our `theme.config.js` file within liquid files. This is especially helpful for when you have to access a breakpoint value within your markup.
+We can use this markup to access properties of the `theme.config.js` file within liquid files. This is especially helpful for when you have to access a breakpoint value within your markup.
 ```javascript
 {% theme 'breakpoints.md' %} // defined in theme.config.js
 ```
 
+***
 ## Theme.config.js
-After initializing your Theme Envy project, you will find a `theme.config.js` file in your project root. This is where we manage all of our Theme Envy build options.
+After initializing your Theme Envy project, you will find a `theme.config.js` file in your project root. This is where we manage all of the Theme Envy build options.
 
 ```javascript
 module.exports = {
@@ -233,16 +233,20 @@ module.exports = {
 }
 ```
 
+***
 ## Tailwind
 [Tailwind](https://tailwindcss.com/) is enabled automatically. It can be disabled in `theme.config.js`, and customized in `tailwind.config.js`
+***
 ## Webpack
 [Webpack](https://webpack.js.org/) is used to bundle and manage JS and CSS. By default, the only entry point is Theme Envy which will handle all `elements` and `features`. Any additional scripts or stylesheets can be added to the `entry` in `theme.config.js`.
 
+***
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
+***
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

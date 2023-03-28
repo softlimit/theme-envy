@@ -13,7 +13,7 @@ module.exports = (func, childFiles, type) => {
   // get all files from the parent theme, using only directories listed in ThemeConfig
   const only = [...ThemeEnvy.parentTheme.elements, ...ThemeEnvy.parentTheme.features]
   if (type === 'schema') {
-    only.push('_schema')
+    only.push('schema')
   }
   if (type === 'liquid') {
     only.push(...directories.map(dir => path.resolve(ThemeEnvy.parentTheme, dir)))
