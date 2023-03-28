@@ -49,10 +49,10 @@ and make your Shopify development life smoother.
 
 program
   .command('build')
-  .description('Build Shopify theme dist from src in either production or development context with watch process option for serving')
+  .description('Build Shopify theme')
   .usage('[development|production] -w|--watch')
   .addArgument(new commander.Argument('[env]', 'Specify the build environment to run').choices(['development', 'production']))
-  .option('-w, --watch', 'Watch for changed files and update dist')
+  .option('-w, --watch', 'Watch for changed files and update dist, serve with Shopify CLI')
   .option('-v, --verbose', 'Show Tailwind and Webpack in output')
   .action((env, options, command) => {
     scriptMessage(command.name())
