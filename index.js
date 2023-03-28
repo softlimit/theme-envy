@@ -22,7 +22,9 @@ const themeEnvyCommands = {
   dev: require('#Helpers/functions/dev.js'),
   init: require('#Init'),
   new: require('#Helpers/functions/scaffold-new/index.js'),
+  orphans: require('#Helpers/functions/find-orphans.js'),
   'pull-json': require('#Helpers/functions/pull-json.js'),
+  tree: require('#Helpers/functions/liquid-tree/index.js'),
 }
 
 const scriptMessage = (scriptName) => {
@@ -82,6 +84,14 @@ program
   .action((options, command) => {
     scriptMessage(command.name())
     themeEnvyCommands.dev()
+  })
+
+program
+  .command('find-orphans')
+  .description('Find unused snippets, partials, and assets in your Shopify theme')
+  .action((options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.orphans()
   })
 
 program
@@ -167,4 +177,14 @@ program
     themeEnvyCommands['pull-json']()
   })
 
+program
+  .command('tree')
+  .description('Display the dependency tree for a .liquid file')
+  .usage('[filepaths]')
+  .argument('[filepaths]', 'Project relative path(s) to .liquid files. Separate multiple paths with commas.')
+  .option('-v, --verbose', 'display as JS Object instead of formatted tree')
+  .action((filepath, options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.tree(filepath, options)
+  })
 program.parse()
