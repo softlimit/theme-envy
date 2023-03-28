@@ -61,6 +61,11 @@ const globs = {
       return glob.sync(path.resolve(src, '**/sections/**/*.json'))
     },
   },
+  snippets: {
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/snippets/**/*.liquid'))
+    },
+  },
   templates: {
     glob(src) {
       return glob.sync(path.resolve(src, '**/templates/**/*.json'))
