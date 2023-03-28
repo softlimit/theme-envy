@@ -107,9 +107,11 @@ Commands:
   clean                        Empty output directory
   convert [options] [source]   Convert an existing Shopify theme to Theme Envy directory structure
   dev                          Start development process and sync with Shopify using the Shopify CLI
+  find-orphans                 Find unused snippets, partials, and assets in your Shopify theme
   init [options] [source]      Initialize a new Shopify theme project with Theme Envy directory structure
-  new <type> <name> [include]  Create named directory in theme-envy/features or theme-envy/elements from starter files
+  new <type> <name> [include]  Create new Feature or Element from starter files
   pull-json                    Pull json template, section, and settings_data files from theme using Shopify CLI
+  tree [options] [filepaths]   Display the dependency tree for a .liquid file
   help [command]               display help for command
 ```
 
