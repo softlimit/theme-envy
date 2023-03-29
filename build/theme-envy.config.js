@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts')
 const { ESBuildMinifyPlugin } = require('esbuild-loader')
 const path = require('path')
 
@@ -53,6 +54,8 @@ module.exports = {
   },
   resolve: {
     alias: {
+      Build: ThemeEnvy.paths.build,
+      Helpers: ThemeEnvy.paths.helpers,
       Elements: path.resolve(ThemeEnvy.themePath, 'theme-envy/elements/'),
       Features: path.resolve(ThemeEnvy.themePath, 'theme-envy/features/'),
       Root: path.resolve(process.cwd()),
@@ -60,8 +63,9 @@ module.exports = {
     },
   },
   plugins: [
+    new RemoveEmptyScriptsPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].css?h=[chunkhash:5]'
+      filename: '[name].css?h=[chunkhash:5]',
     }),
   ]
 }

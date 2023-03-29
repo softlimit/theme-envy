@@ -4,7 +4,7 @@ const getAll = require('#Build/functions/get-all.js')
 
 const criticalCSS = getAll('criticalCSS')
 
-const markup = `@import './tailwind-base.css';
+const markup = `${ThemeEnvy.tailwind !== false ? "@import './tailwind-base.css'" : ''};
 ${criticalCSS.map(file => `@import '${file}';`).join('\n')}
 `
 
