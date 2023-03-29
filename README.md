@@ -187,8 +187,8 @@ Use this syntax in section `.liquid` files in place of the normal `{% schema %}{
 > Don't worry about relative/absolute paths here, Theme Envy will find your uniquely named schema js file within your project.
 
 When managing your section as a **Feature** we recommend putting all of your schema files in that feature's `schema` subdirectory. Schema that is shared across multiple features/sections should go in `src/theme-envy/schema`
-> **Warning**
-> All **schema** files must be within a `schema`
+> **Warning**  
+> All **schema** files must be within a `schema` directory
 
 ***
 ### Partials
