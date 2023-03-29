@@ -9,7 +9,7 @@ const logSymbols = require('#LogSymbols')
 
 module.exports = function({ dest }) {
   const featuresDir = path.resolve(__dirname, './features')
-  const initFeatures = glob.sync(`${featuresDir}/**`).filter(ref => fs.statSync(ref).isDirectory() && ref !== featuresDir)
+  const initFeatures = glob.sync(`${featuresDir}/*`).filter(ref => fs.statSync(ref).isDirectory() && ref !== featuresDir)
   initFeatures.forEach(feature => {
     const target = path.resolve(dest, './theme-envy/features', path.basename(feature))
     if (fs.existsSync(target)) return

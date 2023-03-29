@@ -13,3 +13,8 @@ ThemeEnvy.dependencies = {}
 ThemeEnvy.events = new EventEmitter()
 ThemeEnvy.themePath = path.resolve(process.cwd(), (ThemeEnvy.themePath || 'src'))
 ThemeEnvy.outputPath = path.resolve(process.cwd(), (ThemeEnvy.outputPath || 'dist'))
+
+ThemeEnvy.paths = {
+  build: path.resolve(__dirname, '../../build'),
+  helpers: path.resolve(__dirname, '../../helpers'),
+}

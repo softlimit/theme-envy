@@ -40,6 +40,7 @@ Table of Contents
   - [Elements](#elements)
   - [Features](#features)
   - [Hooks/installs](#hooksinstalls)
+  - [Critical CSS](#critical-css)
   - [Schema/Theme Require](#schematheme-require)
   - [JS Section Schema](#js-section-schema)
   - [Partials](#partials)
@@ -148,6 +149,7 @@ Theme Envy "Features" are bigger pieces/sections of your site. Any JS/CSS assets
       └── sections/ # .liquid files only, included in build automatically
       └── snippets/ # .liquid files only, included in build automatically
       └── styles/ # contains any .css files, must be imported into index.js
+      └── critical.css # optional file that adds render blocking, sitewide CSS
       └── index.js # is concatenated and loaded sitewide
       └── install.js # defines where to inject code into hooks
 ```
@@ -169,7 +171,9 @@ module.exports = [
 ]
 ```
 During the build, all code for the `head-end` hook will be collected, sorted by priority (where 0 is highest in the code), and will replace the `{% hook 'head-end' %}` tag.
-
+***
+### Critical CSS
+In "Features" you may write render blocking CSS that you want to load site wide in a `critical.css` file in the Feature's directory. The critical.css files are concatenated with the Tailwind Stylesheet (when enabled), so that they are render blocking, loaded once, and then cached for subsequent page loads.
 ***
 ### Schema/Theme Require
 We were frustrated by how difficult it is to share smaller pieces of Shopify Section schema across sections. Theme Envy includes a couple of tools to make this easier.

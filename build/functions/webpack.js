@@ -9,6 +9,7 @@
   */
 
 const webpack = require('webpack')
+const getAll = require('./get-all')
 
 module.exports = function({ mode, opts }) {
   return new Promise((resolve, reject) => {
@@ -24,6 +25,12 @@ module.exports = function({ mode, opts }) {
     webpackConfig.watch = watch
     // merge our theme config named entries into webackConfig.entry
     webpackConfig.entry = { ...webpackConfig.entry, ...ThemeEnvy.entry }
+
+    if (ThemeEnvy?.tailwind === false && getAll('criticalCSS').length > 0) {
+      // if tailwind is disabled, we need to add our critical css to the entry list
+      webpackConfig.entry['theme-envy.critical'] = `${ThemeEnvy.paths.build}/requires/styles/theme-envy.css`
+    }
+
     webpack(webpackConfig, (err, stats) => {
       if (err || stats.hasErrors()) {
         console.log(stats, err)
