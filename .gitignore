@@ -127,3 +127,5 @@ tmp
 /utils
 /build/requires/scripts/elements.js
 /build/requires/scripts/features.js
+/build/requires/styles/theme-envy.css
+/build/requires/snippets/theme-envy.liquid

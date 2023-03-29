@@ -12,7 +12,7 @@ module.exports = function({ mode, opts }) {
     const verbose = opts.verbose || false
 
     // run tailwind
-    const tailwindCss = path.resolve(__dirname, '../styles/theme-envy.css')
+    const tailwindCss = path.resolve(__dirname, '../requires/styles/theme-envy.css')
     const tailwindOpts = ['tailwindcss', 'build', '-i', tailwindCss, '-o', `${ThemeEnvy.outputPath}/assets/theme-envy.critical.css`]
     if (mode === 'production') tailwindOpts.push('--minify')
     if (watch) tailwindOpts.push('--watch')

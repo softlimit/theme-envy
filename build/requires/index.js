@@ -10,6 +10,7 @@ const requires = [
   './locales',
   './scripts',
   './snippets',
+  './styles',
   './templates',
 ]
 

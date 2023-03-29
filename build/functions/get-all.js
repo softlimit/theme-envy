@@ -25,6 +25,11 @@ const globs = {
     },
     filter: file => path.basename(file) !== 'settings_schema.js',
   },
+  criticalCSS: {
+    glob(src) {
+      return glob.sync(path.resolve(src, '**/critical.css'))
+    },
+  },
   elements: {
     glob(src) {
       return [...glob.sync(path.resolve(src, '**/elements/**/index.js')), ...glob.sync(path.resolve(src, '**/elements/*.js'))]
