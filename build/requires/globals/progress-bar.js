@@ -17,7 +17,7 @@ const colors = require('ansi-colors');
     globals: 1,
     liquid: getAll('liquid').length,
     locales: 1,
-    requires: 6,
+    requires: 7,
     sectionGroups: 1,
     tailwind: ThemeEnvy?.tailwind !== false ? 1 : 0,
     templates: getAll('templates').length,
