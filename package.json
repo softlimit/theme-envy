@@ -33,8 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/softlimit/shopify-env",
-    "directory": "@softlimit/shopify-env"
+    "url": "https://github.com/softlimit/theme-envy"
   },
   "engines": {
     "npm": "8.x"
