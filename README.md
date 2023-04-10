@@ -4,7 +4,7 @@
 <!-- omit in toc -->
 ## _The lean, mean development machine for your Shopify themes_
 
-[![Built by Softlimit](https://cdn.shopify.com/s/files/1/0581/4760/2587/files/softlimit-app-icons-03.png?v=1680017399)](https://www.softlimit.com/)
+[<img src="https://cdn.shopify.com/s/files/1/0581/4760/2587/files/Built_by_Softlimit_-_Orange.png?v=1681137186" width="140px" alt="Built by Softlimit">](https://www.softlimit.com/)
 
 Theme Envy is a feature-rich, performance-optimized Shopify theme development environment. With the extended liquid tools, you can move beyond liquid snippets with repeatable code. Theme Envy compiles everything for you using a combination of custom build processes, Node, Webpack, and Tailwind.
 <!-- omit in toc -->
