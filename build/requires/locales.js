@@ -3,14 +3,19 @@
 */
 const fs = require('fs-extra')
 const path = require('path')
+const { getAll } = require('#Build/functions')
 
-// if dist/locales does not exist, create it
+const locales = getAll('locales')
+
+// if dist/locales doesn't exist create it
 fs.ensureDirSync(path.resolve(ThemeEnvy.outputPath, 'locales'))
 
-try {
-  fs.copySync(path.resolve(ThemeEnvy.themePath, 'locales'), path.resolve(ThemeEnvy.outputPath, 'locales'))
-  // update progress bar
-  ThemeEnvy.progress.increment('locales')
-} catch (err) {
-  console.error(err)
-}
+locales.forEach(locale => {
+  try {
+    fs.copySync(locale, path.resolve(ThemeEnvy.outputPath, 'locales', path.basename(locale)))
+    // update progress bar
+    ThemeEnvy.progress.increment('locales', 1)
+  } catch (err) {
+    console.error(err)
+  }
+})

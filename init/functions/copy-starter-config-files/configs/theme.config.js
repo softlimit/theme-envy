@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    // main: './src/scripts/main.js',
+    // main: ['./src/scripts/main.js'],
   },
   store: 'my-store.myshopify.com',
   themePath: 'src',

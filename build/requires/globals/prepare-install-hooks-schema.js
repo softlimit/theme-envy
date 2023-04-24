@@ -43,7 +43,6 @@ const path = require('path');
     }
   })
 
-  // TODO: LOOK INTO THIS
   schema.forEach(entry => {
     const file = `${entry.file}.liquid`
     ThemeEnvy.schema[file] = ThemeEnvy.schema[file] || {
@@ -53,6 +52,6 @@ const path = require('path');
     // add the schema to the destination, process entry.content for softlimit partials
     // target is either 'settings' or 'blocks'
     const target = entry.target.split('.')[1]
-    ThemeEnvy.schema[file][target].push(entry.content)
+    ThemeEnvy.schema[file][target] = [...ThemeEnvy.schema[file][target], ...entry.content]
   })
 })()

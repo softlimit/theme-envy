@@ -7,19 +7,41 @@
 */
 const path = require('path')
 const { directories } = require('#EnsureDirectories')
+// sets resolved parent theme path
+require('./parent-theme.js')
 
 module.exports = (func, childFiles, type) => {
   const childRelative = childFiles.map(file => path.relative(ThemeEnvy.themePath, file))
-  // get all files from the parent theme, using only directories listed in ThemeConfig
-  const only = [...ThemeEnvy.parentTheme.elements, ...ThemeEnvy.parentTheme.features]
+  // get all files from the parent theme, using only elements and features directories in parent theme
+  let only = [...ThemeEnvy.parentTheme.elements, ...ThemeEnvy.parentTheme.features]
+
+  if (type === 'elements') {
+    only = ThemeEnvy.parentTheme.elements
+  }
+  if (type === 'features') {
+    only = ThemeEnvy.parentTheme.features
+  }
   if (type === 'schema') {
-    only.push('schema')
+    only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/theme-envy/schema'))
   }
   if (type === 'liquid') {
-    only.push(...directories.map(dir => path.resolve(ThemeEnvy.parentTheme, dir)))
+    only.push(...directories.map(dir => path.resolve(ThemeEnvy.parentTheme.path, 'src', dir)))
   }
   if (type === 'sectionGroups') {
-    only.push(path.resolve(ThemeEnvy.parentTheme, 'sections'))
+    only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/sections'))
   }
-  return func(ThemeEnvy.parentTheme, only).filter(file => !childRelative.includes(path.relative(ThemeEnvy.parentTheme, file)))
+  if (type === 'config') {
+    only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/config'))
+  }
+  if (type === 'locales') {
+    only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/locales'))
+  }
+  if (type === 'templates') {
+    only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/templates'))
+  }
+  if (type === 'criticalCSS') {
+    only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/styles'))
+  }
+
+  return func(ThemeEnvy.parentTheme.path, only).filter(file => !childRelative.includes(path.relative(ThemeEnvy.parentTheme.path, file)))
 }

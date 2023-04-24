@@ -4,9 +4,8 @@
 
 const fs = require('fs-extra')
 const path = require('path')
-const glob = require('glob')
-
-const assets = glob.sync(path.resolve(ThemeEnvy.themePath, '**/assets/**/*.*'))
+const { getAll } = require('#Build/functions')
+const assets = getAll('assets')
 
 // if dist/assets doesn't exist create it
 fs.ensureDirSync(path.resolve(ThemeEnvy.outputPath, 'assets'))

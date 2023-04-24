@@ -15,14 +15,15 @@
 const path = require('path')
 const chalk = require('chalk')
 const emoji = require('node-emoji')
-const { themeEnvy, webpack, tailwind } = require('#Build/functions')
+const { themeEnvy, webpack } = require('#Build/functions')
 const { distClean } = require('#Helpers')
 
 module.exports = async function(env, opts = {}) {
   const mode = env || 'production'
+  process.env.mode = mode
 
   // empty dist folder for a clean build, do not log the clean message
-  distClean({ quiet: true })
+  if (opts.clean || !opts.watch) distClean({ quiet: true })
 
   // our pretty build message
   const relativeDistPath = path.relative(process.cwd(), ThemeEnvy.outputPath)
@@ -36,8 +37,6 @@ module.exports = async function(env, opts = {}) {
   require('./requires')
 
   await themeEnvy({ mode, opts })
-
-  if (ThemeEnvy?.tailwind !== false) await tailwind({ mode, opts })
 
   await webpack({ mode, opts })
 
