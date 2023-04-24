@@ -61,19 +61,10 @@ class RetryChunkLoadPlugin {
                   setTimeout(function () {
                     var retryAttempt = ${maxRetries} - retries + 1;
                     var retryAttemptString = '&retry-attempt=' + retryAttempt;
-                    fetch('/?sections=theme-envy-manifest')
-                    .then(res => res.json())
-                    .then(res => {
-                      const file = chunkId + '.js'
-                      const Manifest = JSON.parse(new DOMParser().parseFromString(res.manifest, 'text/html').querySelector('#shopify-section-theme-envy-manifest').textContent)
-                      if(!Manifest[file]) return Date.now()
-                      return Manifest[file].slice(Manifest[file].indexOf('?') + 1)
-                    })
-                    .then(cacheBust => {
-                      queryMap.set(chunkId, cacheBust);
-                      countMap.set(chunkId, retries - 1);
-                      resolve(${RuntimeGlobals.ensureChunk}(chunkId));
-                    })
+                    const cacheBust = Date.now();
+                    queryMap.set(chunkId, cacheBust);
+                    countMap.set(chunkId, retries - 1);
+                    resolve(${RuntimeGlobals.ensureChunk}(chunkId));
                   }, ${this.options.retryDelay || this.options.timeout || 0})
                 })
               });

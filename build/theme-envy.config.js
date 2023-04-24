@@ -1,12 +1,10 @@
 const path = require('path')
-const fs = require('fs-extra')
 
 const { EsbuildPlugin } = require('esbuild-loader')
 const { RetryChunkLoadPlugin } = require('./functions/webpack-plugins/retry-chunk-load-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts')
 const TerserPlugin = require('terser-webpack-plugin')
-const WebpackAssetsManifest = require('webpack-assets-manifest')
 
 module.exports = {
   entry: {
@@ -79,13 +77,6 @@ module.exports = {
       retryDelay: 0,
       // optional value to set the maximum number of retries to load the chunk. Default is 1
       maxRetries: 3
-    }),
-    new WebpackAssetsManifest({
-      done: ({ assets }) => {
-        // plugin is not outputting any manifests file, so let's do it here
-        const manifestPath = path.resolve(ThemeEnvy.outputPath, 'sections/theme-envy-manifest.liquid')
-        fs.writeFileSync(manifestPath, JSON.stringify(assets, null, 2))
-      }
     }),
   ]
 }
