@@ -12,11 +12,11 @@ const { spawn } = require('child_process')
 
 module.exports = function() {
   const relativeDistPath = path.relative(process.cwd(), ThemeEnvy.outputPath)
-  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, `--path=${relativeDistPath}`, '--only=templates/**/*.!(*(*.).json,config/settings_data.json,sections/*.!(*(*.).json']
+  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, `--path=${relativeDistPath}`]
   const shopify = spawn('shopify', themePull, { cwd: ThemeEnvy.outputPath, stdio: 'inherit' })
 
   shopify.on('exit', function() {
-    const files = glob.sync(path.resolve(ThemeEnvy.outputPath, '{templates,config,sections}/**/*.!(*(*.).json')).filter(file => file.indexOf('settings_schema') > -1)
+    const files = glob.sync(path.resolve(ThemeEnvy.outputPath, '{templates,config,sections}/**/*.json')).filter(file => file.indexOf('settings_schema') > -1)
     files.forEach(file => fs.copyFileSync(file, file.replace(ThemeEnvy.outputPath, ThemeEnvy.themePath)))
   })
 }
