@@ -13,7 +13,10 @@ const path = require('path');
 
   // look for parent theme in node_modules
   const parentThemePath = ThemeEnvy.parentTheme?.path
-  if (!parentThemePath) return
+  if (!parentThemePath) {
+    removeParentThemeReference()
+    return
+  }
   const parentThemePkg = fs.existsSync(path.resolve(process.cwd(), 'node_modules', parentThemePath))
     ? path.resolve(process.cwd(), 'node_modules', parentThemePath)
     : false
@@ -24,11 +27,19 @@ const path = require('path');
   // prefer node_modules over relative path
   const parentTheme = parentThemePkg || parentThemeRelative
 
+  if (!parentTheme) {
+    removeParentThemeReference()
+    return
+  }
   ThemeEnvy.parentTheme.path = parentTheme
   // define elements and features arrays
   ThemeEnvy.parentTheme.elements = listFeaturesOrElements({ type: 'elements' })
   ThemeEnvy.parentTheme.features = listFeaturesOrElements({ type: 'features' })
 })()
+
+function removeParentThemeReference() {
+  delete ThemeEnvy.parentTheme
+}
 
 function listFeaturesOrElements({ type }) {
   // get parentTheme config

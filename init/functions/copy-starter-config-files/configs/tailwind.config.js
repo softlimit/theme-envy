@@ -17,8 +17,8 @@ const config = {
 }
 
 // merge parentTheme tailwind config if it exists
-if (ThemeEnvy.parentTheme) {
-  const parentTailwind = require(path.join(path.dirname(require.resolve('theme-framework')), 'tailwind.config.js'))
+if (ThemeEnvy.parentTheme?.path) {
+  const parentTailwind = require(path.join(path.dirname(require.resolve(ThemeEnvy.parentTheme.path)), 'tailwind.config.js'))
   // deep merge parentTheme tailwind config with child theme tailwind config
   if (parentTailwind) {
     config.theme.extend = Object.assign(config.theme.extend, parentTailwind.theme.extend)

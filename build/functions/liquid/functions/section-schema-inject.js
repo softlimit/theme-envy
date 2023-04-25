@@ -28,9 +28,6 @@ function injectJsSchema({ source, filePath, schema }) {
   // check for installs
   const schemaWithInjections = checkInstalls({ schema: schemaSource, filePath })
   // replace the {% schema %} tag with the schema string and update asset
-  // if (filePath.includes('media-with-text-overlay.liquid')) {
-  //   console.dir(schemaWithInjections.blocks, { depth: null })
-  // }
   return source.replace(schema[0], formatSchema(schemaWithInjections))
 }
 

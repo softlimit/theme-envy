@@ -11,14 +11,17 @@
   */
 const path = require('path')
 const glob = require('glob')
-const parentThemeFiles = require('./parent-theme-files')
+const parentThemeFiles = require('./parent-theme/parent-theme-files')
 
 // ignore node_modules in globs
 const globSync = (src, pattern) => glob.sync(path.resolve(src, pattern), {
   ignore: {
     ignored: p => {
       // ignore node_modules in parent theme but not the parent theme itself (within node_modules)
-      return p.fullpath().includes(path.resolve(ThemeEnvy.parentTheme.path, 'node_modules')) ? true : p.fullpath().includes('node_modules') && !p.fullpath().includes(ThemeEnvy.parentTheme.path)
+      if (ThemeEnvy.parentTheme) {
+        return p.fullpath().includes(path.resolve(ThemeEnvy.parentTheme.path, 'node_modules')) ? true : p.fullpath().includes('node_modules') && !p.fullpath().includes(ThemeEnvy.parentTheme.path)
+      }
+      return p.fullpath().includes('node_modules')
     },
   }
 })

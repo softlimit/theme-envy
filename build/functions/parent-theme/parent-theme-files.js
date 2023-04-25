@@ -8,7 +8,7 @@
 const path = require('path')
 const { directories } = require('#EnsureDirectories')
 // sets resolved parent theme path
-require('./parent-theme.js')
+require('./index.js')
 
 module.exports = (func, childFiles, type) => {
   const childRelative = childFiles.map(file => path.relative(ThemeEnvy.themePath, file))
