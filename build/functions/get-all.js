@@ -11,69 +11,87 @@
   */
 const path = require('path')
 const glob = require('glob')
-const parentThemeFiles = require('./parent-theme-files')
+const parentThemeFiles = require('./parent-theme/parent-theme-files')
+
+// ignore node_modules in globs
+const globSync = (src, pattern) => glob.sync(path.resolve(src, pattern), {
+  ignore: {
+    ignored: p => {
+      // ignore node_modules in parent theme but not the parent theme itself (within node_modules)
+      if (ThemeEnvy.parentTheme) {
+        return p.fullpath().includes(path.resolve(ThemeEnvy.parentTheme.path, 'node_modules')) ? true : p.fullpath().includes('node_modules') && !p.fullpath().includes(ThemeEnvy.parentTheme.path)
+      }
+      return p.fullpath().includes('node_modules')
+    },
+  }
+})
 
 const globs = {
   assets: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/assets/**/*'))
+      return globSync(src, '**/assets/**/*')
     },
   },
   config: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/config/**/*.js'))
+      return globSync(src, '**/config/**/*.js')
     },
     filter: file => path.basename(file) !== 'settings_schema.js',
   },
   criticalCSS: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/critical.css'))
+      return globSync(src, '**/critical.css')
     },
   },
   elements: {
     glob(src) {
-      return [...glob.sync(path.resolve(src, '**/elements/**/index.js')), ...glob.sync(path.resolve(src, '**/elements/*.js'))]
+      return [...globSync(src, '**/elements/**/index.js'), ...globSync(src, '**/elements/*.js')]
     }
   },
   features: {
     glob(src) {
-      return glob.sync(path.resolve(src, 'theme-envy/features/**/index.js'))
+      return globSync(src, '**/features/**/index.js')
     },
   },
   installs: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/install.js'))
+      return globSync(src, '**/install.js')
     },
   },
   liquid: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/*.liquid'))
+      return globSync(src, '**/*.liquid')
     },
     filter: file => !file.includes('partials'),
   },
+  locales: {
+    glob(src) {
+      return globSync(src, '**/locales/**/*.json')
+    }
+  },
   partials: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/partials/**/*.liquid'))
+      return globSync(src, '**/partials/**/*.liquid')
     },
   },
   schema: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/schema/**/*.js'))
+      return globSync(src, '**/schema/**/*.js')
     },
   },
   sectionGroups: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/sections/**/*.json'))
+      return globSync(src, '**/sections/**/*.json')
     },
   },
   snippets: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/snippets/**/*.liquid'))
+      return globSync(src, '**/snippets/**/*.liquid')
     },
   },
   templates: {
     glob(src) {
-      return glob.sync(path.resolve(src, '**/templates/**/*.json'))
+      return globSync(src, '**/templates/**/*.json')
     },
   },
 }
@@ -81,16 +99,17 @@ const globs = {
 module.exports = function(type) {
   function getFiles(src, only) {
     // src is either the themePath or the parentTheme
-    // only is a list of directory names to filter against, used for parentTheme
+    // only is a list of directory paths to filter against, used for parentTheme
     let files = globs[type].glob(src)
     if (only) {
       files = files.filter(file => {
-        return only.some(dir => file.indexOf(dir) > -1)
+        return only.some(dir => file.includes(`${dir}/`) || file.includes(`${dir}.js`))
       })
     }
     if (globs[type].filter) {
       files = files.filter(globs[type].filter)
     }
+
     return files
   }
   const files = getFiles(ThemeEnvy.themePath)

@@ -16,10 +16,9 @@ const colors = require('ansi-colors');
     failedHookInstalls: 1,
     globals: 1,
     liquid: getAll('liquid').length,
-    locales: 1,
+    locales: getAll('locales').length,
     requires: 7,
     sectionGroups: 1,
-    tailwind: ThemeEnvy?.tailwind !== false ? 1 : 0,
     templates: getAll('templates').length,
     webpack: 1,
   }

@@ -22,7 +22,7 @@ const listDependencies = ({ filePath, source }) => {
     const action = tag[2]
     const name = tag[3]
     if (action === 'partial') {
-      const file = globbedPartials.filter(partial => partial.includes(`/${`${name}.liquid`}`))
+      const file = globbedPartials.filter(partial => path.basename(partial) === `${name}.liquid`)
       // if partialPath doesn't return anything, exit process and output error
       if (file.length === 0) {
         console.log(`\n${logSymbols.error} ${chalk.red.bold('Error:')}\n\n${chalk.red(`${name}.liquid`)} partial file not found, referenced in:\n${chalk.dim.underline(filePath)}\n\nTo resolve, confirm the partial file exists and that the file\nname reference in the {% partial %} tag matches the partial file.\n`)

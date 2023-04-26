@@ -116,6 +116,7 @@ program
   .description('Build Shopify theme')
   .usage('[development|production] -w|--watch')
   .addArgument(new commander.Argument('[env]', 'Specify the build environment to run').choices(['development', 'production']))
+  .option('-c, --clean', 'Clean output directory before building')
   .option('-w, --watch', 'Watch for changed files and update dist, serve with Shopify CLI')
   .option('-v, --verbose', 'Show Tailwind and Webpack in output')
   .action((env, options, command) => {

@@ -33,7 +33,9 @@ ThemeEnvy.events.on('watch:start', () => {
 })
 
 const ThemeRequire = (file, options) => {
-  // check for file in our pre-globbed arrays
+  // assume files are javascript if no extension given
+  if (!path.extname(file)) file = `${file}.js`
+
   const ref = getFile(file)
 
   if (ref.length === 0) {
@@ -87,10 +89,10 @@ const ThemeRequire = (file, options) => {
     content = schemaExtend(content, options.extend)
   }
   if (options?.loop) {
-    content = schemaLoop(file, content, options.loop)
+    content = schemaLoop(content, options.loop)
   }
   if (options?.suffix) {
-    content = schemaSuffix(file, content, options.suffix)
+    content = schemaSuffix(content, options.suffix)
   }
 
   if (options?.loader) {
@@ -101,7 +103,7 @@ const ThemeRequire = (file, options) => {
   return content
 }
 
-function schemaDelete(file, src, del) {
+function schemaDelete(src, del) {
   const replaceWith = src.filter(entry => {
     if (entry.settings) {
       entry.settings = schemaDelete(entry.settings, del)
@@ -130,7 +132,7 @@ function schemaExtend(src, exts) {
   return replaceWith
 }
 
-function schemaLoop(file, src, loop) {
+function schemaLoop(src, loop) {
   const replaceWith = []
   for (let i = 1; i < (loop + 1); i++) {
     const srcCopy = parseJson(src)
@@ -145,7 +147,7 @@ function schemaLoop(file, src, loop) {
   return replaceWith
 }
 
-function schemaSuffix(file, src, suffix) {
+function schemaSuffix(src, suffix) {
   const replaceWith = parseJson(src)
   replaceWith.map(entry => {
     if (entry.id) entry.id = `${entry.id}_${suffix}`
@@ -165,8 +167,8 @@ function getFile(file) {
     return getSchemaFile(file)
   } else {
     const res = glob.sync(path.resolve(ThemeEnvy.themePath, `**/${file}`))
-    if (ThemeEnvy.parentTheme && res.length === 0) {
-      res.push(...glob.sync(path.resolve(ThemeEnvy.parentTheme, `**/${file}`)))
+    if (ThemeEnvy.parentTheme.path && res.length === 0) {
+      res.push(...glob.sync(path.resolve(ThemeEnvy.parentTheme.path, `**/${file}`)))
     }
     return res
   }
@@ -176,7 +178,7 @@ function getFile(file) {
   @param src [object] - the file contents to be extended
   @param schemaRef [string] - source schema file name being extended
 */
-function parseJson(src, schemaRef) {
+function parseJson(src) {
   try {
     return JSON.parse(JSON.stringify(src))
   } catch (error) {

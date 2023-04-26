@@ -1,12 +1,14 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts')
-const { ESBuildMinifyPlugin } = require('esbuild-loader')
 const path = require('path')
+
+const { EsbuildPlugin } = require('esbuild-loader')
+const { RetryChunkLoadPlugin } = require('./functions/webpack-plugins/retry-chunk-load-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   entry: {
-    'theme-envy': path.resolve(__dirname, 'requires/scripts/theme-envy.js'),
+    'theme-envy': [path.resolve(__dirname, 'requires/scripts/theme-envy.js')],
   },
   output: {
     path: path.resolve(ThemeEnvy.outputPath, 'assets'),
@@ -25,6 +27,7 @@ module.exports = {
       return '[name].js?h=[contenthash:5]'
     }
   },
+  devtool: false,
   module: {
     rules: [
       {
@@ -44,7 +47,7 @@ module.exports = {
     sideEffects: false,
     minimizer: [
       (process.env.mode === 'production')
-        ? new ESBuildMinifyPlugin({
+        ? new EsbuildPlugin({
           target: 'es2015', // Syntax to compile to (see options below for possible values)
         })
         : new TerserPlugin({
@@ -56,16 +59,24 @@ module.exports = {
     alias: {
       Build: ThemeEnvy.paths.build,
       Helpers: ThemeEnvy.paths.helpers,
-      Elements: path.resolve(ThemeEnvy.themePath, 'theme-envy/elements/'),
-      Features: path.resolve(ThemeEnvy.themePath, 'theme-envy/features/'),
       Root: path.resolve(process.cwd()),
       Scripts: path.resolve(ThemeEnvy.themePath, 'scripts/'),
     },
+    modules: ['node_modules'],
+  },
+  resolveLoader: {
+    modules: ['node_modules'],
   },
   plugins: [
     new RemoveEmptyScriptsPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css?h=[chunkhash:5]',
+    }),
+    new RetryChunkLoadPlugin({
+      // optional value to set the amount of time in milliseconds before trying to load the chunk again. Default is 0
+      retryDelay: 0,
+      // optional value to set the maximum number of retries to load the chunk. Default is 1
+      maxRetries: 3
     }),
   ]
 }
