@@ -1,7 +1,7 @@
 const path = require('path')
 
 const { EsbuildPlugin } = require('esbuild-loader')
-const { RetryChunkLoadPlugin } = require('./functions/webpack-plugins/retry-chunk-load-plugin')
+const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -73,6 +73,9 @@ module.exports = {
       filename: '[name].css?h=[chunkhash:5]',
     }),
     new RetryChunkLoadPlugin({
+      cacheBust: `function() {
+        return Date.now();
+      }`,
       // optional value to set the amount of time in milliseconds before trying to load the chunk again. Default is 0
       retryDelay: 0,
       // optional value to set the maximum number of retries to load the chunk. Default is 1
