@@ -69,7 +69,7 @@ function listFeaturesOrElements({ type }) {
           console.error(`The ${item} ${type} does not exist in the parent theme`)
           return
         }
-        elementsOrFeatures.push(path.resolve(ThemeEnvy.parentTheme.path, 'theme-envy', type, item))
+        elementsOrFeatures.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/theme-envy', type, item))
       }
     })
   }
