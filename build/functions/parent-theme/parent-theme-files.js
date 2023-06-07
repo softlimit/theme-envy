@@ -10,8 +10,8 @@ const { directories } = require('#EnsureDirectories')
 // sets resolved parent theme path
 require('./index.js')
 
-module.exports = (func, childFiles, type) => {
-  const childRelative = childFiles.map(file => path.relative(ThemeEnvy.themePath, file))
+module.exports = (getFiles, childFiles, type) => {
+  const childRelative = childFiles.map(file => path.relative(process.cwd(), file))
   // get all files from the parent theme, using only elements and features directories in parent theme
   let only = [...ThemeEnvy.parentTheme.elements, ...ThemeEnvy.parentTheme.features]
 
@@ -42,6 +42,5 @@ module.exports = (func, childFiles, type) => {
   if (type === 'criticalCSS') {
     only.push(path.resolve(ThemeEnvy.parentTheme.path, 'src/styles'))
   }
-
-  return func(ThemeEnvy.parentTheme.path, only).filter(file => !childRelative.includes(path.relative(ThemeEnvy.parentTheme.path, file)))
+  return getFiles(ThemeEnvy.parentTheme.path, only).filter(file => !childRelative.includes(path.relative(ThemeEnvy.parentTheme.path, file)))
 }
