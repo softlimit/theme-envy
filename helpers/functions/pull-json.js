@@ -12,7 +12,7 @@ const { spawn } = require('child_process')
 
 module.exports = function() {
   const relativeDistPath = path.relative(process.cwd(), ThemeEnvy.outputPath)
-  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, `--path=${relativeDistPath}`, '--only=settings_data.json', '--only=templates/*.json']
+  const themePull = ['theme', 'pull', `--store=${ThemeEnvy.store}`, `--path=${relativeDistPath}`, '--only=settings_data.json', '--only=templates/*.json', '--only=sections/*.json']
   const shopify = spawn('shopify', themePull, { cwd: path.resolve(process.cwd()), stdio: 'inherit' })
 
   shopify.on('exit', function() {

@@ -19,6 +19,9 @@ module.exports = function(path) {
   if (path.includes('templates/customers')) {
     return `templates/customers/${filename}`
   }
+  if (path.includes('templates/metaobject')) {
+    return `templates/metaobject/${filename}`
+  }
   if (path.includes('templates/') && !path.includes('customers/')) {
     return `templates/${filename}`
   }
