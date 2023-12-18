@@ -21,6 +21,7 @@ const themeEnvyCommands = {
   convert: require('#Convert'),
   dev: require('#Helpers/functions/dev.js'),
   init: require('#Init'),
+  ignore: require('#Ignore'),
   new: require('#Helpers/functions/scaffold-new/index.js'),
   orphans: require('#Helpers/functions/find-orphans.js'),
   'pull-json': require('#Helpers/functions/pull-json.js'),
@@ -188,4 +189,15 @@ program
     scriptMessage(command.name())
     themeEnvyCommands.convert(source)
   })
+
+program
+  .command('ignore')
+  .description('Create a .shopifyignore file in the output directory based on the type of ignore patter specified in the argument')
+  .usage(['[none|locales|push]'])
+  .addArgument(new commander.Argument('[type]', 'The type of ignore pattern to use').choices(['none', 'locales', 'push']))
+  .action((type, options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.ignore(type)
+  })
+
 program.parse()

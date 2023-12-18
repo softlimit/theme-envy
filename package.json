@@ -27,6 +27,7 @@
     "#Init/*": "./init/*",
     "#Init/functions": "./init/functions/index.js",
     "#Init/functions/*": "./init/functions/*",
+    "#Ignore": "./ignore/index.js",
     "#LogSymbols": "./helpers/functions/log-symbols.js",
     "#Root/*": "./*"
   },
