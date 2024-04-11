@@ -14,6 +14,14 @@ const templateOutputPath = path.resolve(ThemeEnvy.outputPath, 'templates')
 fs.ensureDirSync(templateOutputPath)
 globbedTemplates.forEach(file => {
   // write each file to dist
+  // if the file path includes customers, output into a customers directory in templates
+  if (file.includes('customers')) {
+    const customerOutputPath = path.resolve(templateOutputPath, 'customers')
+    fs.ensureDirSync(customerOutputPath)
+    fs.copyFileSync(file, path.resolve(customerOutputPath, path.basename(file)))
+    ThemeEnvy.progress.increment('templates', 1)
+    return
+  }
   fs.copyFileSync(file, path.resolve(templateOutputPath, path.basename(file)))
   // update progress bar
   ThemeEnvy.progress.increment('templates', 1)
