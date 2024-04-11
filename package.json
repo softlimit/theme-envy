@@ -1,6 +1,6 @@
 {
   "name": "@softlimit/theme-envy",
-  "version": "0.1.8-alpha",
+  "version": "0.1.10-alpha",
   "description": "Softlimit Shopify Theme Development Environment",
   "bin": {
     "theme-envy": "./index.js"
