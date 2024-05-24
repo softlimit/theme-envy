@@ -107,6 +107,7 @@ Commands:
   build [options] [env]        Build Shopify theme
   clean                        Empty output directory
   convert [options] [source]   Convert an existing Shopify theme to Theme Envy directory structure
+  deploy                       Deploy your theme to Shopify by copying the live theme then pushing changes to codebase on top of it
   dev                          Start development process and sync with Shopify using the Shopify CLI
   find-orphans                 Find unused snippets, partials, and assets in your Shopify theme
   init [options] [source]      Initialize a new Shopify theme project with Theme Envy directory structure

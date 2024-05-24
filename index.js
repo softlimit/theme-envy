@@ -19,6 +19,7 @@ const themeEnvyCommands = {
   build: require('#Build'),
   clean: require('#Helpers/functions/dist-clean.js'),
   convert: require('#Convert'),
+  deploy: require('#Helpers/functions/deploy/index.js'),
   dev: require('#Helpers/functions/dev.js'),
   init: require('#Init'),
   ignore: require('#Ignore'),
@@ -86,6 +87,14 @@ This does the following things:
       options.store = await promptly.prompt(chalk.yellow('Please provide the myshopify.com domain of your store (this can be changed later in theme.config.js):\n '))
     }
     themeEnvyCommands.init(source, options)
+  })
+
+program
+  .command('deploy')
+  .description('Deploy your theme to Shopify by copying the live theme then pushing changes to codebase on top of it')
+  .action((options, command) => {
+    scriptMessage(command.name())
+    themeEnvyCommands.deploy()
   })
 
 program

@@ -25,4 +25,11 @@ module.exports = function({ target, opts }) {
     if (err) return console.error(err)
     console.log(`${logSymbols.success} Utils starter files copied`)
   })
+
+  // copy github deploy workflow
+  const githubDeploySrc = path.resolve(__dirname, './.github/workflows/deploy.yml')
+  fs.copy(githubDeploySrc, path.resolve(target, '.github/workflows/deploy.yml'), err => {
+    if (err) return console.error(err)
+    console.log(`${logSymbols.success} GitHub deploy workflow copied`)
+  })
 }
