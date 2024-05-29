@@ -1,0 +1,53 @@
+name: Deploy Production Theme
+
+on:
+  push:
+    # trigger on v* tags
+    tags:
+      - 'v*'
+    # allow tests from pushes to branch
+    branches:
+      - 'deploy-release-action'
+
+  # or manually
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    # connects organization and repo variables and secrets to the runner
+    env:
+      SHOPIFY_FLAG_STORE: ${{ vars.SHOPIFY_FLAG_STORE }}
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_CLI_TTY: 0
+    steps:
+      # load the current repo on the runner
+      - name: checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.WORKFLOW_REPO_ACCESS }}
+
+      # set up node
+      - name: use node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.13.0'
+
+      # set up ruby
+      - name: use ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
+      # install dependencies
+      - name: install dependencies
+        run: |
+          gem install bundler
+          npm install -g npm@8.19.2
+          npm install
+
+      # run deployment script from framework bin scripts
+      - name: deploy new theme
+        run: npx theme-envy deploy
