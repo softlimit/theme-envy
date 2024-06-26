@@ -18,8 +18,8 @@ module.exports = function({ file, mode, verbose }) {
   const outputPath = `${ThemeEnvy.outputPath}/${shopifyPath}`
   let source = fs.readFileSync(file, 'utf8')
 
-  // inject schema .js into liquid section files
-  if (file.includes('sections/')) source = sectionSchemaInject({ source, filePath: file })
+  // inject schema .js into liquid section or block files
+  if (file.includes('sections/') || file.includes('blocks/')) source = sectionSchemaInject({ source, filePath: file })
 
   // apply our custom liquid tags: partial, hook, theme
   source = extendLiquid({ source, filePath: file })

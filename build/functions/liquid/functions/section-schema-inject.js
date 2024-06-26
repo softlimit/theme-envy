@@ -9,7 +9,7 @@ const path = require('path')
 const { parseSchema } = require('#Helpers')
 
 module.exports = function({ source, filePath }) {
-  if (!filePath.includes('sections')) return source
+  if (!filePath.includes('sections') && !filePath.includes('blocks')) return source
   // inject installs into inlined schema with {% schema %} {% endschema %} tags
   const hasSchemaTag = source.match(/{% schema %}/g)
   if (hasSchemaTag) return injectInstallsSchema({ source, filePath })
@@ -21,6 +21,9 @@ module.exports = function({ source, filePath }) {
 }
 
 function injectJsSchema({ source, filePath, schema }) {
+  if (filePath.includes('blocks')) {
+    console.log('inject block schema', filePath, schema)
+  }
   // regexp for a quoted string within our schema match
   const schemaFile = schema[0].match(/'(.*)'/)[1] || schema[0].match(/"(.*)"/)[1]
   // load the file export
