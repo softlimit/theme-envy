@@ -36,7 +36,7 @@
     "url": "https://github.com/softlimit/theme-envy"
   },
   "engines": {
-    "npm": "8.x"
+    "npm": ">=8.x"
   },
   "standard-version": {
     "scripts": {

@@ -13,6 +13,9 @@ module.exports = function(path) {
   if (path.includes('sections/')) {
     return `sections/${filename}`
   }
+  if (path.includes('blocks/')) {
+    return `blocks/${filename}`
+  }
   if (path.includes('layout/')) {
     return `layout/${filename}`
   }
