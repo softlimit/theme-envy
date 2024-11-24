@@ -68,6 +68,10 @@ npx theme-envy init
 > **Note**  
 > During the `init` command a new "Feature" is added to your project called `theme-envy` in `src/theme-envy/features/theme-envy`. This feature will add a snippet and `{% render 'theme-envy' %}` to the end of your `<head>` tag in `layout/theme.liquid` during project build. This handles all the Theme Envy JS and CSS.
 
+Next, install Theme Access in your store and create a new theme access token.
+
+Save this access token as an environment variable called `SHOPIFY_CLI_THEME_TOKEN` in a `.env` file at the project root.
+
 You are now ready to start developing! Get started with this simple command in your terminal
 ```bash
 npx theme-envy dev
